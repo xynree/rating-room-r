@@ -7,8 +7,8 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "rating-room-r",
-    "version": "0.0.0"
+    "productName": "Rating Room",
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -33,7 +33,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.rating.room",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -42,7 +42,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": ["db/*"],
       "shortDescription": "",
       "targets": "all",
       "windows": {
@@ -62,7 +62,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "rating-room-r",
+        "title": "Rating Room",
         "width": 800
       }
     ]
