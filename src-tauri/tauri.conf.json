@@ -12,6 +12,13 @@
   },
   "tauri": {
     "allowlist": {
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": ["$APPDATA/db/*"]
+      },
       "all": false,
       "shell": {
         "all": false,
@@ -42,7 +49,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": ["db/*"],
+      "resources": [],
       "shortDescription": "",
       "targets": "all",
       "windows": {
