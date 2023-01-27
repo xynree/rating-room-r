@@ -9,11 +9,23 @@ use serde::{Deserialize, Serialize};
 use sled_extensions::json::JsonEncoding;
 use sled_extensions::structured::Tree;
 use sled_extensions::DbExt;
-
 #[derive(Deserialize, Serialize)]
 struct Rating {
+    id: usize,
     name: String,
-    cost: String,
+    description: String,
+    rating: usize,
+    categories: Vec<Category>,
+    comments: String,
+    image: Vec<u8>,
+    date: String,
+}
+
+#[derive(Deserialize, Serialize)]
+struct Category {
+    id: usize,
+    name: String,
+    description: String,
 }
 
 struct RatingState {
@@ -23,7 +35,7 @@ struct RatingState {
 #[tauri::command]
 fn greet(state: tauri::State<RatingState>) -> String {
     if let Some(rating) = state.ratings.get("Takis").unwrap() {
-        format!("{}'s cost {}", rating.name, rating.cost)
+        format!("{}'s are {}", rating.name, rating.description)
     } else {
         String::new()
     }
@@ -42,8 +54,18 @@ fn main() -> Result<(), Box<dyn Error>> {
     ratings.insert(
         "Takis",
         Rating {
+            id: 1,
             name: "Takis".to_owned(),
-            cost: "2.0".to_owned(),
+            description: "A Delicious Snack".to_owned(),
+            rating: 4,
+            categories: Vec::from([Category {
+                id: 1,
+                name: "snack".to_owned(),
+                description: "yummy stuff".to_owned(),
+            }]),
+            comments: "yummy yummy".to_owned(),
+            date: "today".to_owned(),
+            image: vec![2],
         },
     )?;
 
