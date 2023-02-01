@@ -1,0 +1,24 @@
+<script lang="ts">
+    import { invoke } from "@tauri-apps/api/tauri";
+
+    // TODO: turn this into a store? Or maybe not needed.
+    let items: Item[] = [];
+    async function get_items() {
+        items = await invoke("get_items");
+    }
+
+    // run on load?
+    get_items();
+</script>
+
+<div class="border m-3 p-3">
+    <!-- example usage-->
+    {#if items.length == 0}
+        <p>No Items</p>
+    {:else}
+        <h2 class="text-xl font-bold">Items</h2>
+        {#each items as item}
+            <p>{item.name} - {item.description} - {item.date}</p>
+        {/each}
+    {/if}
+</div>
