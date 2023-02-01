@@ -13,23 +13,37 @@ to store ratings as a simple number and doing the parsing later,
 that saves us another data structure.
 
 ```mermaid
-    erDiagram
-        ITEM {
-                integer ItemId
-                nvarchar name
-                nvarchar description
-                integer CategoryId
-                integer rating
-                nvarchar comments
-                nvarchar image_path
-                date date
-            }
+erDiagram
+    items {
+        integer   id
+        varchar   name
+        varchar   description
+        varchar   comments
+        date   date
+    }
+    categories {
+        integer   id
+        varchar   name
+        varchar   description
+    }
+    ratings {
+        integer   id
+        integer   rating
+        date   date
+    }
+    items_to_ratings {
+        integer   id
+        integer   item_id
+        integer   rating_id
+    }
+    items_to_categories {
+        integer   id
+        integer   item_id
+        integer   category_id
+    }
 
-        CATEGORY {
-               integer CategoryId
-               nvarchar name
-               nvarchar description
-            }
-
-        ITEM ||--|{ CATEGORY : have
+     items ||--|{ items_to_ratings : have
+     ratings ||--|{ items_to_ratings : have
+     categories ||--|{ items_to_categories : have
+     items ||--|{ items_to_categories : have
 ```
