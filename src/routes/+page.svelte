@@ -4,7 +4,12 @@
     // TODO: turn this into a store? Or maybe not needed.
     let items: Item[] = [];
     async function get_items() {
-        items = await invoke("get_items");
+        // TODO: figure out what type to assign for items that allows a catch returning an error
+        items = await invoke("get_items", {
+            filter: { Category: ["sjhkdgj"] },
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 
     // run on load?
