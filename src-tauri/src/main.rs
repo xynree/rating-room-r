@@ -3,12 +3,13 @@
     windows_subsystem = "windows"
 )]
 
-use std::error::Error;
+use std::{
+    error::Error,
+    sync::{Arc, Mutex},
+};
 
+use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
-use sled_extensions::json::JsonEncoding;
-use sled_extensions::structured::Tree;
-use sled_extensions::DbExt;
 use tauri::Manager;
 
 #[derive(Default, Deserialize, Serialize)]
@@ -31,7 +32,7 @@ struct Category {
 }
 
 struct RatingState {
-    ratings: Tree<Rating, JsonEncoding>,
+    conn: Arc<Mutex<Connection>>,
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -42,31 +43,29 @@ fn main() -> Result<(), Box<dyn Error>> {
                 .app_data_dir()
                 .expect("failed to find Data Dir");
 
-            let db = sled_extensions::Config::default()
-                .path(data_dir.join("db"))
-                .open()?;
+            let conn = Connection::open(data_dir).unwrap();
 
-            let ratings = db.open_json_tree("ratings")?;
+            // ratings.insert(
+            //     "Takis",
+            //     Rating {
+            //         id: 1,
+            //         name: "Takis".to_owned(),
+            //         description: "A Delicious Snack".to_owned(),
+            //         rating: 4,
+            //         categories: Vec::from([Category {
+            //             id: 1,
+            //             name: "snack".to_owned(),
+            //             description: "yummy stuff".to_owned(),
+            //         }]),
+            //         comments: "yummy yummy".to_owned(),
+            //         date: "today".to_owned(),
+            //         image: vec![2],
+            //     },
+            // )?;
 
-            ratings.insert(
-                "Takis",
-                Rating {
-                    id: 1,
-                    name: "Takis".to_owned(),
-                    description: "A Delicious Snack".to_owned(),
-                    rating: 4,
-                    categories: Vec::from([Category {
-                        id: 1,
-                        name: "snack".to_owned(),
-                        description: "yummy stuff".to_owned(),
-                    }]),
-                    comments: "yummy yummy".to_owned(),
-                    date: "today".to_owned(),
-                    image: vec![2],
-                },
-            )?;
-
-            app.manage(RatingState { ratings });
+            app.manage(RatingState {
+                conn: Arc::new(Mutex::new(conn)),
+            });
             Ok(())
         })
         .run(tauri::generate_context!())
