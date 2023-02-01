@@ -2,6 +2,7 @@
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
+#![warn(clippy::style, clippy::pedantic)]
 
 mod commands;
 mod errors;
@@ -37,6 +38,7 @@ fn main() {
             });
             Ok(())
         })
+        .invoke_handler(tauri::generate_handler![get_items])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
