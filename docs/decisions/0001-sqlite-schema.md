@@ -12,6 +12,9 @@ One option is going with `ITEM`'s that can have multiple `CATEGORY`'s. If we cho
 to store ratings as a simple number and doing the parsing later,
 that saves us another data structure.
 
+We'll have an `items`, `categories` and `ratings` table - with two joining tables that link
+`items` to `ratings` and `items` to `categories`.
+
 ```mermaid
 erDiagram
     items {
