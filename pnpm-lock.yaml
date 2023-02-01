@@ -6,6 +6,7 @@ specifiers:
   '@tauri-apps/api': ^1.2.0
   '@tauri-apps/cli': ^1.2.2
   autoprefixer: ^10.4.13
+  madr: ^3.0.0
   postcss: ^8.4.21
   svelte: ^3.54.0
   svelte-check: ^3.0.0
@@ -17,6 +18,7 @@ specifiers:
 
 dependencies:
   '@tauri-apps/api': 1.2.0
+  madr: 3.0.0
   tauri-plugin-sql-api: github.com/tauri-apps/tauri-plugin-sql/3a1da9500f4d23a8c53f38d6ad6b37972d9f92bd
 
 devDependencies:
@@ -829,6 +831,10 @@ packages:
     resolution: {integrity: sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==}
     engines: {node: '>=10'}
     dev: true
+
+  /madr/3.0.0:
+    resolution: {integrity: sha512-gb4ML7LGDARy2EY0WT5rxCUJcXvColIbNCeyoxcj3s/p1qdbpD3UsZrC7hkFkwOBukwnzx87Cu81HwTLvisTZg==}
+    dev: false
 
   /magic-string/0.27.0:
     resolution: {integrity: sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==}
