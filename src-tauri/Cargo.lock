@@ -1904,11 +1904,13 @@ dependencies = [
 name = "rating-room-r"
 version = "0.0.0"
 dependencies = [
+ "anyhow",
  "rusqlite",
  "serde",
  "serde_json",
  "tauri",
  "tauri-build",
+ "thiserror",
 ]
 
 [[package]]

@@ -8,7 +8,6 @@ mod errors;
 mod filters;
 mod schema;
 
-use commands::get_items;
 use rusqlite::Connection;
 use std::sync::Mutex;
 use tauri::Manager;
@@ -23,7 +22,7 @@ fn main() {
                 .app_data_dir()
                 .expect("failed to find Data Dir");
 
-            let mut db_doesnt_exist = !data_dir.join("ratings.db").exists();
+            let db_doesnt_exist = !data_dir.join("ratings.db").exists();
 
             let conn = Connection::open(data_dir.join("ratings.db")).unwrap();
 
@@ -40,5 +39,4 @@ fn main() {
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-    Ok(())
 }
