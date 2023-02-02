@@ -14,18 +14,33 @@
         });
     }
 
+    let item_id: number = 0;
+    let item: Item | null = null;
+    async function get_item() {
+        item = await invoke("get_item", { id: item_id });
+    }
+
     // run on load?
     get_items();
 </script>
 
 <div class="border m-3 p-3">
-    <!-- example usage-->
-    {#if items.length == 0}
-        <p>No Items</p>
-    {:else}
-        <h2 class="text-xl font-bold">Items</h2>
-        {#each items as item}
+    <div class="m-3 flex flex-col max-w-sm items-start">
+        <h1 class="font-bold">API Testing Demo</h1>
+        <input type="number" id="item_id" bind:value={item_id} />
+        <button class=" p-1 font-bold" on:click={get_item}>Get Item</button>
+        {#if item != null}
+            <h1>My Item</h1>
             <p>{item.name} - {item.description} - {item.date}</p>
-        {/each}
-    {/if}
+        {/if}
+        <!-- example usage-->
+        {#if items.length == 0}
+            <p>No Items</p>
+        {:else}
+            <h2 class="text-xl font-bold">Items</h2>
+            {#each items as item}
+                <p>{item.name} - {item.description} - {item.date}</p>
+            {/each}
+        {/if}
+    </div>
 </div>
