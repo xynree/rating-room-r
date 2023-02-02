@@ -6,8 +6,8 @@
         // TODO: figure out what type to assign for items that allows a catch returning an error
         items = await invoke("get_items", {
             filter: {
-                category: ["Drinks"],
-                rating: ["2"],
+                rating: ["3", "4", "5"],
+                category: [],
             },
         }).catch((error) => {
             console.error(error);

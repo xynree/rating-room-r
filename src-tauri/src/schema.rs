@@ -85,3 +85,94 @@ CREATE TABLE items_to_ratings (
  );",
     )?)
 }
+
+pub fn seed_db(conn: &Connection) -> anyhow::Result<()> {
+    Ok(conn.execute_batch(
+        r#"
+INSERT INTO items ( name )
+VALUES
+("Moisturizing Cream"),
+("Zero Sugar Ginger Beer"),
+("V60 Buono Electric Drip Kettle"),
+("Slim Open Can 50L"),
+("Reflections Double Sided LED Vanity Mirror"),
+("16oz Narrow Mouth Water Bottle"),
+("Dracaena Marginata"),
+("Parla Scratching Post"),
+("Airpods Pro"),
+("M1 Macbook Pro"),
+("Air Purifier"),
+("Qahwa Brew");
+
+INSERT INTO categories ( name )
+VALUES
+("Media"),
+("Kitchen"),
+("Snack"),
+("Pet"),
+("Art"),
+("Plant"),
+("Audio"),
+("Tool"),
+("Food"),
+("Exercise"),
+("Beauty"),
+("Entertainment"),
+("Accessory"),
+("Electronics"),
+("Alcohol"),
+("Appliance"),
+("Drink");
+
+INSERT INTO items_to_categories ( item_id, category_id )
+VALUES
+( 1, 11 ),
+( 2, 17 ),
+( 2, 9 ),
+( 3, 16 ),
+( 4, 2 ),
+( 5, 11 ),
+( 5, 13 ),
+( 6, 13 ),
+( 6, 10 ),
+( 7, 4 ),
+( 7, 6 ),
+( 8, 4 ),
+( 9, 14 ),
+( 9, 13 ),
+( 10, 13 ),
+( 11, 16 ),
+( 12, 2 );
+
+INSERT INTO ratings ( rating )
+VALUES
+(5),
+(4),
+(4),
+(5),
+(5),
+(4),
+(4),
+(4),
+(4),
+(5),
+(3),
+(5);
+
+INSERT INTO items_to_ratings ( item_id, rating_id )
+VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(11, 11),
+(12, 12);
+"#,
+    )?)
+}
