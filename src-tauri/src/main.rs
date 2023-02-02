@@ -9,11 +9,12 @@ mod errors;
 mod filters;
 mod schema;
 
+use commands::get_items;
 use rusqlite::Connection;
 use std::sync::Mutex;
 use tauri::Manager;
 
-use schema::{create_tables, seed_db, AppState, Database};
+use crate::schema::{create_tables, AppState, Database};
 
 fn main() {
     tauri::Builder::default()
