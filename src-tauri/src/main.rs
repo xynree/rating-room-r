@@ -14,7 +14,7 @@ use std::sync::Mutex;
 use tauri::Manager;
 
 use commands::{get_item, get_items};
-use schema::{create_tables, AppState, Database};
+use schema::{create_tables, seed_db, AppState, Database};
 
 fn main() {
     tauri::Builder::default()
