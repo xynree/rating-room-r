@@ -21,7 +21,7 @@ pub struct AppState {
 ///    comments             VARCHAR(255)
 ///    date                 VARCHAR(200)  DEFAULT CURRENT_DATE   
 /// ````
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Default, Serialize, Deserialize, Clone, Debug)]
 pub struct Item {
     pub id: usize,
     pub name: String,
@@ -38,11 +38,17 @@ pub struct Item {
 ///    name                 VARCHAR(100)
 ///    description          VARCHAR(255)
 /// ````
-#[derive(Deserialize, Serialize)]
+#[derive(Default, Debug, Deserialize, Serialize)]
 pub struct Category {
     pub id: usize,
     pub name: String,
     pub description: String,
+}
+
+#[derive(Default, Debug, Deserialize, Serialize)]
+pub struct Rating {
+    pub id: usize,
+    pub rating: usize,
 }
 
 pub fn create_tables(conn: &Connection) -> anyhow::Result<()> {
