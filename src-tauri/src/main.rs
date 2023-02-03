@@ -13,7 +13,6 @@ use rusqlite::Connection;
 use std::sync::Mutex;
 use tauri::Manager;
 
-use commands::{get_item, get_items};
 use schema::{create_tables, seed_db, AppState, Database};
 
 fn main() {
@@ -41,7 +40,6 @@ fn main() {
             });
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_items, get_item])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
