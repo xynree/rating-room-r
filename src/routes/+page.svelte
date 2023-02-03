@@ -32,7 +32,7 @@
     {#each items as item}
       <p>{item.name} - {item.description} - {item.date}</p>
     {/each}
-  {/if} -->
+  {/if}
   <div class="font-bold">Categories</div>
   {#if categories}
     {#each categories as { id, name, description }}
