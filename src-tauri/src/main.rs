@@ -2,6 +2,7 @@
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
+#![warn(clippy::style, clippy::pedantic)]
 
 mod commands;
 mod errors;
@@ -12,7 +13,7 @@ use rusqlite::Connection;
 use std::sync::Mutex;
 use tauri::Manager;
 
-use crate::schema::{create_tables, AppState, Database};
+use schema::{create_tables, seed_db, AppState, Database};
 
 fn main() {
     tauri::Builder::default()
@@ -28,6 +29,8 @@ fn main() {
 
             if db_doesnt_exist {
                 create_tables(&conn)?;
+                // if dev
+                seed_db(&conn)?;
             }
 
             app.manage(AppState {
