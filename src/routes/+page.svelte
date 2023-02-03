@@ -25,7 +25,6 @@
   {#if item}
     <p>{item.name} - {item.description} - {item.date}</p>
   {/if}
-  <!-- example usage-->
   {#if items.length == 0}
     <p>No Items</p>
   {:else}
@@ -33,7 +32,7 @@
     {#each items as item}
       <p>{item.name} - {item.description} - {item.date}</p>
     {/each}
-  {/if}
+  {/if} -->
   <div class="font-bold">Categories</div>
   {#if categories}
     {#each categories as { id, name, description }}
