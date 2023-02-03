@@ -7,7 +7,12 @@ type Item = {
 };
 
 type Category = {
-  id: number
-  name: string
-  description: string
-}
+  id: number;
+  name: string;
+  description: string;
+};
+
+type Rating = {
+  id: number;
+  rating: number;
+};

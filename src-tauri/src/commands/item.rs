@@ -4,9 +4,96 @@ use tauri::{command, State};
 use crate::{
     errors::CommandResult,
     filters::{get_filtered_items, Filter},
-    schema::Item,
+    schema::{Category, Item, Rating},
     AppState,
 };
+
+#[command]
+pub fn create_item(
+    state: State<AppState>,
+    item: Item,
+    rating: Option<Rating>,
+    category: Option<Category>,
+) -> CommandResult<usize> {
+    let db = state.db.conn.lock().unwrap();
+    let rating = rating.unwrap_or_default();
+
+    dbg!(&item);
+    // insert item
+    match db.execute(
+        "INSERT INTO items (name, description, comments) VALUES ( ?, ?, ? )",
+        [item.name, item.description, item.comments],
+    ) {
+        Err(e) => {
+            return Err(crate::errors::CommandError::Other(anyhow::anyhow!(
+                "Error inserting row into items: {e}"
+            )))
+        }
+        _ => {}
+    };
+
+    let item_id = db.last_insert_rowid();
+
+    // insert rating
+    match db.execute(
+        "INSERT INTO ratings (rating) VALUES ( ? )",
+        params![rating.rating],
+    ) {
+        Err(e) => {
+            return Err(crate::errors::CommandError::Other(anyhow::anyhow!(
+                "Error inserting row into ratings: {e}"
+            )))
+        }
+        _ => {}
+    };
+
+    let rating_id = db.last_insert_rowid();
+
+    // link item with rating
+    match db.execute(
+        "INSERT INTO items_to_ratings (item_id, rating_id) VALUES ( ?, ? )",
+        params![item_id, rating_id],
+    ) {
+        Err(e) => {
+            return Err(crate::errors::CommandError::Other(anyhow::anyhow!(
+                "Error inserting row into items_to_ratings: {e}"
+            )))
+        }
+        _ => {}
+    };
+
+    if let Some(category) = category {
+        // insert category
+        match db.execute(
+            "INSERT INTO categories (name, description) VALUES ( ? ? )",
+            params![category.name, category.description],
+        ) {
+            Err(e) => {
+                return Err(crate::errors::CommandError::Other(anyhow::anyhow!(
+                    "Error inserting row into categories: {e}"
+                )))
+            }
+            _ => {}
+        };
+
+        let category_id = db.last_insert_rowid();
+
+        // link item with category
+        match db.execute(
+            "INSERT INTO items_to_categories (item_id, category_id) VALUES ( ? ? )",
+            params![item_id, category_id],
+        ) {
+            Err(e) => {
+                return Err(crate::errors::CommandError::Other(anyhow::anyhow!(
+                    "Error inserting row into items_to_categories: {e}"
+                )))
+            }
+            _ => {}
+        };
+    }
+
+    Ok(item_id.try_into().unwrap())
+}
 
 /// Wraps a basic `SELECT * FROM items` query.
 ///
