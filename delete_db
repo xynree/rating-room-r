@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rm -i "$HOME/Library/Application Support/com.rating.room/ratings.db"

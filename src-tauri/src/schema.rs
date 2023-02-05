@@ -55,14 +55,14 @@ pub fn create_tables(conn: &Connection) -> anyhow::Result<()> {
 CREATE TABLE categories ( 
     id                   INTEGER PRIMARY KEY,
 	name                 VARCHAR(255) NOT NULL UNIQUE,
-	description          TEXT
+	description          TEXT     NOT NULL DEFAULT ''
  );
 
 CREATE TABLE items ( 
     id                   INTEGER PRIMARY KEY, 
 	name                 VARCHAR(255) NOT NULL UNIQUE,
-	description          TEXT     ,
-	comments             TEXT     
+	description          TEXT     NOT NULL DEFAULT '',
+	comments             TEXT     NOT NULL DEFAULT '' 
  );
 
 CREATE TABLE ratings ( 
@@ -72,16 +72,16 @@ CREATE TABLE ratings (
 ); 
 
 CREATE TABLE items_to_categories ( 
-	item_id            INTEGER     ,
-	category_id        INTEGER     ,
+	item_id            INTEGER NOT NULL,
+	category_id        INTEGER NOT NULL,
 	FOREIGN KEY ( item_id ) REFERENCES items( id )  ,
 	FOREIGN KEY ( category_id ) REFERENCES categories( id )  ,
     PRIMARY KEY ( item_id, category_id )
  );
 
 CREATE TABLE items_to_ratings (
-    item_id INTEGER ,
-    rating_id INTEGER      ,
+    item_id INTEGER NOT NULL,
+    rating_id INTEGER  NOT NULL    ,
 	FOREIGN KEY ( item_id ) REFERENCES items( id )  ,
 	FOREIGN KEY ( rating_id ) REFERENCES ratings( id )  ,
     PRIMARY KEY ( item_id, rating_id )
