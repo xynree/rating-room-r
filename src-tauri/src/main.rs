@@ -13,7 +13,9 @@ use rusqlite::Connection;
 use std::sync::Mutex;
 use tauri::Manager;
 
-use commands::{create_item, get_categories, get_item, get_items};
+use commands::{
+    create_category, create_item, delete_category, get_categories, get_item, get_items,
+};
 use schema::{create_tables, seed_db, AppState, Database};
 
 fn main() {
@@ -46,6 +48,8 @@ fn main() {
             get_items,
             get_item,
             create_item,
+            create_category,
+            delete_category
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

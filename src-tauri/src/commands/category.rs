@@ -2,7 +2,7 @@ use tauri::{command, State};
 
 use crate::{
     errors::CommandResult,
-    schema::{AppState, Category, CategoryDetails},
+    schema::{AppState, Category},
 };
 
 #[command]
@@ -26,10 +26,15 @@ pub fn get_categories(state: State<AppState>) -> CommandResult<Vec<Category>> {
     Ok(categories)
 }
 
-pub fn create_category(details: CategoryDetails, state: State<AppState>) -> CommandResult<()> {
-    let CategoryDetails { name, description } = details;
+#[command]
+#[allow(clippy::needless_pass_by_value)]
+pub fn create_category(
+    name: String,
+    description: String,
+    state: State<AppState>,
+) -> CommandResult<()> {
     let db = state.db.conn.lock().unwrap();
-    let mut stmt = db.prepare("INSERT INTO Categories (name, description) VALUE ( ?, ? )")?;
+    let mut stmt = db.prepare("INSERT INTO categories (name, description) VALUES ( ?, ? )")?;
 
     match stmt.execute([name, description]) {
         Ok(_) => Ok(()),
@@ -39,12 +44,13 @@ pub fn create_category(details: CategoryDetails, state: State<AppState>) -> Comm
     }
 }
 
-pub fn delete_category(details: CategoryDetails, state: State<AppState>) -> CommandResult<()> {
-    let CategoryDetails { name, description } = details;
+#[command]
+#[allow(clippy::needless_pass_by_value)]
+pub fn delete_category(id: usize, state: State<AppState>) -> CommandResult<()> {
     let db = state.db.conn.lock().unwrap();
-    let mut stmt = db.prepare("DELETE Categories (name, description) VALUE ( ?, ? )")?;
+    let mut stmt = db.prepare("DELETE FROM categories WHERE id = ?")?;
 
-    match stmt.execute([name, description]) {
+    match stmt.execute([id]) {
         Ok(_) => Ok(()),
         Err(e) => Err(crate::errors::CommandError::Other(anyhow::anyhow!(
             "Error creating cateogry: {e}"
