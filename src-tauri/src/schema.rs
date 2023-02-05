@@ -19,7 +19,6 @@ pub struct AppState {
 ///    name                 VARCHAR(100)
 ///    description          VARCHAR(255)
 ///    comments             VARCHAR(255)
-///    date                 VARCHAR(200)  DEFAULT CURRENT_DATE   
 /// ````
 #[derive(Default, Serialize, Deserialize, Clone, Debug)]
 pub struct Item {
@@ -27,7 +26,6 @@ pub struct Item {
     pub name: String,
     pub description: String,
     pub comments: String,
-    pub date: String,
 }
 
 /// Representation of `category` table in our schema.
@@ -55,40 +53,39 @@ pub fn create_tables(conn: &Connection) -> anyhow::Result<()> {
     Ok(conn.execute_batch(
         "
 CREATE TABLE categories ( 
-	id                   INTEGER NOT NULL  PRIMARY KEY  ,
-	name                 VARCHAR(100)     ,
-	description          VARCHAR(255)     
+    id                   INTEGER PRIMARY KEY,
+	name                 VARCHAR(255) NOT NULL UNIQUE,
+	description          TEXT
  );
 
 CREATE TABLE items ( 
-	id                   INTEGER NOT NULL  PRIMARY KEY  ,
-	name                 VARCHAR(100)     ,
-	description          VARCHAR(255)     ,
-	comments             VARCHAR(255)     ,
-	date                 TEXT(200) DEFAULT CURRENT_DATE   
- );
-
-CREATE TABLE items_to_categories ( 
-	id                   INTEGER NOT NULL  PRIMARY KEY  ,
-	item_id              INTEGER     ,
-	category_id          INTEGER     ,
-	FOREIGN KEY ( category_id ) REFERENCES categories( id )  ,
-	FOREIGN KEY ( item_id ) REFERENCES items( id )  
+    id                   INTEGER PRIMARY KEY, 
+	name                 VARCHAR(255) NOT NULL UNIQUE,
+	description          TEXT     ,
+	comments             TEXT     
  );
 
 CREATE TABLE ratings ( 
-	id                   INTEGER NOT NULL  PRIMARY KEY  ,
-	rating               INTEGER     ,
-	date                 TEXT(200) DEFAULT CURRENT_DATE   
+	id                   INTEGER PRIMARY KEY,
+	rating               INTEGER NOT NULL CHECK ( rating <= 5 AND rating >= 0 ),
+	date                 VARCHAR(10) NOT NULL DEFAULT CURRENT_DATE 
+); 
+
+CREATE TABLE items_to_categories ( 
+	item_id            INTEGER     ,
+	category_id        INTEGER     ,
+	FOREIGN KEY ( item_id ) REFERENCES items( id )  ,
+	FOREIGN KEY ( category_id ) REFERENCES categories( id )  ,
+    PRIMARY KEY ( item_id, category_id )
  );
 
-CREATE TABLE items_to_ratings ( 
-	id                   INTEGER NOT NULL  PRIMARY KEY  ,
-	item_id              INTEGER     ,
-	rating_id            INTEGER     ,
+CREATE TABLE items_to_ratings (
+    item_id INTEGER ,
+    rating_id INTEGER      ,
 	FOREIGN KEY ( item_id ) REFERENCES items( id )  ,
-	FOREIGN KEY ( rating_id ) REFERENCES ratings( id )  
- );",
+	FOREIGN KEY ( rating_id ) REFERENCES ratings( id )  ,
+    PRIMARY KEY ( item_id, rating_id )
+);",
     )?)
 }
 
@@ -107,8 +104,8 @@ VALUES
 ("Parla Scratching Post"),
 ("Airpods Pro"),
 ("M1 Macbook Pro"),
-("Air Purifier"),
-("Qahwa Brew");
+("Air Purifier");
+
 
 INSERT INTO categories ( name )
 VALUES
@@ -133,37 +130,35 @@ VALUES
 INSERT INTO items_to_categories ( item_id, category_id )
 VALUES
 ( 1, 11 ),
-( 2, 17 ),
-( 2, 9 ),
-( 3, 16 ),
-( 4, 2 ),
-( 5, 11 ),
-( 5, 13 ),
-( 6, 13 ),
-( 6, 10 ),
-( 7, 4 ),
-( 7, 6 ),
-( 8, 4 ),
-( 9, 14 ),
-( 9, 13 ),
-( 10, 13 ),
-( 11, 16 ),
-( 12, 2 );
+( 2, 17),
+( 2, 9),
+( 3, 16),
+( 4, 2),
+( 5, 11),
+( 5, 13),
+( 6, 13),
+( 6, 10),
+( 7, 4),
+( 7, 6),
+( 8, 4),
+( 9, 14),
+( 9, 15),
+( 10, 14),
+( 11, 16);
 
 INSERT INTO ratings ( rating )
-VALUES
-(5),
+VALUES 
 (4),
-(4),
-(5),
-(5),
-(4),
-(4),
-(4),
-(4),
-(5),
 (3),
-(5);
+(4),
+(5),
+(4),
+(3),
+(4),
+(4),
+(5),
+(4),
+(3);
 
 INSERT INTO items_to_ratings ( item_id, rating_id )
 VALUES
@@ -177,8 +172,7 @@ VALUES
 (8, 8),
 (9, 9),
 (10, 10),
-(11, 11),
-(12, 12);
+(11, 11);
 "#,
     )?)
 }
