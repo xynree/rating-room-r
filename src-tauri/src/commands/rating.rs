@@ -7,6 +7,16 @@ use crate::{
     AppState,
 };
 
+pub fn delete_rating(state: State<AppState>, rating_id: usize) -> CommandResult<()> {
+    let db = state.db.conn.lock().unwrap();
+
+    if let Err(e) = db.execute("DELETE FROM ratings WHERE id = ?", [rating_id]) {
+        return Err(CommandError::RusqliteError(e));
+    };
+
+    Ok(())
+}
+
 pub fn get_ratings(state: State<AppState>, item_id: usize) -> CommandResult<Vec<Rating>> {
     let db = state.db.conn.lock().unwrap();
 
