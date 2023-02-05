@@ -47,6 +47,7 @@ pub struct Category {
 pub struct Rating {
     pub id: usize,
     pub rating: usize,
+    pub date: String,
 }
 
 pub fn create_tables(conn: &Connection) -> anyhow::Result<()> {
