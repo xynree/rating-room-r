@@ -1,7 +1,7 @@
 use tauri::{command, State};
 
 use crate::{
-    errors::CommandResult,
+    errors::{CommandError, CommandResult},
     schema::{AppState, Category},
 };
 
@@ -36,24 +36,27 @@ pub fn create_category(
     let db = state.db.conn.lock().unwrap();
     let mut stmt = db.prepare("INSERT INTO categories (name, description) VALUES ( ?, ? )")?;
 
-    match stmt.execute([name, description]) {
-        Ok(_) => Ok(()),
-        Err(e) => Err(crate::errors::CommandError::Other(anyhow::anyhow!(
-            "Error creating cateogry: {e}"
-        ))),
-    }
+    if let Err(e) = stmt.execute([name, description]) {
+        return Err(CommandError::RusqliteError(e));
+    };
+
+    Ok(())
 }
 
 #[command]
 #[allow(clippy::needless_pass_by_value)]
 pub fn delete_category(id: usize, state: State<AppState>) -> CommandResult<()> {
     let db = state.db.conn.lock().unwrap();
-    let mut stmt = db.prepare("DELETE FROM categories WHERE id = ?")?;
 
-    match stmt.execute([id]) {
-        Ok(_) => Ok(()),
-        Err(e) => Err(crate::errors::CommandError::Other(anyhow::anyhow!(
-            "Error creating cateogry: {e}"
-        ))),
-    }
+    let mut stmt = db.prepare("DELETE FROM items_to_categories WHERE category_id = ( SELECT id FROM categories WHERE id = ? )")?;
+    if let Err(e) = stmt.execute([id]) {
+        return Err(CommandError::RusqliteError(e));
+    };
+
+    let mut stmt = db.prepare("DELETE FROM categories WHERE id = ?")?;
+    if let Err(e) = stmt.execute([id]) {
+        return Err(CommandError::RusqliteError(e));
+    };
+
+    Ok(())
 }
