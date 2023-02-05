@@ -44,6 +44,12 @@ pub struct Category {
 }
 
 #[derive(Default, Debug, Deserialize, Serialize)]
+pub struct CategoryDetails {
+    pub name: String,
+    pub description: String,
+}
+
+#[derive(Default, Debug, Deserialize, Serialize)]
 pub struct Rating {
     pub id: usize,
     pub rating: usize,
