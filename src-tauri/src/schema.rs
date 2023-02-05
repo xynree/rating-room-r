@@ -75,17 +75,29 @@ CREATE TABLE ratings (
 CREATE TABLE items_to_categories ( 
 	item_id            INTEGER NOT NULL,
 	category_id        INTEGER NOT NULL,
-	FOREIGN KEY ( item_id ) REFERENCES items( id )  ,
-	FOREIGN KEY ( category_id ) REFERENCES categories( id )  ,
     PRIMARY KEY ( item_id, category_id )
+    CONSTRAINT fk_items
+        FOREIGN KEY ( item_id )
+        REFERENCES items( id )
+        ON DELETE CASCADE
+    CONSTRAINT fk_categories
+        FOREIGN KEY ( category_id )
+        REFERENCES categories( id )
+        ON DELETE CASCADE
  );
 
 CREATE TABLE items_to_ratings (
     item_id INTEGER NOT NULL,
     rating_id INTEGER  NOT NULL    ,
-	FOREIGN KEY ( item_id ) REFERENCES items( id )  ,
-	FOREIGN KEY ( rating_id ) REFERENCES ratings( id )  ,
     PRIMARY KEY ( item_id, rating_id )
+    CONSTRAINT fk_items
+        FOREIGN KEY ( item_id )
+        REFERENCES items( id )
+        ON DELETE CASCADE
+    CONSTRAINT fk_ratings
+        FOREIGN KEY ( rating_id )
+        REFERENCES ratings( id )
+        ON DELETE CASCADE
 );",
     )?)
 }
