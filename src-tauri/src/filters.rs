@@ -15,7 +15,7 @@ pub fn get_filtered_items(db: &Connection, filter: Filter) -> CommandResult<Vec<
         (None, None) => return Err(CommandError::Other(anyhow::anyhow!("Filter is empty"))),
         (None, Some(rating)) => {
             let sql = format!(
-"SELECT items.* FROM items INNER JOIN items_to_ratings ON items_to_ratings.item_id = items.id
+"SELECT * FROM items INNER JOIN items_to_ratings ON items_to_ratings.item_id = items.id
 INNER JOIN ratings ON items_to_ratings.rating_id = ratings.id
 WHERE ratings.rating IN ({})",
                     repeat_vars(rating.len())
@@ -27,7 +27,6 @@ WHERE ratings.rating IN ({})",
                     name: row.get(1)?,
                     description: row.get(2).unwrap_or(String::new()),
                     comments: row.get(3).unwrap_or(String::new()),
-                    date: row.get(4)?,
                 })
             })?;
             for item in rows {
@@ -48,7 +47,6 @@ WHERE categories.name IN ({})",
                     name: row.get(1)?,
                     description: row.get(2).unwrap_or(String::new()),
                     comments: row.get(3).unwrap_or(String::new()),
-                    date: row.get(4)?,
                 })
             })?;
             for item in rows {
@@ -76,7 +74,6 @@ WHERE categories.name IN ({})",
                         name: row.get(1)?,
                         description: row.get(2).unwrap_or(String::new()),
                         comments: row.get(3).unwrap_or(String::new()),
-                        date: row.get(4)?,
                     })
                 },
             )?;
