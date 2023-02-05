@@ -1,8 +1,7 @@
-# Svelte-Kit + Vite
+# Reading Room (R)
 
-This template should help get you started developing with Tauri and Svelte-Kit in Vite.
+An app that lets you keep a personal database of ratings.
 
-## Recommended IDE Setup
+Written in Rust and Typescript with Tauri, Svelte, and SQLite.
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
-
+A collaborative project by [zane](https://github.com/xynree) and [xinrui](https://github.com/xynree)
