@@ -1,4 +1,4 @@
-# Reading Room (R)
+# Rating Room (R)
 
 An app that lets you keep a personal database of ratings.
 
