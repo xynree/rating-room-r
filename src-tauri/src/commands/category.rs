@@ -48,10 +48,10 @@ pub fn create_category(
 pub fn delete_category(id: usize, state: State<AppState>) -> CommandResult<()> {
     let db = state.db.conn.lock().unwrap();
 
-    let mut stmt = db.prepare("DELETE FROM items_to_categories WHERE category_id = ( SELECT id FROM categories WHERE id = ? )")?;
-    if let Err(e) = stmt.execute([id]) {
-        return Err(CommandError::RusqliteError(e));
-    };
+    // let mut stmt = db.prepare("DELETE FROM items_to_categories WHERE category_id = ( SELECT id FROM categories WHERE id = ? )")?;
+    // if let Err(e) = stmt.execute([id]) {
+    //     return Err(CommandError::RusqliteError(e));
+    // };
 
     let mut stmt = db.prepare("DELETE FROM categories WHERE id = ?")?;
     if let Err(e) = stmt.execute([id]) {
