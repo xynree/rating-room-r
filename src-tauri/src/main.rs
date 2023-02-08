@@ -3,6 +3,7 @@
     windows_subsystem = "windows"
 )]
 #![warn(clippy::style, clippy::pedantic)]
+#![allow(clippy::module_name_repetitions)]
 
 mod commands;
 mod errors;

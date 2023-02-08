@@ -15,7 +15,7 @@ pub fn get_categories(state: State<AppState>) -> CommandResult<Vec<Category>> {
     dbg!(&stmt);
     let rows = stmt.query_map([], |row| {
         Ok(Category {
-            id: row.get(0)?,
+            category_id: row.get(0)?,
             name: row.get(1)?,
             description: row.get(2).unwrap_or(String::new()),
         })

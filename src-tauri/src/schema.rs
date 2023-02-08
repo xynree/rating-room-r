@@ -1,3 +1,4 @@
+use chrono::NaiveDateTime;
 use std::sync::Mutex;
 
 use rusqlite::Connection;
@@ -22,7 +23,7 @@ pub struct AppState {
 /// ````
 #[derive(Default, Serialize, Deserialize, Clone, Debug)]
 pub struct Item {
-    pub id: usize,
+    pub item_id: usize,
     pub name: String,
     pub description: String,
     pub comments: String,
@@ -38,38 +39,38 @@ pub struct Item {
 /// ````
 #[derive(Default, Debug, Deserialize, Serialize)]
 pub struct Category {
-    pub id: usize,
+    pub category_id: usize,
     pub name: String,
     pub description: String,
 }
 
-#[derive(Default, Debug, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Rating {
-    pub id: usize,
+    pub rating_id: usize,
     pub rating: usize,
-    pub date: String,
+    pub date: NaiveDateTime,
 }
 
 pub fn create_tables(conn: &Connection) -> anyhow::Result<()> {
     Ok(conn.execute_batch(
         "
 CREATE TABLE categories ( 
-    id                   INTEGER PRIMARY KEY,
+    category_id                   INTEGER PRIMARY KEY,
 	name                 VARCHAR(255) NOT NULL UNIQUE,
 	description          TEXT     NOT NULL DEFAULT ''
  );
 
 CREATE TABLE items ( 
-    id                   INTEGER PRIMARY KEY, 
+    item_id                   INTEGER PRIMARY KEY, 
 	name                 VARCHAR(255) NOT NULL UNIQUE,
 	description          TEXT     NOT NULL DEFAULT '',
 	comments             TEXT     NOT NULL DEFAULT '' 
  );
 
 CREATE TABLE ratings ( 
-	id                   INTEGER PRIMARY KEY,
+	rating_id                   INTEGER PRIMARY KEY,
 	rating               INTEGER NOT NULL CHECK ( rating <= 5 AND rating >= 0 ),
-	date                 VARCHAR(10) NOT NULL DEFAULT CURRENT_DATE 
+	creation_timestamp                 TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 ); 
 
 CREATE TABLE items_to_categories ( 
@@ -78,11 +79,11 @@ CREATE TABLE items_to_categories (
     PRIMARY KEY ( item_id, category_id )
     CONSTRAINT fk_items
         FOREIGN KEY ( item_id )
-        REFERENCES items( id )
+        REFERENCES items( item_id )
         ON DELETE CASCADE
     CONSTRAINT fk_categories
         FOREIGN KEY ( category_id )
-        REFERENCES categories( id )
+        REFERENCES categories( category_id )
         ON DELETE CASCADE
  );
 
@@ -92,11 +93,11 @@ CREATE TABLE items_to_ratings (
     PRIMARY KEY ( item_id, rating_id )
     CONSTRAINT fk_items
         FOREIGN KEY ( item_id )
-        REFERENCES items( id )
+        REFERENCES items( item_id )
         ON DELETE CASCADE
     CONSTRAINT fk_ratings
         FOREIGN KEY ( rating_id )
-        REFERENCES ratings( id )
+        REFERENCES ratings( rating_id )
         ON DELETE CASCADE
 );",
     )?)

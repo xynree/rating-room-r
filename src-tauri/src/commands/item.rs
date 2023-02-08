@@ -87,7 +87,7 @@ pub fn get_items(state: State<AppState>) -> CommandResult<Vec<Item>> {
     let mut stmt = db.prepare("SELECT * FROM items")?;
     let rows = stmt.query_map([], |row| {
         Ok(Item {
-            id: row.get(0)?,
+            item_id: row.get(0)?,
             name: row.get(1)?,
             description: row.get(2).unwrap_or(String::new()),
             comments: row.get(3).unwrap_or(String::new()),
@@ -118,7 +118,7 @@ pub fn get_item(state: State<AppState>, id: usize) -> CommandResult<Item> {
         params![id],
         |row| {
             Ok(Item {
-                id: row.get(0)?,
+                item_id: row.get(0)?,
                 name: row.get(1)?,
                 description: row.get(2).unwrap_or(String::new()),
                 comments: row.get(3).unwrap_or(String::new()),

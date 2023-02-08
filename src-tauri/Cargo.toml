@@ -20,6 +20,7 @@ tauri = { version = "1.2", features = ["fs-all", "path-all", "shell-open"] }
 rusqlite = { version = "0.28.0", features = ["bundled"] }
 anyhow = "1.0.68"
 thiserror = "1.0.38"
+chrono = { version = "0.4.23", features = ["serde"] }
 
 [features]
 # by default Tauri runs in production mode

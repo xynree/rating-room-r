@@ -1,9 +1,8 @@
-use rusqlite::params;
-use tauri::{command, State};
+use tauri::State;
 
 use crate::{
     errors::{CommandError, CommandResult},
-    schema::{Category, Item, Rating},
+    schema::Rating,
     AppState,
 };
 
@@ -25,9 +24,19 @@ pub fn get_ratings(state: State<AppState>, item_id: usize) -> CommandResult<Vec<
     let rows: Vec<_> = stmt
         .query_map([item_id], |row| {
             Ok(Rating {
-                id: row.get(1)?,
+                rating_id: row.get(1)?,
                 rating: row.get(2)?,
-                date: row.get(3)?,
+                date: chrono::NaiveDateTime::parse_from_str(
+                    row.get::<usize, String>(3)?.as_str(),
+                    "",
+                )
+                .map_err(|e| {
+                    rusqlite::Error::FromSqlConversionFailure(
+                        0,
+                        rusqlite::types::Type::Text,
+                        Box::new(e),
+                    )
+                })?,
             })
         })?
         .collect();
@@ -35,7 +44,7 @@ pub fn get_ratings(state: State<AppState>, item_id: usize) -> CommandResult<Vec<
     let mut ratings = Vec::new();
 
     for row in rows {
-        ratings.push(row?)
+        ratings.push(row?);
     }
 
     Ok(ratings)
