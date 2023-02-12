@@ -53,7 +53,7 @@ pub fn delete_category(id: usize, state: State<AppState>) -> CommandResult<()> {
     //     return Err(CommandError::RusqliteError(e));
     // };
 
-    let mut stmt = db.prepare("DELETE FROM categories WHERE id = ?")?;
+    let mut stmt = db.prepare("DELETE FROM categories WHERE category_id = ?")?;
     if let Err(e) = stmt.execute([id]) {
         return Err(CommandError::RusqliteError(e));
     };

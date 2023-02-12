@@ -1,5 +1,5 @@
 type Item = {
-  id: number;
+  itemId: number;
   name: string;
   description: string;
   comments: string;
@@ -7,12 +7,12 @@ type Item = {
 };
 
 type Category = {
-  id: number;
+  category_id: number;
   name: string;
   description: string;
 };
 
 type Rating = {
-  id: number;
+  ratingId: number;
   rating: number;
 };

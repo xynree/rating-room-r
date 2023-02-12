@@ -69,16 +69,6 @@ pub fn create_item(
     Ok(item_id.try_into().unwrap())
 }
 
-/// Wraps a basic `SELECT * FROM items` query.
-///
-/// # Examples
-/// ```javascript
-///     let items: Item[] = [];
-///     async function get_items() {
-///         items = await invoke("get_items");
-///     };
-/// ```
-///
 #[command]
 #[allow(clippy::needless_pass_by_value)]
 pub fn get_items(state: State<AppState>) -> CommandResult<Vec<Item>> {
@@ -99,22 +89,12 @@ pub fn get_items(state: State<AppState>) -> CommandResult<Vec<Item>> {
     Ok(items)
 }
 
-/// Wraps a basic `SELECT * FROM items` query.
-///
-/// # Examples
-/// ```javascript
-///     let items: Item[] = [];
-///     async function get_items() {
-///         items = await invoke("get_items");
-///     };
-/// ```
-///
 #[command]
 #[allow(clippy::needless_pass_by_value)]
 pub fn get_item(state: State<AppState>, id: usize) -> CommandResult<Item> {
     let db = state.db.conn.lock().unwrap();
     let item = db.query_row(
-        "SELECT * FROM items WHERE id = ? ORDER BY items.id ",
+        "SELECT * FROM items WHERE item_id = ? ORDER BY item_id ",
         params![id],
         |row| {
             Ok(Item {
@@ -127,4 +107,20 @@ pub fn get_item(state: State<AppState>, id: usize) -> CommandResult<Item> {
     )?;
 
     Ok(item)
+}
+
+#[command]
+#[allow(clippy::needless_pass_by_value)]
+pub fn update_item(state: State<AppState>, item: Item) -> CommandResult<usize> {
+    let db = state.db.conn.lock().unwrap();
+    let mut stmt =
+        db.prepare("UPDATE items SET name = ?, description = ?, comments = ? WHERE item_id = ?")?;
+    let id = stmt.execute([
+        item.name,
+        item.description,
+        item.comments,
+        item.item_id.to_string(),
+    ])?;
+
+    Ok(id)
 }
