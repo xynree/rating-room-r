@@ -21,7 +21,7 @@ pub struct AppState {
 ///    description          VARCHAR(255)
 ///    comments             VARCHAR(255)
 /// ````
-#[derive(Default, Serialize, Deserialize, Clone, Debug)]
+#[derive(Eq, PartialEq, Default, Serialize, Deserialize, Clone, Debug)]
 pub struct Item {
     pub item_id: usize,
     pub name: String,

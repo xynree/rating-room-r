@@ -6,6 +6,7 @@
 #![allow(clippy::module_name_repetitions)]
 
 mod commands;
+mod db;
 mod errors;
 mod filters;
 mod schema;
