@@ -3,8 +3,10 @@
     windows_subsystem = "windows"
 )]
 #![warn(clippy::style, clippy::pedantic)]
+#![allow(clippy::module_name_repetitions)]
 
 mod commands;
+mod db;
 mod errors;
 mod filters;
 mod schema;
@@ -40,6 +42,15 @@ fn main() {
             });
             Ok(())
         })
+        .invoke_handler(tauri::generate_handler![
+            commands::get_categories,
+            commands::get_items,
+            commands::get_item,
+            commands::update_item,
+            commands::create_item,
+            commands::create_category,
+            commands::delete_category
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

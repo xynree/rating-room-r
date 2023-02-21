@@ -18,29 +18,26 @@ We'll have an `items`, `categories` and `ratings` table - with two joining table
 ```mermaid
 erDiagram
     items {
-        integer   id
+        integer   item_id
         varchar   name
         varchar   description
         varchar   comments
-        date   date
     }
     categories {
-        integer   id
+        integer   category_id
         varchar   name
         varchar   description
     }
     ratings {
-        integer   id
+        integer   rating_id
         integer   rating
         date   date
     }
     items_to_ratings {
-        integer   id
         integer   item_id
         integer   rating_id
     }
     items_to_categories {
-        integer   id
         integer   item_id
         integer   category_id
     }
