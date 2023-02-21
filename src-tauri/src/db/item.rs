@@ -68,6 +68,14 @@ pub fn add_rating_to_item(
     Ok(())
 }
 
+pub fn delete_item(conn: &MutexGuard<Connection>, id: usize) -> CommandResult<()> {
+    if let Err(e) = conn.execute("DELETE FROM items WHERE item_id = ?", [id]) {
+        return Err(CommandError::RusqliteError(e));
+    };
+
+    Ok(())
+}
+
 pub fn add_category_to_item(
     conn: &MutexGuard<Connection>,
     category_id: usize,

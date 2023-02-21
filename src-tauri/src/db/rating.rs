@@ -47,6 +47,22 @@ pub fn delete_rating(conn: &MutexGuard<Connection>, rating_id: usize) -> Command
     Ok(())
 }
 
+pub fn update_rating(
+    conn: &MutexGuard<Connection>,
+    rating: usize,
+    rating_id: usize,
+) -> CommandResult<(usize)> {
+    let mut stmt =
+        conn.prepare("UPDATE ratings SET rating = ?, SET date = ? WHERE rating_id = ?")?;
+    let id = stmt.execute([
+        rating,
+        chrono::NaiveDateTime::parse_from_str(row.get::<usize, String>(3)?.as_str(), ""),
+        rating_id.to_string(),
+    ])?;
+
+    Ok(id)
+}
+
 pub fn create_rating(conn: &MutexGuard<Connection>, rating: usize) -> CommandResult<i64> {
     if let Err(e) = conn.execute("INSERT INTO ratings  (rating) VALUES ( ? )", [rating]) {
         return Err(CommandError::RusqliteError(e));

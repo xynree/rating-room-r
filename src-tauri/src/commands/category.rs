@@ -7,12 +7,14 @@ use crate::{
 };
 
 #[command]
+#[allow(clippy::needless_pass_by_value)]
 pub fn get_categories(state: State<AppState>) -> CommandResult<Vec<Category>> {
     let conn = state.db.conn.lock().unwrap();
     db::get_categories(&conn)
 }
 
 #[command]
+#[allow(clippy::needless_pass_by_value)]
 pub fn create_category(
     name: String,
     description: String,
@@ -22,6 +24,8 @@ pub fn create_category(
     db::create_category(&conn, name, description)
 }
 
+#[command]
+#[allow(clippy::needless_pass_by_value)]
 pub fn update_category(category: Category, state: State<AppState>) -> CommandResult<usize> {
     let conn = state.db.conn.lock().unwrap();
     db::update_category(&conn, category)

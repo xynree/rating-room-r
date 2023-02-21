@@ -16,3 +16,12 @@ pub fn create_rating(state: State<AppState>, rating: usize) -> CommandResult<i64
     let conn = state.db.conn.lock().unwrap();
     db::create_rating(&conn, rating)
 }
+
+pub fn update_rating(
+    state: State<AppState>,
+    rating: usize,
+    rating_id: usize,
+) -> CommandResult<i64> {
+    let conn = state.db.conn.lock().unwrap();
+    db::update_rating(&conn, rating, rating_id)
+}
