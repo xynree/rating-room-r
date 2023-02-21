@@ -21,7 +21,7 @@ pub fn update_rating(
     state: State<AppState>,
     rating: usize,
     rating_id: usize,
-) -> CommandResult<i64> {
+) -> CommandResult<usize> {
     let conn = state.db.conn.lock().unwrap();
     db::update_rating(&conn, rating, rating_id)
 }

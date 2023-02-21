@@ -1,7 +1,7 @@
 use std::sync::MutexGuard;
 
-use chrono::NaiveDateTime;
-use rusqlite::Connection;
+use chrono::{NaiveDateTime, Utc};
+use rusqlite::{params, Connection};
 
 use crate::{
     errors::{CommandError, CommandResult},
@@ -51,12 +51,12 @@ pub fn update_rating(
     conn: &MutexGuard<Connection>,
     rating: usize,
     rating_id: usize,
-) -> CommandResult<(usize)> {
+) -> CommandResult<usize> {
     let mut stmt =
         conn.prepare("UPDATE ratings SET rating = ?, SET date = ? WHERE rating_id = ?")?;
-    let id = stmt.execute([
+    let id = stmt.execute(params![
         rating,
-        chrono::NaiveDateTime::parse_from_str(row.get::<usize, String>(3)?.as_str(), ""),
+        Utc::now().naive_utc().to_string(),
         rating_id.to_string(),
     ])?;
 
