@@ -70,3 +70,44 @@ pub fn create_rating(conn: &MutexGuard<Connection>, rating: usize) -> CommandRes
 
     Ok(conn.last_insert_rowid())
 }
+
+#[cfg(test)]
+mod tests {
+    use std::sync::Mutex;
+
+    use chrono::{NaiveDateTime, Utc};
+    use rusqlite::types::FromSql;
+
+    use crate::schema::{create_tables, Category, Item, Rating};
+
+    use super::*;
+
+    fn dummy_connection() -> Mutex<Connection> {
+        let conn = Connection::open_in_memory().unwrap();
+        create_tables(&conn).unwrap();
+        Mutex::new(conn)
+    }
+
+    #[test]
+    fn creates_rating() {
+        let rating = 4;
+
+        let conn = dummy_connection();
+        let conn = conn.lock().unwrap();
+
+        let rating_id = create_rating(&conn, rating).unwrap();
+
+        let result = conn
+            .query_row(
+                "SELECT rating FROM ratings WHERE rating_id = ?",
+                [rating_id.to_string()],
+                |row| {
+                    let rating: usize = row.get(0)?;
+                    Ok(rating)
+                },
+            )
+            .unwrap();
+
+        assert_eq!(rating, result);
+    }
+}
