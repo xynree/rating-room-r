@@ -3,6 +3,7 @@ use std::sync::MutexGuard;
 use rusqlite::{params, Connection};
 
 use crate::{
+    db::create_rating,
     errors::{CommandError, CommandResult},
     schema::{Category, Item, Rating},
 };
@@ -53,15 +54,35 @@ pub fn update_item(conn: &MutexGuard<Connection>, item: Item) -> CommandResult<u
     Ok(id)
 }
 
-pub fn create_item(
+pub fn add_rating_to_item(
     conn: &MutexGuard<Connection>,
-    item: Item,
-    rating: Option<Rating>,
-    category: Option<Category>,
-) -> CommandResult<usize> {
-    let rating = rating.unwrap_or_default();
+    rating_id: usize,
+    item_id: usize,
+) -> CommandResult<()> {
+    if let Err(e) = conn.execute(
+        "INSERT INTO items_to_ratings (item_id, rating_id) VALUES ( ?, ? )",
+        params![item_id, rating_id],
+    ) {
+        return Err(CommandError::RusqliteError(e));
+    };
+    Ok(())
+}
 
-    // insert item
+pub fn add_category_to_item(
+    conn: &MutexGuard<Connection>,
+    category_id: usize,
+    item_id: usize,
+) -> CommandResult<()> {
+    if let Err(e) = conn.execute(
+        "INSERT INTO items_to_categories (item_id, category_id) VALUES ( ? ? )",
+        params![item_id, category_id],
+    ) {
+        return Err(CommandError::RusqliteError(e));
+    };
+    Ok(())
+}
+
+pub fn create_item(conn: &MutexGuard<Connection>, item: Item) -> CommandResult<usize> {
     if let Err(e) = conn.execute(
         "INSERT INTO items (name, description, comments) VALUES ( ?, ?, ? )",
         [item.name, item.description, item.comments],
@@ -69,47 +90,7 @@ pub fn create_item(
         return Err(CommandError::RusqliteError(e));
     };
 
-    let item_id = conn.last_insert_rowid();
-
-    // insert rating
-    if let Err(e) = conn.execute(
-        "INSERT INTO ratings (rating) VALUES ( ? )",
-        params![rating.rating],
-    ) {
-        return Err(CommandError::RusqliteError(e));
-    };
-
-    let rating_id = conn.last_insert_rowid();
-
-    // link item with rating
-    if let Err(e) = conn.execute(
-        "INSERT INTO items_to_ratings (item_id, rating_id) VALUES ( ?, ? )",
-        params![item_id, rating_id],
-    ) {
-        return Err(CommandError::RusqliteError(e));
-    };
-
-    if let Some(category) = category {
-        // insert category
-        if let Err(e) = conn.execute(
-            "INSERT INTO categories (name, description) VALUES ( ? ? )",
-            params![category.name, category.description],
-        ) {
-            return Err(CommandError::RusqliteError(e));
-        };
-
-        let category_id = conn.last_insert_rowid();
-
-        // link item with category
-        if let Err(e) = conn.execute(
-            "INSERT INTO items_to_categories (item_id, category_id) VALUES ( ? ? )",
-            params![item_id, category_id],
-        ) {
-            return Err(CommandError::RusqliteError(e));
-        };
-    }
-
-    Ok(item_id.try_into().unwrap())
+    Ok(conn.last_insert_rowid() as usize)
 }
 
 #[cfg(test)]
@@ -159,12 +140,7 @@ mod tests {
         let conn = dummy_connection();
         let conn = conn.lock().unwrap();
 
-        conn.execute(
-            "INSERT INTO items (item_id, name, description, comments) VALUES (?, ?, ?, ?)",
-            params![item.item_id, item.name, item.description, item.comments],
-        )
-        .unwrap();
-
-        assert_eq!(item, get_item(&conn, 1).unwrap());
+        let item_id = create_item(&conn, item.clone()).unwrap();
+        assert_eq!(item, get_item(&conn, item_id).unwrap());
     }
 }

@@ -1,5 +1,6 @@
 use std::sync::MutexGuard;
 
+use chrono::NaiveDateTime;
 use rusqlite::Connection;
 
 use crate::{
@@ -44,4 +45,12 @@ pub fn delete_rating(conn: &MutexGuard<Connection>, rating_id: usize) -> Command
     };
 
     Ok(())
+}
+
+pub fn create_rating(conn: &MutexGuard<Connection>, rating: usize) -> CommandResult<i64> {
+    if let Err(e) = conn.execute("INSERT INTO ratings  (rating) VALUES ( ? )", [rating]) {
+        return Err(CommandError::RusqliteError(e));
+    };
+
+    Ok(conn.last_insert_rowid())
 }

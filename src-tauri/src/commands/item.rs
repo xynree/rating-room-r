@@ -8,14 +8,9 @@ use crate::{
 };
 
 #[command]
-pub fn create_item(
-    state: State<AppState>,
-    item: Item,
-    rating: Option<Rating>,
-    category: Option<Category>,
-) -> CommandResult<usize> {
+pub fn create_item(state: State<AppState>, item: Item) -> CommandResult<usize> {
     let conn = state.db.conn.lock().unwrap();
-    db::create_item(&conn, item, rating, category)
+    db::create_item(&conn, item)
 }
 
 #[command]
