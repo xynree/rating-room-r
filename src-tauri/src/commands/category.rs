@@ -22,6 +22,11 @@ pub fn create_category(
     db::create_category(&conn, name, description)
 }
 
+pub fn update_category(category: Category, state: State<AppState>) -> CommandResult<usize> {
+    let conn = state.db.conn.lock().unwrap();
+    db::update_category(&conn, category)
+}
+
 #[command]
 pub fn delete_category(id: usize, state: State<AppState>) -> CommandResult<()> {
     let conn = state.db.conn.lock().unwrap();

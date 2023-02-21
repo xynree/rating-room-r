@@ -23,6 +23,17 @@ pub fn get_categories(conn: &MutexGuard<Connection>) -> CommandResult<Vec<Catego
     Ok(categories)
 }
 
+pub fn update_category(conn: &MutexGuard<Connection>, category: Category) -> CommandResult<usize> {
+    let mut stmt =
+        conn.prepare("UPDATE categories SET name = ?, SET description = ? WHERE category_id = ?")?;
+    let id = stmt.execute([
+        category.name,
+        category.description,
+        category.category_id.to_string(),
+    ])?;
+    Ok(id)
+}
+
 pub fn create_category(
     conn: &MutexGuard<Connection>,
     name: String,
