@@ -190,7 +190,7 @@ mod tests {
             comments: String::from("None"),
         };
 
-        create_item(&conn, item.clone()).unwrap();
+        create_item(&conn, item.name, item.description, item.comments).unwrap();
 
         for rating in ratings.clone() {
             conn.execute("INSERT INTO ratings (rating) VALUES ( ? )", [rating])

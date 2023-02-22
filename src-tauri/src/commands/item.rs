@@ -9,9 +9,14 @@ use crate::{
 
 #[command]
 #[allow(clippy::needless_pass_by_value)]
-pub fn create_item(state: State<AppState>, item: Item) -> CommandResult<usize> {
+pub fn create_item(
+    state: State<AppState>,
+    name: String,
+    description: String,
+    comments: String,
+) -> CommandResult<usize> {
     let conn = state.db.conn.lock().unwrap();
-    db::create_item(&conn, item)
+    db::create_item(&conn, name, description, comments)
 }
 
 #[command]

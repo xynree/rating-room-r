@@ -89,10 +89,15 @@ pub fn add_category_to_item(
     Ok(())
 }
 
-pub fn create_item(conn: &MutexGuard<Connection>, item: Item) -> CommandResult<usize> {
+pub fn create_item(
+    conn: &MutexGuard<Connection>,
+    name: String,
+    description: String,
+    comments: String,
+) -> CommandResult<usize> {
     if let Err(e) = conn.execute(
         "INSERT INTO items (name, description, comments) VALUES ( ?, ?, ? )",
-        [item.name, item.description, item.comments],
+        [name, description, comments],
     ) {
         return Err(CommandError::RusqliteError(e));
     };
@@ -150,8 +155,14 @@ mod tests {
         let conn = dummy_connection();
         let conn = conn.lock().unwrap();
 
-        let item_id = create_item(&conn, item.clone()).unwrap();
-        assert_eq!(item, get_item(&conn, item_id).unwrap());
+        let item_id = create_item(
+            &conn,
+            item.name.clone(),
+            item.description.clone(),
+            item.comments.clone(),
+        )
+        .unwrap();
+        assert_eq!(item.clone(), get_item(&conn, item_id).unwrap());
     }
 
     #[test]
