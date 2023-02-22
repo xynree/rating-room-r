@@ -2,7 +2,6 @@
   import { getItem, getTable } from "../service/db"
   import { onMount } from "svelte"
   import { invoke } from "@tauri-apps/api"
-  import { writeBinaryFile, BaseDirectory } from "@tauri-apps/api/fs"
   import { saveFile } from "../service/file"
 
   let items: Item[] = []

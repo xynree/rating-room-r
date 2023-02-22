@@ -132,6 +132,7 @@ mod tests {
             name: String::from("Chips"),
             description: String::from("Crunchy"),
             comments: String::from("Love Them"),
+            img_path: String::from("test"),
         };
 
         let conn = dummy_connection();
@@ -164,6 +165,7 @@ mod tests {
             item.name.clone(),
             item.description.clone(),
             item.comments.clone(),
+            item.img_path.clone(),
         )
         .unwrap();
         assert_eq!(item.clone(), get_item(&conn, item_id).unwrap());
@@ -177,24 +179,28 @@ mod tests {
                 name: String::from("Chips"),
                 description: String::from("Crunchy"),
                 comments: String::from("Love Them"),
+                img_path: String::from("test"),
             },
             Item {
                 item_id: 2,
                 name: String::from("Airpods"),
                 description: String::from("Bumpin"),
                 comments: String::from("Loud in the ears"),
+                img_path: String::from("test"),
             },
             Item {
                 item_id: 3,
                 name: String::from("Random"),
                 description: String::from("Random"),
                 comments: String::from("Random"),
+                img_path: String::from("test"),
             },
             Item {
                 item_id: 4,
                 name: String::from("Bottle"),
                 description: String::from("Water"),
                 comments: String::from("Testing"),
+                img_path: String::from("test"),
             },
         ];
 
@@ -219,6 +225,7 @@ mod tests {
             name: String::from("Chips"),
             description: String::from("Crunchy"),
             comments: String::from("Love Them"),
+            img_path: String::from("test"),
         };
 
         let conn = dummy_connection();
@@ -248,6 +255,7 @@ mod tests {
             name: String::from("Chips"),
             description: String::from("Crunchy"),
             comments: String::from("Love Them"),
+            img_path: String::from("test"),
         };
 
         let conn = dummy_connection();
@@ -270,6 +278,7 @@ mod tests {
                     name: row.get(1)?,
                     description: row.get(2).unwrap_or(String::new()),
                     comments: row.get(3).unwrap_or(String::new()),
+                    img_path: row.get(4).unwrap_or(String::new()),
                 })
             })
             .unwrap_err();
@@ -284,6 +293,7 @@ mod tests {
             name: String::from("Chips"),
             description: String::from("Crunchy"),
             comments: String::from("Love Them"),
+            img_path: String::from("test"),
         };
 
         let category = Category {
@@ -331,6 +341,7 @@ mod tests {
             name: String::from("Chips"),
             description: String::from("Crunchy"),
             comments: String::from("Love Them"),
+            img_path: String::from("test"),
         };
 
         let rating = Rating {
