@@ -37,7 +37,7 @@ pub struct Item {
 ///    name                 VARCHAR(100)
 ///    description          VARCHAR(255)
 /// ````
-#[derive(Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, PartialEq, Eq, Default, Debug, Deserialize, Serialize)]
 pub struct Category {
     pub category_id: usize,
     pub name: String,
