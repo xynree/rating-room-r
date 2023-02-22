@@ -3,6 +3,7 @@
   import { onMount } from "svelte"
   import { invoke } from "@tauri-apps/api"
   import { writeBinaryFile, BaseDirectory } from "@tauri-apps/api/fs"
+  import { saveFile } from "../service/file"
 
   let items: Item[] = []
   let categoryName: string
@@ -39,26 +40,19 @@
     refresh()
   })
 
-  async function saveFile(e: any) {
+  function saveImg(e: any) {
     const file = document.getElementById("imageInput") as HTMLInputElement
-    const saveFile = file.files && file.files[0]
-    if (saveFile) {
-      let binaryInput = await saveFile.arrayBuffer()
-      console.log(binaryInput)
-      const write = await writeBinaryFile(
-        { path: saveFile.name, contents: binaryInput },
-        { dir: BaseDirectory.AppData }
-      )
-      console.log("written", write)
-    }
+    const savePath = file.files && file.files[0] && saveFile(file.files[0])
+
+    savePath?.then(console.log)
   }
 </script>
 
 <div class="flex flex-col items-start max-w-sm gap-6 m-3">
   <h1 class="font-bold">API Testing Demo</h1>
   <div>
-    <input type="file" accept="image/*" id="imageInput" /><button on:click={saveFile}
-      >Save File to Tauri :)</button
+    <input type="file" accept="image/*" id="imageInput" /><button on:click={saveImg}
+      >Save Img to Tauri :)</button
     >
   </div>
   <input type="number" id="itemId" bind:value={itemId} />

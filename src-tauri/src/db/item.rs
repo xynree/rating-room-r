@@ -17,6 +17,7 @@ pub fn get_item(conn: &MutexGuard<Connection>, id: usize) -> CommandResult<Item>
                 name: row.get(1)?,
                 description: row.get(2).unwrap_or(String::new()),
                 comments: row.get(3).unwrap_or(String::new()),
+                img_path: row.get(4).unwrap_or(String::new()),
             })
         },
     )?;
@@ -33,6 +34,7 @@ pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<Item>> {
             name: row.get(1)?,
             description: row.get(2).unwrap_or(String::new()),
             comments: row.get(3).unwrap_or(String::new()),
+            img_path: row.get(4).unwrap_or(String::new()),
         })
     })?;
     for item in rows {
@@ -94,10 +96,11 @@ pub fn create_item(
     name: String,
     description: String,
     comments: String,
+    img_path: String,
 ) -> CommandResult<usize> {
     if let Err(e) = conn.execute(
-        "INSERT INTO items (name, description, comments) VALUES ( ?, ?, ? )",
-        [name, description, comments],
+        "INSERT INTO items (name, description, comments, img_path) VALUES ( ?, ?, ?, ?)",
+        [name, description, comments, img_path],
     ) {
         return Err(CommandError::RusqliteError(e));
     };
@@ -150,6 +153,7 @@ mod tests {
             name: String::from("Chips"),
             description: String::from("Crunchy"),
             comments: String::from("Love Them"),
+            img_path: String::from("/test"),
         };
 
         let conn = dummy_connection();

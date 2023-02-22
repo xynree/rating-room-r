@@ -14,9 +14,10 @@ pub fn create_item(
     name: String,
     description: String,
     comments: String,
+    img_path: String,
 ) -> CommandResult<usize> {
     let conn = state.db.conn.lock().unwrap();
-    db::create_item(&conn, name, description, comments)
+    db::create_item(&conn, name, description, comments, img_path)
 }
 
 #[command]
@@ -45,10 +46,4 @@ pub fn get_item(state: State<AppState>, id: usize) -> CommandResult<Item> {
 pub fn update_item(state: State<AppState>, item: Item) -> CommandResult<usize> {
     let conn = state.db.conn.lock().unwrap();
     db::update_item(&conn, item)
-}
-
-#[command]
-#[allow(clippy::needless_pass_by_value)]
-pub fn save_file(state: State<AppState>, pathString: String) -> CommandResult<String> {
-    Ok("filepath".to_owned())
 }

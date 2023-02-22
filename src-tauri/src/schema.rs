@@ -27,6 +27,7 @@ pub struct Item {
     pub name: String,
     pub description: String,
     pub comments: String,
+    pub img_path: String,
 }
 
 /// Representation of `category` table in our schema.
@@ -64,7 +65,8 @@ CREATE TABLE items (
     item_id                   INTEGER PRIMARY KEY, 
 	name                 VARCHAR(255) NOT NULL UNIQUE,
 	description          TEXT     NOT NULL DEFAULT '',
-	comments             TEXT     NOT NULL DEFAULT '' 
+	comments             TEXT     NOT NULL DEFAULT '', 
+    img_path             TEXT     NOT NULL DEFAULT ''
  );
 
 CREATE TABLE ratings ( 
