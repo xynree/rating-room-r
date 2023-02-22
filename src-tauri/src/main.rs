@@ -46,10 +46,11 @@ fn main() {
             commands::get_categories,
             commands::get_items,
             commands::get_item,
+            commands::save_file,
             commands::update_item,
             commands::create_item,
             commands::create_category,
-            commands::delete_category
+            commands::delete_category,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

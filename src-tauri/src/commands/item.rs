@@ -46,3 +46,9 @@ pub fn update_item(state: State<AppState>, item: Item) -> CommandResult<usize> {
     let conn = state.db.conn.lock().unwrap();
     db::update_item(&conn, item)
 }
+
+#[command]
+#[allow(clippy::needless_pass_by_value)]
+pub fn save_file(state: State<AppState>, pathString: String) -> CommandResult<String> {
+    Ok("filepath".to_owned())
+}
