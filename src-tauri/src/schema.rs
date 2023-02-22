@@ -44,7 +44,7 @@ pub struct Category {
     pub description: String,
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(PartialEq, Eq, Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Rating {
     pub rating_id: usize,
     pub rating: usize,
