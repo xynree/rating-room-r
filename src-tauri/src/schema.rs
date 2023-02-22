@@ -70,7 +70,7 @@ CREATE TABLE items (
 CREATE TABLE ratings ( 
 	rating_id                   INTEGER PRIMARY KEY,
 	rating               INTEGER NOT NULL CHECK ( rating <= 5 AND rating >= 0 ),
-	creation_timestamp                 TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+	date                 TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 ); 
 
 CREATE TABLE items_to_categories ( 
