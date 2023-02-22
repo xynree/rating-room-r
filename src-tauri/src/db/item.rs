@@ -139,8 +139,8 @@ mod tests {
         let conn = conn.lock().unwrap();
 
         conn.execute(
-            "INSERT INTO items (item_id, name, description, comments) VALUES (?, ?, ?, ?)",
-            params![item.item_id, item.name, item.description, item.comments],
+            "INSERT INTO items (item_id, name, description, comments, img_path) VALUES (?, ?, ?, ?, ?)",
+            params![item.item_id, item.name, item.description, item.comments, item.img_path],
         )
         .unwrap();
 
@@ -209,8 +209,8 @@ mod tests {
 
         for item in items.clone() {
             conn.execute(
-                "INSERT INTO items (item_id, name, description, comments) VALUES (?, ?, ?, ?)",
-                params![item.item_id, item.name, item.description, item.comments],
+                "INSERT INTO items (item_id, name, description, comments, img_path) VALUES (?, ?, ?, ?, ?)",
+                params![item.item_id, item.name, item.description, item.comments, item.img_path],
             )
             .unwrap();
         }
@@ -232,8 +232,8 @@ mod tests {
         let conn = conn.lock().unwrap();
 
         conn.execute(
-            "INSERT INTO items (item_id, name, description, comments) VALUES (?, ?, ?, ?)",
-            params![item.item_id, item.name, item.description, item.comments],
+            "INSERT INTO items (item_id, name, description, comments, img_path) VALUES (?, ?, ?, ?, ?)",
+            params![item.item_id, item.name, item.description, item.comments, item.img_path],
         )
         .unwrap();
 
@@ -262,8 +262,8 @@ mod tests {
         let conn = conn.lock().unwrap();
 
         conn.execute(
-            "INSERT INTO items (item_id, name, description, comments) VALUES (?, ?, ?, ?)",
-            params![item.item_id, item.name, item.description, item.comments],
+            "INSERT INTO items (item_id, name, description, comments, img_path) VALUES (?, ?, ?, ?, ?)",
+            params![item.item_id, item.name, item.description, item.comments, item.img_path],
         )
         .unwrap();
 
@@ -306,8 +306,8 @@ mod tests {
         let conn = conn.lock().unwrap();
 
         conn.execute(
-            "INSERT INTO items (item_id, name, description, comments) VALUES (?, ?, ?, ?)",
-            params![item.item_id, item.name, item.description, item.comments],
+            "INSERT INTO items (item_id, name, description, comments, img_path) VALUES (?, ?, ?, ?, ?)",
+            params![item.item_id, item.name, item.description, item.comments, item.img_path],
         )
         .unwrap();
 
@@ -354,13 +354,13 @@ mod tests {
         let conn = conn.lock().unwrap();
 
         conn.execute(
-            "INSERT INTO items (item_id, name, description, comments) VALUES (?, ?, ?, ?)",
-            params![item.item_id, item.name, item.description, item.comments],
+            "INSERT INTO items (item_id, name, description, comments, img_path) VALUES (?, ?, ?, ?, ?)",
+            params![item.item_id, item.name, item.description, item.comments, item.img_path],
         )
         .unwrap();
 
         conn.execute(
-            "INSERT INTO ratings (rating_id, rating, creation_timestamp) VALUES (?, ?, ?)",
+            "INSERT INTO ratings (rating_id, rating, date) VALUES (?, ?, ?)",
             params![
                 rating.rating_id,
                 rating.rating.to_string(),
