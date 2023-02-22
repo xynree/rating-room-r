@@ -54,6 +54,7 @@ pub fn update_rating(
 ) -> CommandResult<usize> {
     let mut stmt =
         conn.prepare("UPDATE ratings SET rating = ?, SET date = ? WHERE rating_id = ?")?;
+        conn.prepare("UPDATE ratings SET rating = ? , creation_timestamp = ? WHERE rating_id = ?")?;
     let id = stmt.execute(params![
         rating,
         Utc::now().naive_utc().to_string(),
