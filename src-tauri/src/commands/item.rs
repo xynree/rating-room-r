@@ -14,9 +14,10 @@ pub fn create_item(
     name: String,
     description: String,
     comments: String,
+    img_path: String,
 ) -> CommandResult<usize> {
     let conn = state.db.conn.lock().unwrap();
-    db::create_item(&conn, name, description, comments)
+    db::create_item(&conn, name, description, comments, img_path)
 }
 
 #[command]

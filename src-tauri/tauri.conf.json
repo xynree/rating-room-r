@@ -17,7 +17,7 @@
       },
       "fs": {
         "all": true,
-        "scope": ["$APPDATA/*"]
+        "scope": ["$APPDATA/**/*"]
       },
       "all": false,
       "shell": {

@@ -12,7 +12,7 @@ mod filters;
 mod schema;
 
 use rusqlite::Connection;
-use std::sync::Mutex;
+use std::{fs::create_dir, sync::Mutex};
 use tauri::Manager;
 
 use schema::{create_tables, seed_db, AppState, Database};
@@ -24,6 +24,10 @@ fn main() {
                 .path_resolver()
                 .app_data_dir()
                 .expect("failed to find Data Dir");
+
+            if !data_dir.join("imgs").exists() {
+                create_dir(data_dir.join("imgs"))?;
+            }
 
             let db_doesnt_exist = !data_dir.join("ratings.db").exists();
 
@@ -49,7 +53,7 @@ fn main() {
             commands::update_item,
             commands::create_item,
             commands::create_category,
-            commands::delete_category
+            commands::delete_category,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -52,8 +52,7 @@ pub fn update_rating(
     rating: usize,
     rating_id: usize,
 ) -> CommandResult<usize> {
-    let mut stmt =
-        conn.prepare("UPDATE ratings SET rating = ? , creation_timestamp = ? WHERE rating_id = ?")?;
+    let mut stmt = conn.prepare("UPDATE ratings SET rating = ? , date = ? WHERE rating_id = ?")?;
     let id = stmt.execute(params![
         rating.to_string(),
         Utc::now().naive_utc().to_string(),
@@ -188,9 +187,17 @@ mod tests {
             name: String::from("Chips"),
             description: String::from("Crunchy"),
             comments: String::from("None"),
+            img_path: String::from("test"),
         };
 
-        create_item(&conn, item.name, item.description, item.comments).unwrap();
+        create_item(
+            &conn,
+            item.name,
+            item.description,
+            item.comments,
+            item.img_path,
+        )
+        .unwrap();
 
         for rating in ratings.clone() {
             conn.execute("INSERT INTO ratings (rating) VALUES ( ? )", [rating])
