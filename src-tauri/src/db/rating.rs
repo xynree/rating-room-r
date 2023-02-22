@@ -1,6 +1,6 @@
 use std::sync::MutexGuard;
 
-use chrono::{NaiveDateTime, Utc};
+use chrono::Utc;
 use rusqlite::{params, Connection};
 
 use crate::{
@@ -13,11 +13,11 @@ pub fn get_ratings(conn: &MutexGuard<Connection>, item_id: usize) -> CommandResu
     let rows: Vec<_> = stmt
         .query_map([item_id], |row| {
             Ok(Rating {
-                rating_id: row.get(1)?,
-                rating: row.get(2)?,
+                rating_id: row.get(0)?,
+                rating: row.get(1)?,
                 date: chrono::NaiveDateTime::parse_from_str(
-                    row.get::<usize, String>(3)?.as_str(),
-                    "",
+                    row.get::<usize, String>(2)?.as_str(),
+                    "%Y-%m-%d %H:%M:%S",
                 )
                 .map_err(|e| {
                     rusqlite::Error::FromSqlConversionFailure(
@@ -53,10 +53,9 @@ pub fn update_rating(
     rating_id: usize,
 ) -> CommandResult<usize> {
     let mut stmt =
-        conn.prepare("UPDATE ratings SET rating = ?, SET date = ? WHERE rating_id = ?")?;
         conn.prepare("UPDATE ratings SET rating = ? , creation_timestamp = ? WHERE rating_id = ?")?;
     let id = stmt.execute(params![
-        rating,
+        rating.to_string(),
         Utc::now().naive_utc().to_string(),
         rating_id.to_string(),
     ])?;
@@ -65,7 +64,7 @@ pub fn update_rating(
 }
 
 pub fn create_rating(conn: &MutexGuard<Connection>, rating: usize) -> CommandResult<i64> {
-    if let Err(e) = conn.execute("INSERT INTO ratings  (rating) VALUES ( ? )", [rating]) {
+    if let Err(e) = conn.execute("INSERT INTO ratings (rating) VALUES ( ? )", [rating]) {
         return Err(CommandError::RusqliteError(e));
     };
 
@@ -76,10 +75,12 @@ pub fn create_rating(conn: &MutexGuard<Connection>, rating: usize) -> CommandRes
 mod tests {
     use std::sync::Mutex;
 
-    use chrono::{NaiveDateTime, Utc};
-    use rusqlite::types::FromSql;
+    use rusqlite::Error;
 
-    use crate::schema::{create_tables, Category, Item, Rating};
+    use crate::{
+        db::{add_rating_to_item, create_item},
+        schema::{create_tables, Item},
+    };
 
     use super::*;
 
@@ -110,5 +111,100 @@ mod tests {
             .unwrap();
 
         assert_eq!(rating, result);
+    }
+
+    #[test]
+    fn updates_rating() {
+        let conn = dummy_connection();
+        let conn = conn.lock().unwrap();
+
+        let rating = 4;
+
+        let rating_id = create_rating(&conn, rating).unwrap();
+
+        let result = conn
+            .query_row(
+                "SELECT rating FROM ratings WHERE rating_id = ?",
+                [rating_id.to_string()],
+                |row| {
+                    let rating: usize = row.get(0)?;
+                    Ok(rating)
+                },
+            )
+            .unwrap();
+
+        let new_rating = 2;
+
+        let new_rating_id = update_rating(&conn, new_rating, rating_id as usize).unwrap();
+
+        let result = conn
+            .query_row(
+                "SELECT rating FROM ratings WHERE rating_id = ?",
+                [rating_id.to_string()],
+                |row| {
+                    let rating: usize = row.get(0)?;
+                    Ok(rating)
+                },
+            )
+            .unwrap();
+
+        assert_eq!(new_rating, result);
+    }
+
+    #[test]
+    fn deletes_rating() {
+        let conn = dummy_connection();
+        let conn = conn.lock().unwrap();
+
+        let rating = 4;
+
+        let rating_id = create_rating(&conn, rating).unwrap();
+
+        delete_rating(&conn, rating_id as usize).unwrap();
+
+        let result = conn
+            .query_row(
+                "SELECT rating FROM ratings WHERE rating_id = ?",
+                [rating_id.to_string()],
+                |row| {
+                    let rating: usize = row.get(0)?;
+                    Ok(rating)
+                },
+            )
+            .unwrap_err();
+
+        let expected = Error::QueryReturnedNoRows;
+
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn gets_ratings() {
+        let conn = dummy_connection();
+        let conn = conn.lock().unwrap();
+        let ratings = vec![4, 2, 3, 1, 5];
+        let item = Item {
+            item_id: 1,
+            name: String::from("Chips"),
+            description: String::from("Crunchy"),
+            comments: String::from("None"),
+        };
+
+        create_item(&conn, item.clone()).unwrap();
+
+        for rating in ratings.clone() {
+            conn.execute("INSERT INTO ratings (rating) VALUES ( ? )", [rating])
+                .unwrap();
+            let rating_id = conn.last_insert_rowid();
+            add_rating_to_item(&conn, rating_id as usize, item.item_id).unwrap();
+        }
+
+        let result: Vec<_> = get_ratings(&conn, item.item_id)
+            .unwrap()
+            .iter()
+            .map(|r| r.rating)
+            .collect();
+
+        assert_eq!(ratings, result);
     }
 }
