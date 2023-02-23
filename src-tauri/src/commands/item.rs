@@ -29,6 +29,23 @@ pub fn delete_item(state: State<AppState>, id: usize) -> CommandResult<()> {
 
 #[command]
 #[allow(clippy::needless_pass_by_value)]
+pub fn filter_by_rating(state: State<AppState>, range: Vec<usize>) -> CommandResult<Vec<Item>> {
+    let conn = state.db.conn.lock().unwrap();
+    db::filter_by_rating(&conn, range)
+}
+
+#[command]
+#[allow(clippy::needless_pass_by_value)]
+pub fn filter_by_category(
+    state: State<AppState>,
+    categories: Vec<String>,
+) -> CommandResult<Vec<Item>> {
+    let conn = state.db.conn.lock().unwrap();
+    db::filter_by_category(&conn, categories)
+}
+
+#[command]
+#[allow(clippy::needless_pass_by_value)]
 pub fn get_items(state: State<AppState>) -> CommandResult<Vec<Item>> {
     let conn = state.db.conn.lock().unwrap();
     db::get_items(&conn)
