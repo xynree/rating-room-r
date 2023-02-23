@@ -49,6 +49,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             commands::get_categories,
             commands::get_items,
+            commands::get_ratings,
             commands::get_item,
             commands::update_item,
             commands::create_item,
