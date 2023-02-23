@@ -2,18 +2,22 @@
   import { page } from "$app/stores"
   import { invoke } from "@tauri-apps/api"
   import { getItem } from "../../../service/db"
+
   let id = Number($page.params.id)
 
   let item: Item
   getItem(id).then((r) => (item = r))
 
   let ratings: Rating[]
-  invoke("get_ratings", { id }).then((r) => (ratings = r as Rating[]))
+  invoke("get_ratings", { itemId: id }).then((r) => {
+    ratings = r as Rating[]
+    console.log(r)
+  })
 </script>
 
 <div class="flex items-center justify-center w-screen gap-12 my-24">
   <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
-  <img src={item?.img_path} class="w-48 h-48 bg-gray-500" />
+  <img alt="image here" class="w-48 h-48 bg-gray-500 rounded-2xl" />
   <div class="flex flex-col gap-4">
     <div>
       <p class="tag">name</p>
@@ -25,7 +29,7 @@
     </div>
     <div>
       <p class="tag">rating</p>
-      <p>{(ratings && ratings[0]) || "get rating number"}</p>
+      <p>{ratings && ratings[0].rating}</p>
     </div>
     <div>
       <p class="tag">categories</p>
@@ -36,8 +40,8 @@
       <p>{item?.comments || "no comments"}</p>
     </div>
     <div>
-      <p class="tag">date added</p>
-      <p>{item?.date || "no date"}</p>
+      <p class="tag">last rated</p>
+      <p>{ratings && new Date(ratings[0].date).toDateString()}</p>
     </div>
   </div>
 </div>

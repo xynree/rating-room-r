@@ -108,19 +108,19 @@ CREATE TABLE items_to_ratings (
 pub fn seed_db(conn: &Connection) -> anyhow::Result<()> {
     Ok(conn.execute_batch(
         r#"
-INSERT INTO items ( name )
+INSERT INTO items ( name, img_path )
 VALUES
-("Moisturizing Cream"),
-("Zero Sugar Ginger Beer"),
-("V60 Buono Electric Drip Kettle"),
-("Slim Open Can 50L"),
-("Reflections Double Sided LED Vanity Mirror"),
-("16oz Narrow Mouth Water Bottle"),
-("Dracaena Marginata"),
-("Parla Scratching Post"),
-("Airpods Pro"),
-("M1 Macbook Pro"),
-("Air Purifier");
+("Moisturizing Cream", "test.jpg"),
+("Zero Sugar Ginger Beer", "test.jpg"),
+("V60 Buono Electric Drip Kettle", "test.jpg"),
+("Slim Open Can 50L", "test.jpg"),
+("Reflections Double Sided LED Vanity Mirror", "test.jpg"),
+("16oz Narrow Mouth Water Bottle", "test.jpg"),
+("Dracaena Marginata", "test.jpg"),
+("Parla Scratching Post", "test.jpg"),
+("Airpods Pro", "test.jpg"),
+("M1 Macbook Pro", "test.jpg"),
+("Air Purifier", "test.jpg");
 
 
 INSERT INTO categories ( name )
