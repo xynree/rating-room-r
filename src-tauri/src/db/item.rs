@@ -1,6 +1,6 @@
 use std::sync::MutexGuard;
 
-use rusqlite::{params, Connection};
+use rusqlite::{params, params_from_iter, Connection};
 
 use crate::{
     errors::{CommandError, CommandResult},
@@ -23,6 +23,90 @@ pub fn get_item(conn: &MutexGuard<Connection>, id: usize) -> CommandResult<Item>
     )?;
 
     Ok(item)
+}
+
+fn repeat_vars(count: usize) -> String {
+    assert_ne!(count, 0);
+    let mut s = "?,".repeat(count);
+    // Remove trailing comma
+    s.pop();
+    s
+}
+
+pub fn filter_by_category(
+    conn: &MutexGuard<Connection>,
+    cats: Vec<String>,
+) -> CommandResult<Vec<Item>> {
+    let vars = repeat_vars(cats.len());
+    let sql = format!(
+        r#"select i.*, c.*
+from items i
+join items_to_categories itc on (i.item_id = itc.item_id)
+join categories c
+on itc.category_id = c.category_id
+and c.name in ({})
+group by i.item_id;
+"#,
+        vars
+    );
+
+    let mut items = Vec::new();
+    let mut stmt = conn.prepare(&sql)?;
+    let rows = stmt
+        .query_map(params_from_iter(cats), |row| {
+            Ok(Item {
+                item_id: row.get(0)?,
+                name: row.get(1)?,
+                description: row.get(2)?,
+                comments: row.get(3)?,
+                img_path: row.get(4)?,
+            })
+        })
+        .unwrap();
+
+    for row in rows {
+        items.push(row?);
+    }
+
+    Ok(items)
+}
+
+pub fn filter_by_rating(
+    conn: &MutexGuard<Connection>,
+    range: Vec<usize>,
+) -> CommandResult<Vec<Item>> {
+    let vars = repeat_vars(range.len());
+    let sql = format!(
+        r#"
+        select i.*, r.*, max(r.date)
+        from items i
+        join items_to_ratings itr on (i.item_id = itr.item_id)
+        left outer join ratings r 
+        on itr.rating_id = r.rating_id
+        where r.rating in ({})
+        group by i.item_id;"#,
+        vars
+    );
+
+    let mut items = Vec::new();
+    let mut stmt = conn.prepare(&sql)?;
+    let rows = stmt
+        .query_map(params_from_iter(range), |row| {
+            Ok(Item {
+                item_id: row.get(0)?,
+                name: row.get(1)?,
+                description: row.get(2)?,
+                comments: row.get(3)?,
+                img_path: row.get(4)?,
+            })
+        })
+        .unwrap();
+
+    for row in rows {
+        items.push(row?);
+    }
+
+    Ok(items)
 }
 
 pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<Item>> {
@@ -145,6 +229,148 @@ mod tests {
         .unwrap();
 
         assert_eq!(item, get_item(&conn, 1).unwrap());
+    }
+
+    #[test]
+    fn filters_by_category() {
+        let items = vec![
+            Item {
+                item_id: 1,
+                name: String::from("Chips"),
+                description: String::from("Crunchy"),
+                comments: String::from("Love Them"),
+                img_path: String::from("test"),
+            },
+            Item {
+                item_id: 2,
+                name: String::from("Airpods"),
+                description: String::from("Bumpin"),
+                comments: String::from("Loud in the ears"),
+                img_path: String::from("test"),
+            },
+            Item {
+                item_id: 3,
+                name: String::from("Random"),
+                description: String::from("Random"),
+                comments: String::from("Random"),
+                img_path: String::from("test"),
+            },
+            Item {
+                item_id: 4,
+                name: String::from("Bottle"),
+                description: String::from("Water"),
+                comments: String::from("Testing"),
+                img_path: String::from("test"),
+            },
+        ];
+
+        let cats: Vec<String> = vec![
+            String::from("Food"),
+            String::from("Exercise"),
+            String::from("Appliance"),
+            String::from("Random"),
+        ];
+
+        let conn = dummy_connection();
+        let conn = conn.lock().unwrap();
+
+        let items_cat: Vec<(Item, String)> = items
+            .clone()
+            .into_iter()
+            .zip(cats.iter().cloned())
+            .collect();
+
+        for (item, cat) in items_cat {
+            conn.execute(
+            "INSERT INTO items (item_id, name, description, comments, img_path) VALUES (?, ?, ?, ?, ?)",
+            params![item.item_id, item.name, item.description, item.comments, item.img_path],
+        )
+        .unwrap();
+            conn.execute("INSERT INTO categories (name) VALUES (?)", params![cat])
+                .unwrap();
+
+            let category_id = conn.last_insert_rowid();
+
+            conn.execute(
+                "INSERT INTO items_to_categories (item_id, category_id) VALUES (?, ?)",
+                params![item.item_id, category_id as usize],
+            )
+            .unwrap();
+        }
+
+        let result = filter_by_category(
+            &conn,
+            vec![String::from("Exercise"), String::from("Appliance")],
+        )
+        .unwrap();
+
+        assert_eq!(items[1..=2], result);
+    }
+    #[test]
+    fn filters_by_rating() {
+        let items = vec![
+            Item {
+                item_id: 1,
+                name: String::from("Chips"),
+                description: String::from("Crunchy"),
+                comments: String::from("Love Them"),
+                img_path: String::from("test"),
+            },
+            Item {
+                item_id: 2,
+                name: String::from("Airpods"),
+                description: String::from("Bumpin"),
+                comments: String::from("Loud in the ears"),
+                img_path: String::from("test"),
+            },
+            Item {
+                item_id: 3,
+                name: String::from("Random"),
+                description: String::from("Random"),
+                comments: String::from("Random"),
+                img_path: String::from("test"),
+            },
+            Item {
+                item_id: 4,
+                name: String::from("Bottle"),
+                description: String::from("Water"),
+                comments: String::from("Testing"),
+                img_path: String::from("test"),
+            },
+        ];
+
+        let ratings: Vec<usize> = vec![1, 2, 3, 4];
+
+        let conn = dummy_connection();
+        let conn = conn.lock().unwrap();
+
+        let items_ratings: Vec<(Item, usize)> = items
+            .clone()
+            .into_iter()
+            .zip(ratings.iter().copied())
+            .collect();
+
+        for (item, rating) in items_ratings {
+            conn.execute(
+            "INSERT INTO items (item_id, name, description, comments, img_path) VALUES (?, ?, ?, ?, ?)",
+            params![item.item_id, item.name, item.description, item.comments, item.img_path],
+        )
+        .unwrap();
+            conn.execute("INSERT INTO ratings (rating) VALUES (?)", params![rating])
+                .unwrap();
+
+            let rating_id = conn.last_insert_rowid();
+
+            conn.execute(
+                "INSERT INTO items_to_ratings (item_id, rating_id) VALUES (?, ?)",
+                params![item.item_id, rating_id as usize],
+            )
+            .unwrap();
+        }
+
+        let result = filter_by_rating(&conn, vec![3, 4]).unwrap();
+
+        assert_eq!(items[2..=3], result);
     }
 
     #[test]
