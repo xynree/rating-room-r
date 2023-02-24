@@ -4,32 +4,22 @@
   import { getItem } from "../../../service/db"
   import { appDataDir, join } from "@tauri-apps/api/path"
   import { convertFileSrc } from "@tauri-apps/api/tauri"
-  let id = Number($page.params.id)
+  import { onMount } from "svelte"
 
+  let id = Number($page.params.id)
   let imgUrl: string = ""
   let item: Item
-  getItem(id).then((r) => {
-    item = r
+  let ratings: Rating[]
+  let categories: Category[] = []
 
-    getImage(item)
-  })
-
-  async function getImage(item: Item) {
+  onMount(async () => {
+    item = await getItem(id)
     const appDataDirPath = await appDataDir()
     const imgPath = await join(appDataDirPath, `imgs/${item.img_path}`)
     imgUrl = convertFileSrc(imgPath)
-  }
 
-  let ratings: Rating[]
-  invoke("get_ratings", { itemId: id }).then((r) => {
-    ratings = r as Rating[]
-    console.log(r)
-  })
-
-  let categories: Category[] = []
-  invoke("get_categories_for_item", { id }).then((cat) => {
-    categories = cat as Category[]
-    console.log(categories)
+    ratings = await invoke("get_ratings", { itemId: id })
+    categories = await invoke("get_categories_for_item", { id })
   })
 </script>
 
