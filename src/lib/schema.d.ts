@@ -14,6 +14,7 @@ type Category = {
 };
 
 type Rating = {
+  date: string | number | Date
   ratingId: number;
   rating: number;
 };

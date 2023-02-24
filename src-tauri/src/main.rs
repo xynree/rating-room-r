@@ -50,6 +50,7 @@ fn main() {
             commands::get_categories,
             commands::get_items,
             commands::get_ratings,
+            commands::get_categories_for_item,
             commands::get_item,
             commands::update_item,
             commands::create_item,

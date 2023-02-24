@@ -15,6 +15,13 @@ pub fn get_categories(state: State<AppState>) -> CommandResult<Vec<Category>> {
 
 #[command]
 #[allow(clippy::needless_pass_by_value)]
+pub fn get_categories_for_item(state: State<AppState>, id: usize) -> CommandResult<Vec<Category>> {
+    let conn = state.db.conn.lock().unwrap();
+    db::get_categories_for_item(&conn, id)
+}
+
+#[command]
+#[allow(clippy::needless_pass_by_value)]
 pub fn create_category(
     name: String,
     description: String,
