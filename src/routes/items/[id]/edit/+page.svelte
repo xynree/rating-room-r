@@ -10,12 +10,14 @@
   let item: Item
   let ratings: Rating[]
   let categories: Category[] = []
+  let allCategories: Category[] = []
 
   onMount(async () => {
     item = await getItem(id)
     imgUrl = await imgURL(item.img_path)
     ratings = await invoke("get_ratings", { itemId: id })
     categories = await invoke("get_categories_for_item", { id })
+    allCategories = await invoke("get_categories")
   })
 </script>
 
@@ -47,24 +49,29 @@
       <p class="tag">categories</p>
       <div class="flex">
         {#each categories as { name }}
-          <p class="badge">{name}</p>
+          <div class="flex gap-1 badge"><button>x</button>{name}</div>
         {/each}
+        <select class="badge">
+          <option>add category</option>
+          {#each allCategories as category}<option>{category.name}</option>{/each}
+        </select>
       </div>
     </div>
     <div>
       <p class="tag">comments</p>
       <input value={item?.comments} placeholder="Comments" />
     </div>
+    <button class="badge">Save Item</button>
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   .tag {
     @apply font-bold;
   }
 
   .badge {
-    @apply rounded-full bg-slate-200 text-xs px-3 py-1;
+    @apply rounded-full bg-slate-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
   }
 
   a {
