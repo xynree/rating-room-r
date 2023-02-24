@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { onMount } from "svelte"
   import { page } from "$app/stores"
   import { invoke } from "@tauri-apps/api"
-  import { getItem } from "../../../service/db"
-  import { imgURL } from "../../../service/file"
-  import { onMount } from "svelte"
+  import { getItem } from "../../../../service/db"
+  import { imgURL } from "../../../../service/file"
 
   let id = Number($page.params.id)
   let imgUrl: string = ""
@@ -25,25 +25,27 @@
   <div class="flex flex-col gap-4">
     <div>
       <p class="tag">name</p>
-      <p>{item?.name}</p>
+      <input value={item?.name} />
     </div>
     <div>
       <p class="tag">description</p>
-      <p>{item?.description || "no description"}</p>
+      <input value={item?.description} placeholder="description" />
     </div>
     <div>
       <p class="tag">rating</p>
       {#if ratings}
-        <div class="flex text-slate-600">
-          {#each Array(ratings[0].rating) as _}
-            <p>★</p>
+        <select class="flex text-slate-600">
+          {#each Array(5) as _, i}
+            <option value={i} selected={Number(ratings[0].rating) === i + 1}>
+              {#each Array(i + 1) as _}★{/each}
+            </option>
           {/each}
-        </div>
+        </select>
       {/if}
     </div>
     <div>
       <p class="tag">categories</p>
-      <div class="flex gap-2">
+      <div class="flex">
         {#each categories as { name }}
           <p class="badge">{name}</p>
         {/each}
@@ -51,11 +53,7 @@
     </div>
     <div>
       <p class="tag">comments</p>
-      <p class="text-sm">{item?.comments || "Nothing to say."}</p>
-    </div>
-    <div>
-      <p class="tag">last rated</p>
-      <p class="text-sm">{ratings && new Date(ratings[0].date).toDateString()}</p>
+      <input value={item?.comments} placeholder="Comments" />
     </div>
   </div>
 </div>
@@ -71,5 +69,8 @@
 
   a {
     @apply text-sm p-6;
+  }
+  input {
+    @apply border-2 border-blue-400;
   }
 </style>
