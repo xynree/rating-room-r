@@ -47,7 +47,13 @@
     </div>
     <div>
       <p class="tag">rating</p>
-      <p>{ratings && ratings[0].rating}</p>
+      {#if ratings}
+        <div class="flex text-slate-600">
+          {#each Array(ratings[0].rating) as _}
+            <p>★</p>
+          {/each}
+        </div>
+      {/if}
     </div>
     <div>
       <p class="tag">categories</p>
@@ -59,11 +65,11 @@
     </div>
     <div>
       <p class="tag">comments</p>
-      <p>{item?.comments || "no comments"}</p>
+      <p class="text-sm">{item?.comments || "Nothing to say."}</p>
     </div>
     <div>
       <p class="tag">last rated</p>
-      <p>{ratings && new Date(ratings[0].date).toDateString()}</p>
+      <p class="text-sm">{ratings && new Date(ratings[0].date).toDateString()}</p>
     </div>
   </div>
 </div>
