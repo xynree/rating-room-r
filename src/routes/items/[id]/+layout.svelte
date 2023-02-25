@@ -25,7 +25,7 @@
   </div>
 </nav>
 {#if showModal}
-  <Modal {toggleModal} {deleteItem} />
+  <Modal on:modalClose={toggleModal} on:modalSubmit={deleteItem} />
 {/if}
 
 <slot />
