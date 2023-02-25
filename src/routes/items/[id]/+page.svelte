@@ -4,6 +4,7 @@
   import { getItem } from 'service/db'
   import { imgURL } from 'service/file'
   import { onMount } from 'svelte'
+  import RatingDisplay from '$lib/RatingDisplay.svelte'
 
   let id = Number($page.params.id)
   let imgUrl: string = ''
@@ -37,13 +38,8 @@
       <p>{item?.description || 'no description'}</p>
     </div>
     <div>
-      <p class="tag">rating</p>
       {#if ratings}
-        <div class="flex text-slate-600">
-          {#each Array(ratings[0].rating) as _}
-            <p>★</p>
-          {/each}
-        </div>
+        <RatingDisplay {ratings} />
       {/if}
     </div>
     <div>
@@ -58,12 +54,7 @@
       <p class="tag">comments</p>
       <p class="text-sm">{item?.comments || 'Nothing to say.'}</p>
     </div>
-    <div>
-      <p class="tag">last rated</p>
-      <p class="text-sm">
-        {ratings && new Date(ratings[0].date).toDateString()}
-      </p>
-    </div>
+    <div />
   </div>
 </div>
 
