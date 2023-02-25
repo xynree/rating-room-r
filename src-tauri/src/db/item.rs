@@ -15,9 +15,9 @@ pub fn get_item(conn: &MutexGuard<Connection>, id: usize) -> CommandResult<Item>
             Ok(Item {
                 item_id: row.get(0)?,
                 name: row.get(1)?,
-                description: row.get(2).unwrap_or(String::new()),
-                comments: row.get(3).unwrap_or(String::new()),
-                img_path: row.get(4).unwrap_or(String::new()),
+                description: row.get(2).unwrap_or_default(),
+                comments: row.get(3).unwrap_or_default(),
+                img_path: row.get(4).unwrap_or_default(),
             })
         },
     )?;
