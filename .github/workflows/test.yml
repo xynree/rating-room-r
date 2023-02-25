@@ -1,8 +1,9 @@
 name: 'test-on-pr'
-on: [pull_request]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   test-tauri:
+    
     strategy:
       fail-fast: false
       matrix:
@@ -29,5 +30,7 @@ jobs:
       - name: install frontend dependencies
         run: pnpm install # change this to npm or pnpm depending on which one you use
       - uses: tauri-apps/tauri-action@v0
+        with:
+          tauriScript: "pnpm tauri"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
