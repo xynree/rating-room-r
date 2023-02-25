@@ -53,6 +53,7 @@ pub fn update_category(category: Category, state: State<AppState>) -> CommandRes
 }
 
 #[command]
+#[allow(clippy::needless_pass_by_value)]
 pub fn delete_category(id: usize, state: State<AppState>) -> CommandResult<()> {
     let conn = state.db.conn.lock().unwrap();
     db::delete_category(&conn, id)

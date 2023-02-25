@@ -14,7 +14,7 @@ pub fn get_categories(conn: &MutexGuard<Connection>) -> CommandResult<Vec<Catego
         Ok(Category {
             category_id: row.get(0)?,
             name: row.get(1)?,
-            description: row.get(2).unwrap_or(String::new()),
+            description: row.get(2).unwrap_or_default(),
         })
     })?;
     for category in rows {
@@ -83,12 +83,9 @@ pub fn delete_category(conn: &MutexGuard<Connection>, id: usize) -> CommandResul
 mod tests {
     use std::sync::Mutex;
 
-    use rusqlite::{params, Error};
+    use rusqlite::params;
 
-    use crate::{
-        db::{add_rating_to_item, create_item},
-        schema::{create_tables, Item},
-    };
+    use crate::schema::create_tables;
 
     use super::*;
 
@@ -109,17 +106,12 @@ mod tests {
         let conn = dummy_connection();
         let conn = conn.lock().unwrap();
 
-        create_category(
-            &conn,
-            category.name.to_owned(),
-            category.description.to_owned(),
-        )
-        .unwrap();
+        create_category(&conn, category.name.clone(), category.description.clone()).unwrap();
 
         let result = conn
             .query_row(
                 "SELECT * FROM categories WHERE name = ? ",
-                [category.name.to_owned()],
+                [category.name.clone()],
                 |row| {
                     Ok(Category {
                         category_id: row.get(0)?,
@@ -156,12 +148,7 @@ mod tests {
         let conn = conn.lock().unwrap();
 
         for category in categories.clone() {
-            create_category(
-                &conn,
-                category.name.to_owned(),
-                category.description.to_owned(),
-            )
-            .unwrap();
+            create_category(&conn, category.name.clone(), category.description.clone()).unwrap();
         }
 
         let result = get_categories(&conn).unwrap();
@@ -179,12 +166,7 @@ mod tests {
         let conn = dummy_connection();
         let conn = conn.lock().unwrap();
 
-        create_category(
-            &conn,
-            category.name.to_owned(),
-            category.description.to_owned(),
-        )
-        .unwrap();
+        create_category(&conn, category.name.clone(), category.description.clone()).unwrap();
 
         let new_category = Category {
             name: String::from("Meals"),
@@ -211,6 +193,11 @@ mod tests {
     }
 
     #[test]
+    #[allow(
+        clippy::needless_pass_by_value,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss
+    )]
     fn deletes_categories() {
         let category = Category {
             category_id: 1,
@@ -235,7 +222,7 @@ mod tests {
             .query_row(
                 "SELECT * FROM categories WHERE category_id = ?",
                 [category_id],
-                |row| Ok(()),
+                |_row| Ok(()),
             )
             .unwrap_err();
 

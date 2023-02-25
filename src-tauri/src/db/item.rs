@@ -116,9 +116,9 @@ pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<Item>> {
         Ok(Item {
             item_id: row.get(0)?,
             name: row.get(1)?,
-            description: row.get(2).unwrap_or(String::new()),
-            comments: row.get(3).unwrap_or(String::new()),
-            img_path: row.get(4).unwrap_or(String::new()),
+            description: row.get(2).unwrap_or_default(),
+            comments: row.get(3).unwrap_or_default(),
+            img_path: row.get(4).unwrap_or_default(),
         })
     })?;
     for item in rows {
@@ -202,6 +202,11 @@ pub fn add_category_to_item(
     Ok(())
 }
 
+#[allow(
+    clippy::needless_pass_by_value,
+    clippy::cast_possible_truncation,
+    clippy::cast_sign_loss
+)]
 pub fn create_item(
     conn: &MutexGuard<Connection>,
     name: String,
@@ -223,8 +228,7 @@ pub fn create_item(
 mod tests {
     use std::sync::Mutex;
 
-    use chrono::{NaiveDateTime, Utc};
-    use rusqlite::types::FromSql;
+    use chrono::Utc;
 
     use crate::schema::{create_tables, Category, Rating};
 
@@ -258,6 +262,11 @@ mod tests {
         assert_eq!(item, get_item(&conn, 1).unwrap());
     }
 
+    #[allow(
+        clippy::needless_pass_by_value,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss
+    )]
     #[test]
     fn filters_by_category() {
         let items = vec![
@@ -333,6 +342,12 @@ mod tests {
 
         assert_eq!(items[1..=2], result);
     }
+
+    #[allow(
+        clippy::needless_pass_by_value,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss
+    )]
     #[test]
     fn filters_by_rating() {
         let items = vec![
@@ -421,7 +436,7 @@ mod tests {
             item.img_path.clone(),
         )
         .unwrap();
-        assert_eq!(item.clone(), get_item(&conn, item_id).unwrap());
+        assert_eq!(item, get_item(&conn, item_id).unwrap());
     }
 
     #[test]
@@ -472,6 +487,11 @@ mod tests {
     }
 
     #[test]
+    #[allow(
+        clippy::needless_pass_by_value,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss
+    )]
     fn updates_item() {
         let item = Item {
             item_id: 1,
@@ -504,6 +524,11 @@ mod tests {
     }
 
     #[test]
+    #[allow(
+        clippy::needless_pass_by_value,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss
+    )]
     fn deletes_item() {
         let item = Item {
             item_id: 1,
@@ -531,9 +556,9 @@ mod tests {
                 Ok(Item {
                     item_id: row.get(0)?,
                     name: row.get(1)?,
-                    description: row.get(2).unwrap_or(String::new()),
-                    comments: row.get(3).unwrap_or(String::new()),
-                    img_path: row.get(4).unwrap_or(String::new()),
+                    description: row.get(2).unwrap_or_default(),
+                    comments: row.get(3).unwrap_or_default(),
+                    img_path: row.get(4).unwrap_or_default(),
                 })
             })
             .unwrap_err();
