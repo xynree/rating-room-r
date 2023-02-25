@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte"
+  import { createEventDispatcher } from 'svelte'
 
   const dispatch = createEventDispatcher()
-  const modalClose = () => dispatch("modalClose")
-  const modalSubmit = () => dispatch("modalSubmit")
+  const modalClose = () => dispatch('modalClose')
+  const modalSubmit = () => dispatch('modalSubmit')
 </script>
 
 <div
@@ -18,9 +18,13 @@
   <div class="flex flex-col items-center m-auto gap-6">
     <p>Are you sure you want to delete this item?</p>
     <div class="flex gap-1">
-      <button on:click={modalClose} class="border-2 border-black hover:bg-gray-200 ">cancel</button>
-      <button on:click={modalSubmit} class=" text-white bg-black hover:bg-gray-800"
-        >yes, delete</button
+      <button
+        on:click={modalClose}
+        class="border-2 border-black hover:bg-gray-200 ">cancel</button
+      >
+      <button
+        on:click={modalSubmit}
+        class=" text-white bg-black hover:bg-gray-800">yes, delete</button
       >
     </div>
   </div>
