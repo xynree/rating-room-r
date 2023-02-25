@@ -24,7 +24,7 @@ pub fn create_item(
 #[allow(clippy::needless_pass_by_value)]
 pub fn delete_item(state: State<AppState>, id: usize) -> CommandResult<()> {
     let conn = state.db.conn.lock().unwrap();
-    db::delete_item(&conn, id)
+    db::delete_item(conn, id)
 }
 
 #[command]
@@ -65,7 +65,7 @@ pub fn update_item(
     item: Item,
     categories: Vec<Category>,
 ) -> CommandResult<()> {
-    let conn = state.db.conn.lock().unwrap();
+    let mut conn = state.db.conn.lock().unwrap();
     db::update_item(&conn, item.clone())?;
-    db::update_items_categories(&conn, item.item_id, &categories)
+    db::update_items_categories(&mut conn, item.item_id, &categories)
 }
