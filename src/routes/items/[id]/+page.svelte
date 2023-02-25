@@ -21,7 +21,7 @@
 
 <div class="flex gap-12 justify-center items-center my-24 w-screen">
   <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
-  <img alt="drawing of item" src={imgUrl} class="w-48 h-48 bg-gray-500 rounded-2xl" />
+  <img alt="drawing of item" src={imgUrl} width={300} class="bg-gray-500 rounded-2xl" />
   <div class="flex flex-col gap-4">
     <div>
       <p class="tag">name</p>

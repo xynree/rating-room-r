@@ -50,7 +50,11 @@
       {#await imgURL(img_path) then url}
         <a href={`items/${item_id}`}>
           <div class="flex flex-col">
-            <img alt="drawing of item" src={url} width={120} class="bg-gray-500" />
+            <img
+              alt="drawing of item"
+              src={url}
+              class="bg-gray-500 w-24 h-24 object-cover border border-gray-200 rounded-sm"
+            />
             <p class="w-24 text-xs">{name}</p>
           </div>
         </a>

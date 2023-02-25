@@ -44,12 +44,14 @@ pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<Item>> {
 }
 
 pub fn update_item(conn: &MutexGuard<Connection>, item: Item) -> CommandResult<usize> {
-    let mut stmt =
-        conn.prepare("UPDATE items SET name = ?, description = ?, comments = ? WHERE item_id = ?")?;
+    let mut stmt = conn.prepare(
+        "UPDATE items SET name = ?, description = ?, comments = ?, img_path = ? WHERE item_id = ?",
+    )?;
     let id = stmt.execute([
         item.name,
         item.description,
         item.comments,
+        item.img_path,
         item.item_id.to_string(),
     ])?;
     Ok(id)
