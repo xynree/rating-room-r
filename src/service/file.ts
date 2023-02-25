@@ -4,7 +4,7 @@ import { appDataDir, join } from "@tauri-apps/api/path"
 
 export async function saveFile(file: File):Promise<string> {
   let binaryInput = await file.arrayBuffer();
-  const fileType = file.name.split('.')[1]
+  const fileType = file.name.split('.').slice(-1)[0]
   const generatedFileName= crypto.randomUUID() + "." + fileType
   await writeBinaryFile(
     { path: `imgs/${generatedFileName}`, contents: binaryInput },
