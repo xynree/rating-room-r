@@ -8,6 +8,20 @@ use crate::{
 
 #[command]
 #[allow(clippy::needless_pass_by_value)]
+pub fn add_categories_to_item(
+    state: State<AppState>,
+    item_id: usize,
+    categories: Vec<Category>,
+) -> CommandResult<Vec<Category>> {
+    let conn = state.db.conn.lock().unwrap();
+    for category in categories {
+        db::add_category_to_item(&conn, category.category_id, item_id)?;
+    }
+    db::get_categories(&conn)
+}
+
+#[command]
+#[allow(clippy::needless_pass_by_value)]
 pub fn get_categories(state: State<AppState>) -> CommandResult<Vec<Category>> {
     let conn = state.db.conn.lock().unwrap();
     db::get_categories(&conn)
