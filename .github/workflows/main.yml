@@ -1,4 +1,4 @@
-on: [push, pull_request]
+on: [push]
 
 # the name of our workflow
 name: Cargo Test
@@ -40,3 +40,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
+          args: --manifest-path src-tauri/Cargo.toml
