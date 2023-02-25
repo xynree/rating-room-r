@@ -54,6 +54,7 @@ fn main() {
             commands::get_categories_for_item,
             commands::get_item,
             commands::update_item,
+            commands::delete_item,
             commands::create_item,
             commands::create_rating,
             commands::create_category,
