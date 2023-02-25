@@ -1,4 +1,6 @@
 <script lang="ts">
+  import CategorySelect from "$lib/CategorySelect.svelte"
+  import RatingSelect from "$lib/RatingSelect.svelte"
   import { invoke } from "@tauri-apps/api"
   import { onDestroy, onMount } from "svelte"
   import { saveFile } from "../../../service/file"
@@ -22,10 +24,10 @@
     }
   }
 
-  let categories: Category[] = []
+  let allCategories: Category[] = []
 
   onMount(async () => {
-    categories = await invoke("get_categories")
+    allCategories = await invoke("get_categories")
   })
 
   onDestroy(() => {
@@ -35,13 +37,18 @@
 
 <nav class="flex justify-between w-screen p-6 text-sm font-medium shadow-sm">
   <a href="/">☜ go back</a>
-  <div class="flex gap-5">
-    <p>add item</p>
-  </div>
+  <p>add item</p>
 </nav>
 <div class="flex items-center justify-center w-screen gap-12 my-8">
   <div class="flex flex-col">
-    <img alt="drawing of item" id="img" src={imgUrl} width={300} class="bg-gray-500 rounded-2xl" />
+    <img
+      alt="drawing of item"
+      id="img"
+      src={imgUrl}
+      width={300}
+      height={300}
+      class="bg-gray-300 rounded-lg"
+    />
     <input type="file" accept="image/*" id="imageInput" on:change={update} />
   </div>
   <div class="flex flex-col gap-4">
@@ -51,30 +58,33 @@
     </div>
     <div>
       <p class="tag">description</p>
-      <textarea class="outline" />
+      <textarea />
     </div>
     <div>
-      <p class="tag">rating</p>
-      <input type="range" min="0" max="5" />
+      <RatingSelect rating={0} />
     </div>
     <div>
-      <p class="tag">categories</p>
-      <select>
-        {#each categories as category}
-          <option>{category.name}</option>
-        {/each}
-      </select>
+      <CategorySelect {allCategories} />
     </div>
     <div>
       <p class="tag">comments</p>
       <input />
     </div>
-    <button> Create New Item </button>
+    <button class="badge"> Create New Item </button>
   </div>
 </div>
 
-<style>
-  input {
-    @apply outline;
+<style lang="postcss">
+  .tag {
+    @apply font-bold;
+  }
+
+  .badge {
+    @apply rounded-full bg-slate-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
+  }
+
+  input,
+  textarea {
+    @apply border-2 border-blue-400;
   }
 </style>

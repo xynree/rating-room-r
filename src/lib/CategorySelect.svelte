@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let categories: Category[]
+  export let categories: Category[] = []
   export let allCategories: Category[]
 
   import { createEventDispatcher } from "svelte"
@@ -30,7 +30,7 @@
 </script>
 
 <div>
-  <p class="tag">categories</p>
+  <p class="font-bold">categories</p>
   <div class="flex">
     {#each categories as category}
       <div class="flex gap-2 badge">
@@ -45,3 +45,9 @@
       >{/each}
   </select>
 </div>
+
+<style lang="postcss">
+  .badge {
+    @apply rounded-full bg-slate-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
+  }
+</style>
