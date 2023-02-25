@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte"
+  import { onDestroy, onMount } from "svelte"
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
   import { invoke } from "@tauri-apps/api"
@@ -47,6 +47,10 @@
       rating: ratings[0].rating,
       categories: [...categories],
     }
+  })
+
+  onDestroy(() => {
+    window.URL.revokeObjectURL(imgUrl)
   })
 
   function handleRating(e) {

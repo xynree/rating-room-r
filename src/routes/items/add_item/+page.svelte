@@ -1,7 +1,9 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api"
-  import { onMount } from "svelte"
+  import { onDestroy, onMount } from "svelte"
   import { saveFile } from "../../../service/file"
+
+  let imgUrl = ""
 
   function saveImg(e: any) {
     const file = document.getElementById("imageInput") as HTMLInputElement
@@ -9,9 +11,25 @@
 
     savePath?.then(console.log)
   }
+
+  async function update() {
+    const file = document.getElementById("imageInput") as HTMLInputElement
+    if (file && file.files) {
+      const blob = file.files[0]
+      const url = window.URL.createObjectURL(blob)
+      window.URL.revokeObjectURL(imgUrl)
+      imgUrl = url
+    }
+  }
+
   let categories: Category[] = []
+
   onMount(async () => {
     categories = await invoke("get_categories")
+  })
+
+  onDestroy(() => {
+    window.URL.revokeObjectURL(imgUrl)
   })
 </script>
 
@@ -22,6 +40,10 @@
   </div>
 </nav>
 <div class="flex items-center justify-center w-screen gap-12 my-8">
+  <div class="flex flex-col">
+    <img alt="drawing of item" id="img" src={imgUrl} width={300} class="bg-gray-500 rounded-2xl" />
+    <input type="file" accept="image/*" id="imageInput" on:change={update} />
+  </div>
   <div class="flex flex-col gap-4">
     <div>
       <p class="tag">name</p>
@@ -47,11 +69,7 @@
       <p class="tag">comments</p>
       <input />
     </div>
-    <div>
-      <div>image</div>
-      <input type="file" accept="image/*" id="imageInput" />
-    </div>
-    <button on:click={saveImg} class="p-2 bg-gray-300">Save Item</button>
+    <button> Create New Item </button>
   </div>
 </div>
 
