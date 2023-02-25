@@ -61,13 +61,13 @@ pub fn create_category(
     conn: &MutexGuard<Connection>,
     name: String,
     description: String,
-) -> CommandResult<()> {
+) -> CommandResult<usize> {
     let mut stmt = conn.prepare("INSERT INTO categories (name, description) VALUES ( ?, ? )")?;
 
     if let Err(e) = stmt.execute([name, description]) {
         return Err(CommandError::RusqliteError(e));
     };
-    Ok(())
+    Ok(conn.last_insert_rowid() as usize)
 }
 
 pub fn delete_category(conn: &MutexGuard<Connection>, id: usize) -> CommandResult<()> {

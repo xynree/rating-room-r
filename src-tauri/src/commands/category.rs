@@ -40,7 +40,7 @@ pub fn create_category(
     name: String,
     description: String,
     state: State<AppState>,
-) -> CommandResult<()> {
+) -> CommandResult<usize> {
     let conn = state.db.conn.lock().unwrap();
     db::create_category(&conn, name, description)
 }
