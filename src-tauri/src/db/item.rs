@@ -142,12 +142,13 @@ pub fn update_item(conn: &MutexGuard<Connection>, item: Item) -> CommandResult<u
 }
 
 pub fn update_items_categories(
-    conn: &MutexGuard<Connection>,
+    conn: &mut MutexGuard<Connection>,
     item_id: usize,
     categories: &Vec<Category>,
 ) -> CommandResult<()> {
     dbg!(categories, item_id);
-    conn.execute(
+    let mut tx = conn.transaction()?;
+    tx.execute(
         "DELETE from items_to_categories where item_id = ?",
         [item_id],
     )?;
@@ -159,10 +160,18 @@ pub fn update_items_categories(
         vars
     );
 
-    print!("{sql}");
-    let mut stmt = conn.prepare(sql.as_str())?;
-    let cat_ids: Vec<_> = categories.iter().map(|cat| cat.category_id).collect();
-    stmt.execute(params_from_iter(cat_ids))?;
+    {
+        let sp = tx.savepoint()?;
+        let cat_ids: Vec<_> = categories.iter().map(|cat| cat.category_id).collect();
+        {
+            let mut stmt = sp.prepare_cached(sql.as_str())?;
+            stmt.execute(params_from_iter(cat_ids))?;
+        }
+        sp.commit()?;
+    }
+
+    tx.execute("DELETE FROM categories WHERE category_id NOT IN (select category_id from items_to_categories)",[])?;
+    tx.commit()?;
 
     Ok(())
 }
@@ -180,11 +189,14 @@ pub fn add_rating_to_item(
     Ok(())
 }
 
-pub fn delete_item(conn: &MutexGuard<Connection>, id: usize) -> CommandResult<()> {
-    if let Err(e) = conn.execute("DELETE FROM items WHERE item_id = ?", [id]) {
+pub fn delete_item(mut conn: MutexGuard<Connection>, id: usize) -> CommandResult<()> {
+    let tx = conn.transaction()?;
+    if let Err(e) = tx.execute("DELETE FROM items WHERE item_id = ?", [id]) {
         return Err(CommandError::RusqliteError(e));
     };
-
+    // Delete any 'hanging' categories
+    tx.execute("DELETE FROM categories WHERE category_id NOT IN (select category_id from items_to_categories)",[])?;
+    tx.commit()?;
     Ok(())
 }
 
