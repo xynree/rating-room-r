@@ -15,9 +15,10 @@ pub fn get_ratings(state: State<AppState>, item_id: usize) -> CommandResult<Vec<
 }
 
 #[command]
-pub fn create_rating(state: State<AppState>, rating: usize) -> CommandResult<i64> {
+pub fn create_rating(state: State<AppState>, rating: usize, item_id: usize) -> CommandResult<()> {
     let conn = state.db.conn.lock().unwrap();
-    db::create_rating(&conn, rating)
+    let rating_id = db::create_rating(&conn, rating)?;
+    db::add_rating_to_item(&conn, rating_id as usize, item_id)
 }
 
 #[command]

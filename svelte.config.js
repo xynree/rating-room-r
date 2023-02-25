@@ -5,6 +5,9 @@ import { vitePreprocess } from "@sveltejs/kit/vite";
 const config = {
   preprocess: [vitePreprocess()],
   kit: {
+    alias: {
+      service: "src/service",
+    },
     adapter: staticAdapter(),
   },
 };

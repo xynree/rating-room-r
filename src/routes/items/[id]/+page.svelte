@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { invoke } from "@tauri-apps/api"
-  import { getItem } from "../../../service/db"
-  import { imgURL } from "../../../service/file"
+  import { getItem } from "service/db"
+  import { imgURL } from "service/file"
   import { onMount } from "svelte"
 
   let id = Number($page.params.id)
@@ -19,7 +19,7 @@
   })
 </script>
 
-<div class="flex items-center justify-center w-screen gap-12 my-24">
+<div class="flex gap-12 justify-center items-center my-24 w-screen">
   <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
   <img alt="drawing of item" src={imgUrl} class="w-48 h-48 bg-gray-500 rounded-2xl" />
   <div class="flex flex-col gap-4">

@@ -9,7 +9,7 @@ use crate::{
 };
 
 pub fn get_ratings(conn: &MutexGuard<Connection>, item_id: usize) -> CommandResult<Vec<Rating>> {
-    let mut stmt = conn.prepare("SELECT * FROM ratings JOIN items_to_ratings ON ratings.rating_id = items_to_ratings.rating_id WHERE items_to_ratings.item_id = ?")?;
+    let mut stmt = conn.prepare("SELECT * FROM ratings JOIN items_to_ratings ON ratings.rating_id = items_to_ratings.rating_id WHERE items_to_ratings.item_id = ? ORDER BY ratings.date DESC")?;
     let rows: Vec<_> = stmt
         .query_map([item_id], |row| {
             Ok(Rating {
