@@ -1,15 +1,15 @@
 <script>
-  import { goto } from "$app/navigation"
-  import { page } from "$app/stores"
-  import Modal from "$lib/Modal.svelte"
-  import { invoke } from "@tauri-apps/api/tauri"
+  import { goto } from '$app/navigation'
+  import { page } from '$app/stores'
+  import Modal from '$lib/Modal.svelte'
+  import { invoke } from '@tauri-apps/api/tauri'
 
   const id = $page.params.id
   let showModal = false
 
   async function deleteItem() {
-    await invoke("delete_item", { id: Number(id) })
-    goto("/")
+    await invoke('delete_item', { id: Number(id) })
+    goto('/')
   }
 
   function toggleModal() {

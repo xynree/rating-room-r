@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { getItem, getTable } from "../service/db"
-  import { onMount } from "svelte"
-  import { invoke } from "@tauri-apps/api"
-  import { imgURL } from "../service/file"
+  import { getItem, getTable } from '../service/db'
+  import { onMount } from 'svelte'
+  import { invoke } from '@tauri-apps/api'
+  import { imgURL } from '../service/file'
 
   let items: Item[] = []
   let categoryName: string
@@ -11,8 +11,8 @@
   let item: Item | null = null
 
   async function refresh() {
-    items = (await getTable("get_items")) as Item[]
-    categories = (await getTable("get_categories")) as Category[]
+    items = (await getTable('get_items')) as Item[]
+    categories = (await getTable('get_categories')) as Category[]
   }
 
   async function updateItem() {
@@ -20,18 +20,18 @@
   }
 
   async function deleteCategory(id: number) {
-    await invoke("delete_category", { id })
+    await invoke('delete_category', { id })
     refresh()
   }
 
   async function createCategory(e: any) {
     e.preventDefault()
-    if (categoryName == "") return
-    await invoke("create_category", {
+    if (categoryName == '') return
+    await invoke('create_category', {
       name: categoryName,
-      description: "test description",
+      description: 'test description',
     })
-    categoryName = ""
+    categoryName = ''
     refresh()
   }
 
