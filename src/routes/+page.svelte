@@ -2,7 +2,7 @@
   import { getItem, getTable } from "../service/db"
   import { onMount } from "svelte"
   import { invoke } from "@tauri-apps/api"
-  import { saveFile } from "../service/file"
+  import { imgURL } from "../service/file"
 
   let items: Item[] = []
   let categoryName: string
@@ -38,48 +38,29 @@
   onMount(async () => {
     refresh()
   })
-
-  function saveImg(e: any) {
-    const file = document.getElementById("imageInput") as HTMLInputElement
-    const savePath = file.files && file.files[0] && saveFile(file.files[0])
-
-    savePath?.then(console.log)
-  }
 </script>
 
-<div class="flex flex-col items-start max-w-sm gap-6 m-3">
-  <h1 class="font-bold">API Testing Demo</h1>
-  <div>
-    <input type="file" accept="image/*" id="imageInput" /><button on:click={saveImg}
-      >Save Img to Tauri :)</button
-    >
+<nav class="flex justify-between w-screen p-6 text-sm font-medium shadow-sm">
+  <a href="/">my collection</a>
+  <a href="/items/add_item" class="underline">+ add item</a>
+</nav>
+<div class="flex flex-col items-start gap-6 m-3">
+  <div class="flex flex-wrap w-full gap-2">
+    {#each items as { name, item_id, img_path }}
+      {#await imgURL(img_path) then url}
+        <a href={`items/${item_id}`}>
+          <div class="flex flex-col">
+            <img
+              alt="drawing of item"
+              src={url}
+              class="bg-gray-500 w-24 h-24 object-cover border border-gray-200 rounded-sm"
+            />
+            <p class="w-24 text-xs">{name}</p>
+          </div>
+        </a>
+      {/await}
+    {/each}
   </div>
-  <input type="number" id="itemId" bind:value={itemId} />
-  <button on:click={updateItem}>Get Item</button>
-  {#if item}
-    <p>{item.name} - {item.description} - {item.date}</p>
-  {/if}
-  {#if items.length == 0}
-    <p>No Items</p>
-  {:else}
-    <h2 class="text-xl font-bold">Items</h2>
-    {#each items as { name, description, date, comments }}
-      <p>{name} - {description} - {date} - {comments}</p>
-    {/each}
-  {/if}
-  <div class="font-bold">Categories</div>
-  {#if categories}
-    {#each categories as { category_id, name, description }}
-      <div class="flex gap-4">
-        <p>{name} - {category_id} - {description}</p>
-        <button on:click={() => deleteCategory(category_id)}>Delete</button>
-      </div>
-    {/each}
-    <form on:submit={createCategory}>
-      <p>Create Category</p>
-      <input bind:value={categoryName} />
-    </form>
-  {/if}
 </div>
 
 <style lang="postcss">

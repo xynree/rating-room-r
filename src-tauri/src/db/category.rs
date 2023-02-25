@@ -23,6 +23,29 @@ pub fn get_categories(conn: &MutexGuard<Connection>) -> CommandResult<Vec<Catego
     Ok(categories)
 }
 
+pub fn get_categories_for_item(
+    conn: &MutexGuard<Connection>,
+    id: usize,
+) -> CommandResult<Vec<Category>> {
+    let mut stmt = conn.prepare("SELECT * FROM categories JOIN items_to_categories on categories.category_id = items_to_Categories.category_id WHERE items_to_categories.item_id = ? ")?;
+
+    let categories: Vec<_> = stmt
+        .query_map([id], |category| {
+            Ok(Category {
+                category_id: category.get(0)?,
+                name: category.get(1)?,
+                description: category.get(2)?,
+            })
+        })?
+        .collect();
+
+    let mut cat = Vec::new();
+    for c in categories {
+        cat.push(c?);
+    }
+    Ok(cat)
+}
+
 pub fn update_category(conn: &MutexGuard<Connection>, category: Category) -> CommandResult<usize> {
     let mut stmt =
         conn.prepare("UPDATE categories SET name = ?, description = ? WHERE category_id = ?")?;

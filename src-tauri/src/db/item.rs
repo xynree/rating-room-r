@@ -4,7 +4,7 @@ use rusqlite::{params, params_from_iter, Connection};
 
 use crate::{
     errors::{CommandError, CommandResult},
-    schema::Item,
+    schema::{Category, Item},
 };
 
 pub fn get_item(conn: &MutexGuard<Connection>, id: usize) -> CommandResult<Item> {
@@ -128,17 +128,44 @@ pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<Item>> {
 }
 
 pub fn update_item(conn: &MutexGuard<Connection>, item: Item) -> CommandResult<usize> {
-    let mut stmt =
-        conn.prepare("UPDATE items SET name = ?, description = ?, comments = ? WHERE item_id = ?")?;
+    let mut stmt = conn.prepare(
+        "UPDATE items SET name = ?, description = ?, comments = ?, img_path = ? WHERE item_id = ?",
+    )?;
     let id = stmt.execute([
         item.name,
         item.description,
         item.comments,
+        item.img_path,
         item.item_id.to_string(),
     ])?;
     Ok(id)
 }
 
+pub fn update_items_categories(
+    conn: &MutexGuard<Connection>,
+    item_id: usize,
+    categories: &Vec<Category>,
+) -> CommandResult<()> {
+    dbg!(categories, item_id);
+    conn.execute(
+        "DELETE from items_to_categories where item_id = ?",
+        [item_id],
+    )?;
+    let mut vars = format!("({}, ?),", item_id).repeat(categories.len());
+    vars.pop();
+
+    let sql = format!(
+        "INSERT into items_to_categories (item_id, category_id) values {} ",
+        vars
+    );
+
+    print!("{sql}");
+    let mut stmt = conn.prepare(sql.as_str())?;
+    let cat_ids: Vec<_> = categories.iter().map(|cat| cat.category_id).collect();
+    stmt.execute(params_from_iter(cat_ids))?;
+
+    Ok(())
+}
 pub fn add_rating_to_item(
     conn: &MutexGuard<Connection>,
     rating_id: usize,
@@ -466,6 +493,8 @@ mod tests {
         let new_item = Item {
             name: String::from("Ranch Dressing"),
             description: String::from("Smooth"),
+            comments: String::from("New Comment"),
+            img_path: String::from("random"),
             ..item
         };
 

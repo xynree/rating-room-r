@@ -60,7 +60,12 @@ pub fn get_item(state: State<AppState>, id: usize) -> CommandResult<Item> {
 
 #[command]
 #[allow(clippy::needless_pass_by_value)]
-pub fn update_item(state: State<AppState>, item: Item) -> CommandResult<usize> {
+pub fn update_item(
+    state: State<AppState>,
+    item: Item,
+    categories: Vec<Category>,
+) -> CommandResult<()> {
     let conn = state.db.conn.lock().unwrap();
-    db::update_item(&conn, item)
+    db::update_item(&conn, item.clone())?;
+    db::update_items_categories(&conn, item.item_id, &categories)
 }
