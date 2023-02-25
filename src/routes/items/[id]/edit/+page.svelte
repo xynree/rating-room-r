@@ -21,9 +21,9 @@
     categories = await invoke("get_categories_for_item", { id })
     allCategories = await invoke("get_categories")
     editState = {
-      item: { ...item },
+      item,
       rating: ratings[0].rating,
-      categories: [...categories],
+      categories,
     }
   })
 
@@ -42,7 +42,9 @@
   }
 </script>
 
-<ItemForm {editState} on:sendItem={saveItem} />
+{#if item}
+  <ItemForm {editState} on:sendItem={saveItem} />
+{/if}
 
 <style lang="postcss">
   .tag {

@@ -35,19 +35,6 @@
     allCategories = await invoke("get_categories")
   })
 
-  // onMount(async () => {
-  //   item = await getItem(id)
-  //   imgUrl = await imgURL(item.img_path)
-  //   ratings = await invoke("get_ratings", { itemId: id })
-  //   categories = await invoke("get_categories_for_item", { id })
-  //   allCategories = await invoke("get_categories")
-  //   editState = {
-  //     item: { ...item },
-  //     rating: ratings[0].rating,
-  //     categories: [...categories],
-  //   }
-  // })
-
   onDestroy(() => {
     window.URL.revokeObjectURL(imgUrl)
   })
