@@ -1,41 +1,20 @@
 <script lang="ts">
-  import { getItem, getTable } from '../service/db'
+  import { getItems, getTable } from '../service/db'
   import { onMount } from 'svelte'
-  import { invoke } from '@tauri-apps/api'
   import { imgURL } from '../service/file'
+  import { itemsStore } from 'store'
 
   let items: Item[] = []
-  let categoryName: string
   let categories: Category[] = []
-  let itemId: number = 0
-  let item: Item | null = null
 
   async function refresh() {
     items = (await getTable('get_items')) as Item[]
     categories = (await getTable('get_categories')) as Category[]
   }
 
-  async function updateItem() {
-    item = await getItem(itemId)
-  }
-
-  async function deleteCategory(id: number) {
-    await invoke('delete_category', { id })
-    refresh()
-  }
-
-  async function createCategory(e: any) {
-    e.preventDefault()
-    if (categoryName == '') return
-    await invoke('create_category', {
-      name: categoryName,
-      description: 'test description',
-    })
-    categoryName = ''
-    refresh()
-  }
-
   onMount(async () => {
+    const allItems = await getItems()
+    itemsStore.set(allItems)
     refresh()
   })
 </script>
