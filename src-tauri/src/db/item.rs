@@ -267,6 +267,8 @@ mod tests {
         let new_item = Item {
             name: String::from("Ranch Dressing"),
             description: String::from("Smooth"),
+            comments: String::from("New Comment"),
+            img_path: String::from("random"),
             ..item
         };
 
