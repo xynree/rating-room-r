@@ -3,7 +3,7 @@ use tauri::{command, State};
 use crate::{
     db,
     errors::CommandResult,
-    schema::{Category, Item, Rating},
+    schema::{Category, Item},
     AppState,
 };
 

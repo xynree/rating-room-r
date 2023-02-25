@@ -113,6 +113,11 @@ mod tests {
     }
 
     #[test]
+    #[allow(
+        clippy::needless_pass_by_value,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss
+    )]
     fn updates_rating() {
         let conn = dummy_connection();
         let conn = conn.lock().unwrap();
@@ -121,7 +126,7 @@ mod tests {
 
         let rating_id = create_rating(&conn, rating).unwrap();
 
-        let result = conn
+        let _result = conn
             .query_row(
                 "SELECT rating FROM ratings WHERE rating_id = ?",
                 [rating_id.to_string()],
@@ -134,7 +139,7 @@ mod tests {
 
         let new_rating = 2;
 
-        let new_rating_id = update_rating(&conn, new_rating, rating_id as usize).unwrap();
+        let _new_rating_id = update_rating(&conn, new_rating, rating_id as usize).unwrap();
 
         let result = conn
             .query_row(
@@ -151,6 +156,11 @@ mod tests {
     }
 
     #[test]
+    #[allow(
+        clippy::needless_pass_by_value,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss
+    )]
     fn deletes_rating() {
         let conn = dummy_connection();
         let conn = conn.lock().unwrap();
@@ -178,6 +188,11 @@ mod tests {
     }
 
     #[test]
+    #[allow(
+        clippy::needless_pass_by_value,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss
+    )]
     fn gets_ratings() {
         let conn = dummy_connection();
         let conn = conn.lock().unwrap();
