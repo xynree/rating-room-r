@@ -15,10 +15,13 @@
   <div class="flex flex-col items-center m-auto gap-6">
     <p>Are you sure you want to delete this item?</p>
     <div class="flex gap-1">
-      <button on:click={toggleModal} class="border-2 border-black hover:bg-gray-200 ">cancel</button
+      <button
+        on:click={toggleModal}
+        class="border-2 border-black hover:bg-gray-200 ">cancel</button
       >
-      <button on:click={deleteItem} class=" text-white bg-black hover:bg-gray-800"
-        >yes, delete</button
+      <button
+        on:click={deleteItem}
+        class=" text-white bg-black hover:bg-gray-800">yes, delete</button
       >
     </div>
   </div>

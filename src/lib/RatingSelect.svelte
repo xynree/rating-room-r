@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte"
+  import { createEventDispatcher } from 'svelte'
   const dispatch = createEventDispatcher()
   export let defaultRating: number
   function handleChange(e) {
-    dispatch("rating", {
+    dispatch('rating', {
       rating: Number(e.target.value) + 1,
     })
   }
