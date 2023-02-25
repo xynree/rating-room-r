@@ -4,7 +4,7 @@
   import { page } from "$app/stores"
   import { invoke } from "@tauri-apps/api"
   import { getItem } from "service/db"
-  import { saveFile } from "service/file"
+  import { deleteImgFromPath, saveFile } from "service/file"
   import ItemForm from "$lib/ItemForm.svelte"
 
   let id = Number($page.params.id)
@@ -35,6 +35,9 @@
     if (file && file.files && file.files[0]) {
       const img_path = await saveFile(file.files[0])
       editedItem = { ...editedItem, item: { ...editedItem.item, img_path } }
+      if (item.img_path) {
+        deleteImgFromPath(item.img_path)
+      }
     }
     await invoke("update_item", { item: editedItem.item, categories: editState.categories })
     await invoke("create_rating", { rating: editedItem.rating, itemId: id })
