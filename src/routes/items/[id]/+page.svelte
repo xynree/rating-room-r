@@ -5,7 +5,7 @@
   import { getItem } from 'service/db'
   import { imgURL } from 'service/file'
   import { itemsStore } from 'store'
-  import { afterUpdate, onMount } from 'svelte'
+  import { afterUpdate, onDestroy, onMount } from 'svelte'
 
   let id = Number($page.params.id)
   let imgUrl: string = ''
@@ -39,11 +39,9 @@
   onkeydown = (e) => {
     switch (e.code) {
       case 'ArrowLeft':
-      case 'KeyH':
         itemIdx - 1 < 0 || navigate.prev()
         break
       case 'ArrowRight':
-      case 'KeyL':
         itemIdx + 1 >= $itemsStore.length || navigate.next()
         break
       default:
