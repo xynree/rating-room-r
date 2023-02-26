@@ -107,15 +107,13 @@
       />
     </div>
     <div class="flex flex-row gap-2">
-      <button
-        on:click={() => dispatch('cancel')}
-        class="py-1 px-4 rounded-full border-black border-[1.5px]"
-        >cancel</button
-      >
-      <button
-        on:click={() => dispatch('sendItem', editState)}
-        class="py-1 px-4 text-white bg-black rounded-full">update</button
-      >
+
+    <button on:click={() => dispatch('cancel') } class="py-1 px-4 rounded-full border-black border-[1.5px]"
+      >cancel</button
+    >
+    <button on:click={() => dispatch('sendItem', editState)} class="py-1 px-4 text-white bg-black rounded-full"
+      >update</button
+    >
     </div>
   </div>
 </div>
