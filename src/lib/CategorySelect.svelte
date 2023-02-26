@@ -29,14 +29,16 @@
   }
 
   async function addNewCategory() {
+    let cat_id: number = await invoke('create_category', {
+      name: newCategory,
+      description: '',
+    })
 
-    let cat_id: number = await invoke("create_category", {name: newCategory, description: ""});
-
-    let newcat: Category =  {
-            category_id: cat_id,
-            name: newCategory,
-            description: ""
-        };
+    let newcat: Category = {
+      category_id: cat_id,
+      name: newCategory,
+      description: '',
+    }
 
     categories.push(newcat)
     categories = categories
@@ -45,8 +47,7 @@
       categories: categories,
     })
     showCategoryMenu = false
-
-    }
+  }
 
   function removeCategory(e) {
     let category = JSON.parse(e.target.value)
