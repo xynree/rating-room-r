@@ -7,10 +7,6 @@ export async function getTable(tableName: string) {
   })
 }
 
-export async function getItem(id: number):Promise<Item> {
-  return await invoke('get_item', { id }).catch(() => null) as Promise<Item>
-}
-
-export async function getItems():Promise<Item[]>{
-  return await invoke('get_items')
+export async function getItem(id: number) {
+  return invoke('get_item', { id }) as Promise<Item>
 }

@@ -7,7 +7,6 @@ const config = {
 	kit: {
 		alias: {
 			service: "src/service",
-			store: "src/store.ts"
 		},
 		adapter: staticAdapter(),
 		prerender: {
