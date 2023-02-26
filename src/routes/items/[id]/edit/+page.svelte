@@ -7,19 +7,17 @@
   import { deleteImgFromPath, saveFile } from 'service/file'
   import ItemForm from '$lib/ItemForm.svelte'
 
-  let id = Number($page.params.id)
+  $: id = Number($page.params.id)
   let imgUrl: string = ''
   let item: Item
   let ratings: Rating[]
   let categories: Category[] = []
-  let allCategories: Category[] = []
   let editState: EditState
 
   onMount(async () => {
     item = await getItem(id)
     ratings = await invoke('get_ratings', { itemId: id })
     categories = await invoke('get_categories_for_item', { id })
-    allCategories = await invoke('get_categories')
     editState = {
       item,
       rating: ratings[0].rating,
