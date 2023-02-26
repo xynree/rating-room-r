@@ -1,22 +1,64 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
   import { page } from '$app/stores'
   import { invoke } from '@tauri-apps/api'
   import { getItem } from 'service/db'
   import { imgURL } from 'service/file'
-  import { onMount } from 'svelte'
+  import { itemsStore } from 'store'
+  import { afterUpdate, onMount } from 'svelte'
 
   let id = Number($page.params.id)
   let imgUrl: string = ''
   let item: Item
   let ratings: Rating[]
   let categories: Category[] = []
+  let prev: Item | null
+  let next: Item | null
+  let itemIdx: number
 
-  onMount(async () => {
+  const refresh = async () => {
     item = await getItem(id)
+    itemIdx = $itemsStore.findIndex((i) => i.item_id === id)
+    prev = itemIdx - 1 < 0 ? null : $itemsStore[itemIdx - 1]
+    next = itemIdx + 1 > $itemsStore.length ? null : $itemsStore[itemIdx + 1]
     imgUrl = await imgURL(item.img_path)
     ratings = await invoke('get_ratings', { itemId: id })
     categories = await invoke('get_categories_for_item', { id })
+  }
+
+  onMount(refresh)
+
+  afterUpdate(() => {
+    let newId = Number($page.params.id)
+    if (id !== newId) {
+      id = newId
+      refresh()
+    }
   })
+
+  onkeydown = (e) => {
+    switch (e.code) {
+      case 'ArrowLeft':
+      case 'KeyH':
+        itemIdx - 1 < 0 || navigate.prev()
+        break
+      case 'ArrowRight':
+      case 'KeyL':
+        itemIdx + 1 >= $itemsStore.length || navigate.next()
+        break
+      default:
+        break
+    }
+  }
+
+  const navigate = {
+    prev: () => {
+      goto(`/items/${prev?.item_id}`)
+    },
+    next: () => {
+      goto(`/items/${next?.item_id}`)
+    },
+  }
 </script>
 
 <div class="flex gap-12 justify-center items-center my-24 w-screen">
@@ -28,6 +70,11 @@
     class="bg-gray-500 rounded-2xl"
   />
   <div class="flex flex-col gap-4">
+    {#if prev}
+      <button class="navigation" on:click={navigate.prev}>
+        ← {prev.name}
+      </button>
+    {/if}
     <div>
       <p class="tag">name</p>
       <p>{item?.name}</p>
@@ -64,10 +111,13 @@
         {ratings && new Date(ratings[0].date).toDateString()}
       </p>
     </div>
+    {#if next}
+      <button class="navigation" on:click={navigate.next}>{next.name} →</button>
+    {/if}
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   .tag {
     @apply font-bold;
   }
@@ -77,6 +127,10 @@
   }
 
   a {
-    @apply text-sm p-6;
+    @apply text-sm;
+  }
+
+  .navigation {
+    @apply text-sm font-black py-6 hover:text-gray-600 hover:cursor-pointer transition-all text-left;
   }
 </style>
