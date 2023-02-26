@@ -49,7 +49,11 @@
 </script>
 
 {#if item}
-  <ItemForm {editState} on:sendItem={saveItem} />
+  <ItemForm
+    {editState}
+    on:cancel={() => goto(`/items/${id}`)}
+    on:sendItem={saveItem}
+  />
 {/if}
 
 <style lang="postcss">
