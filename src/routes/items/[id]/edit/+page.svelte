@@ -27,7 +27,6 @@
 
   async function saveItem(e: { detail: EditState }) {
     let editedItem = e.detail
-    console.log('saveItem run')
     window.URL.revokeObjectURL(imgUrl)
     const file = document.getElementById('imageInput') as HTMLInputElement
     if (file && file.files && file.files[0]) {
@@ -49,20 +48,3 @@
 {#if item}
   <ItemForm {editState} on:sendItem={saveItem} />
 {/if}
-
-<style lang="postcss">
-  .tag {
-    @apply font-bold;
-  }
-
-  .badge {
-    @apply rounded-full bg-slate-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
-  }
-
-  a {
-    @apply text-sm p-6;
-  }
-  input {
-    @apply border-2 border-blue-400;
-  }
-</style>

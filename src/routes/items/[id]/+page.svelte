@@ -6,14 +6,13 @@
   import { imgURL } from 'service/file'
   import { itemsStore } from 'store'
 
-  let item: Item | undefined
-  let ratings: Rating[] | undefined
-  let categories: Category[] | undefined
+  let item: Item
   let url: string
+  let ratings: Rating[]
+  let categories: Category[]
 
   $: id = Number($page.params.id)
   $: getItem(id).then(async (i) => {
-    console.log(i)
     item = i
     url = await imgURL(i.img_path)
     ratings = await invoke('get_ratings', { itemId: i.item_id })
