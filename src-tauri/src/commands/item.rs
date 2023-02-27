@@ -3,7 +3,7 @@ use tauri::{command, State};
 use crate::{
     db,
     errors::CommandResult,
-    schema::{Category, Item},
+    schema::{Category, FullItem, Item},
     AppState,
 };
 
@@ -46,7 +46,7 @@ pub fn filter_by_category(
 
 #[command]
 #[allow(clippy::needless_pass_by_value)]
-pub fn get_items(state: State<AppState>) -> CommandResult<Vec<Item>> {
+pub fn get_items(state: State<AppState>) -> CommandResult<Vec<FullItem>> {
     let conn = state.db.conn.lock().unwrap();
     db::get_items(&conn)
 }
