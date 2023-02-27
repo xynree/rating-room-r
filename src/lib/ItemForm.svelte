@@ -7,12 +7,6 @@
   import { createEventDispatcher } from 'svelte'
   import { goto } from '$app/navigation'
 
-  let imgUrl: string = ''
-  let defaultRating = 0
-  let allCategories: Category[] = []
-
-  const dispatch = createEventDispatcher()
-
   export let editState: EditState = {
     item: {
       item_id: 0,
@@ -26,15 +20,18 @@
     categories: [],
   }
 
-  afterUpdate(async () => {
-    if (editState.item.img_path && imgUrl === '') {
-      imgUrl = await imgURL(editState.item.img_path)
-    }
+  let imgUrl: string = ''
+  let defaultRating = 0
+  let allCategories: Category[] = []
+  const dispatch = createEventDispatcher()
+
+  $: invoke('get_categories').then((c) => {
+    allCategories = c as Category[]
   })
 
-  onMount(async () => {
-    allCategories = await invoke('get_categories')
-  })
+  $: if (editState.item.img_path && imgUrl === '') {
+    imgURL(editState.item.img_path).then((url) => (imgUrl = url))
+  }
 
   onDestroy(() => {
     window.URL.revokeObjectURL(imgUrl)

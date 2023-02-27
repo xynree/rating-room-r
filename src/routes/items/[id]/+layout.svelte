@@ -4,11 +4,11 @@
   import Modal from '$lib/Modal.svelte'
   import { invoke } from '@tauri-apps/api/tauri'
 
-  const id = $page.params.id
+  $: id = Number($page.params.id)
   let showModal = false
 
   async function deleteItem() {
-    await invoke('delete_item', { id: Number(id) })
+    await invoke('delete_item', { id })
     goto('/')
   }
 

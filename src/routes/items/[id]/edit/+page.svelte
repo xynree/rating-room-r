@@ -7,19 +7,17 @@
   import { deleteImgFromPath, saveFile } from 'service/file'
   import ItemForm from '$lib/ItemForm.svelte'
 
-  let id = Number($page.params.id)
+  $: id = Number($page.params.id)
   let imgUrl: string = ''
   let item: Item
   let ratings: Rating[]
   let categories: Category[] = []
-  let allCategories: Category[] = []
   let editState: EditState
 
   onMount(async () => {
     item = await getItem(id)
     ratings = await invoke('get_ratings', { itemId: id })
     categories = await invoke('get_categories_for_item', { id })
-    allCategories = await invoke('get_categories')
     editState = {
       item,
       rating: ratings[0].rating,
@@ -29,7 +27,6 @@
 
   async function saveItem(e: { detail: EditState }) {
     let editedItem = e.detail
-    console.log('saveItem run')
     window.URL.revokeObjectURL(imgUrl)
     const file = document.getElementById('imageInput') as HTMLInputElement
     if (file && file.files && file.files[0]) {
@@ -55,20 +52,3 @@
     on:sendItem={saveItem}
   />
 {/if}
-
-<style lang="postcss">
-  .tag {
-    @apply font-bold;
-  }
-
-  .badge {
-    @apply rounded-full bg-slate-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
-  }
-
-  a {
-    @apply text-sm p-6;
-  }
-  input {
-    @apply border-2 border-blue-400;
-  }
-</style>
