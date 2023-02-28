@@ -2,20 +2,21 @@
   import { createEventDispatcher } from 'svelte'
   const dispatch = createEventDispatcher()
   export let defaultRating: number
-  function handleChange(e) {
+  function handleChange(num: number) {
     dispatch('rating', {
-      rating: Number(e.target.value) + 1,
+      rating: num + 1,
     })
+  }
+  function fillStar(e) {
+    console.log('hovered')
   }
 </script>
 
 <div>
   <p class="font-bold">rating</p>
-  <select class="flex text-slate-600" on:change={handleChange}>
-    {#each Array(5) as _, i}
-      <option value={i} selected={defaultRating === i + 1}>
-        {#each Array(i + 1) as _}★{/each}
-      </option>
-    {/each}
-  </select>
+  {#each Array(5) as _, i}
+    <button on:click={() => handleChange(i)} on:mouseover={fillStar}>
+      {defaultRating > i ? '★' : '☆'}
+    </button>
+  {/each}
 </div>
