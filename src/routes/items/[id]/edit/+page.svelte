@@ -46,5 +46,9 @@
 </script>
 
 {#if item}
-  <ItemForm {editState} on:sendItem={saveItem} />
+  <ItemForm
+    {editState}
+    defaultRating={ratings && ratings[0].rating}
+    on:sendItem={saveItem}
+  />
 {/if}

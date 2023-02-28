@@ -1,9 +1,14 @@
 <script lang="ts">
+  import { invoke } from '@tauri-apps/api'
   export let categories: Category[] = []
-  export let allCategories: Category[]
+  let allCategories: Category[] = []
 
-  import { createEventDispatcher } from 'svelte'
+  import { createEventDispatcher, onMount } from 'svelte'
   const dispatch = createEventDispatcher()
+
+  onMount(async () => {
+    allCategories = await invoke('get_categories')
+  })
   function addCategory(e) {
     let category = JSON.parse(e.target.value)
 
@@ -47,9 +52,8 @@
   </div>
   <select class="badge" on:change={addCategory}>
     <option>add category</option>
-    {#each allCategories as category}<option value={JSON.stringify(category)}
-        >{category.name}</option
-      >{/each}
+    {#each allCategories as category}
+      <option value={JSON.stringify(category)}>{category.name}</option>{/each}
   </select>
 </div>
 

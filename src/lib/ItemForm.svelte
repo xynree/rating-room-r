@@ -6,6 +6,12 @@
   import CategorySelect from '$lib/CategorySelect.svelte'
   import { createEventDispatcher } from 'svelte'
 
+  export let defaultRating = 0
+  let imgUrl: string = ''
+  let allCategories: Category[] = []
+
+  const dispatch = createEventDispatcher()
+
   export let editState: EditState = {
     item: {
       item_id: 0,
@@ -18,11 +24,6 @@
     rating: 0,
     categories: [],
   }
-
-  let imgUrl: string = ''
-  let defaultRating = 0
-  let allCategories: Category[] = []
-  const dispatch = createEventDispatcher()
 
   $: invoke('get_categories').then((c) => {
     allCategories = c as Category[]
@@ -85,7 +86,6 @@
     <CategorySelect
       on:categories={handleCategory}
       categories={editState.categories}
-      {allCategories}
     />
     <div>
       <p class="tag">comments</p>
