@@ -48,7 +48,7 @@
 {#if item}
   <ItemForm
     {editState}
-    on:cancel={() => goto(`/items/${id}`)}
+    defaultRating={ratings && ratings[0].rating}
     on:sendItem={saveItem}
   />
 {/if}

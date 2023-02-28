@@ -73,7 +73,7 @@
         <div class="flex text-slate-600">
           {#if ratings}
             {#each Array(ratings[0].rating) as _}
-              <p>★</p>
+              <p class="text-yellow-400">★</p>
             {/each}
           {/if}
         </div>

@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { invoke } from '@tauri-apps/api/tauri'
-
+  import { invoke } from '@tauri-apps/api'
   export let categories: Category[] = []
-  export let allCategories: Category[]
+  let allCategories: Category[] = []
 
-  import { createEventDispatcher } from 'svelte'
+  import { createEventDispatcher, onMount } from 'svelte'
   const dispatch = createEventDispatcher()
   let newCategory: string = ''
   function addCategory(e) {
@@ -77,39 +76,11 @@
       </div>
     {/each}
   </div>
-  <button on:click={toggleCategoryMenu} id="addCategory" class="badge">
-    + add category
-  </button>
-  {#if showCategoryMenu}
-    <div class="flex absolute flex-col bg-white rounded-xl border border-black">
-      <div class="overflow-y-auto py-2 px-4 max-h-24">
-        <ul>
-          {#each allCategories as category}
-            <li
-              class="flex flex-col hover:bg-neutral-300"
-              value={JSON.stringify(category)}
-            >
-              <button on:click={addCategory} value={JSON.stringify(category)}>
-                {category.name}
-              </button>
-            </li>{/each}
-        </ul>
-      </div>
-      <form
-        on:submit|preventDefault={addNewCategory}
-        class="p-2 border-t border-t-black"
-      >
-        <input
-          class="font-bold text-center"
-          bind:value={newCategory}
-          placeholder="new category"
-        />
-      </form>
-    </div>
-  {/if}
-  <!-- <select class="badge" on:change={addCategory}> -->
-  <!--   <option>add category</option> -->
-  <!-- </select> -->
+  <select class="badge" on:change={addCategory}>
+    <option>add category</option>
+    {#each allCategories as category}
+      <option value={JSON.stringify(category)}>{category.name}</option>{/each}
+  </select>
 </div>
 
 <style lang="postcss">
