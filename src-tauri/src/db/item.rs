@@ -1,10 +1,11 @@
 use std::sync::MutexGuard;
 
 use rusqlite::{params, params_from_iter, Connection};
+use tauri::utils::config::parse::folder_has_configuration_file;
 
 use crate::{
     errors::{CommandError, CommandResult},
-    schema::{Category, Item},
+    schema::{Category, FullItem, Item, Rating},
 };
 
 pub fn get_item(conn: &MutexGuard<Connection>, id: usize) -> CommandResult<Item> {
@@ -109,21 +110,56 @@ pub fn filter_by_rating(
     Ok(items)
 }
 
-pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<Item>> {
+pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<FullItem>> {
     let mut items = Vec::new();
-    let mut stmt = conn.prepare("SELECT * FROM items")?;
+    let mut stmt = conn.prepare("SELECT i.*, c.*, r.* FROM items i JOIN items_to_ratings itr ON itr.item_id = i.item_id JOIN ratings r ON itr.rating_id = r.rating_id JOIN items_to_categories itc ON itc.item_id = i.item_id JOIN categories c on itc.category_id = c.category_id ")?;
     let rows = stmt.query_map([], |row| {
-        Ok(Item {
+        let item = FullItem {
             item_id: row.get(0)?,
             name: row.get(1)?,
             description: row.get(2).unwrap_or_default(),
             comments: row.get(3).unwrap_or_default(),
             img_path: row.get(4).unwrap_or_default(),
-        })
+            categories: vec![Category {
+                category_id: row.get(5)?,
+                name: row.get(6)?,
+                description: row.get(7).unwrap_or_default(),
+            }],
+            rating: Rating {
+                rating_id: row.get(8)?,
+                rating: row.get(9)?,
+                date: chrono::NaiveDateTime::parse_from_str(
+                    row.get::<usize, String>(10)?.as_str(),
+                    "%Y-%m-%d %H:%M:%S",
+                )
+                .map_err(|e| {
+                    rusqlite::Error::FromSqlConversionFailure(
+                        0,
+                        rusqlite::types::Type::Text,
+                        Box::new(e),
+                    )
+                })?,
+            },
+        };
+
+        Ok(item)
     })?;
+
     for item in rows {
-        items.push(item?);
+        let item = item?;
+        match items
+            .iter()
+            .position(|i: &FullItem| i.item_id == item.item_id)
+        {
+            Some(i) => {
+                if !items[i].categories.contains(&item.categories[0]) {
+                    items[i].categories.push(item.clone().categories[0].clone());
+                }
+            }
+            None => items.push(item.clone()),
+        }
     }
+
     Ok(items)
 }
 
