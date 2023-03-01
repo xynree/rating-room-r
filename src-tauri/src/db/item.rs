@@ -142,32 +142,23 @@ pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<FullItem>> 
             },
         };
 
-        println!("{item:?}");
         Ok(item)
     })?;
 
     for item in rows {
-        items.push(item?);
-    }
-
-    let mut full_items: Vec<FullItem> = Vec::new();
-    items.iter().map(|i| {
-        if full_items.iter().any(|fi| fi.item_id == i.item_id) {
-            full_items = full_items
-                .iter()
-                .map(|fi| {
-                    if fi.item_id == i.item_id {
-                        fi.categories.push(i.categories[0]);
-                        fi.clone()
-                    } else {
-                        fi.clone()
-                    }
-                })
-                .collect();
-        } else {
-            full_items.push(i.clone())
+        let item = item?;
+        match items
+            .iter()
+            .position(|i: &FullItem| i.item_id == item.item_id)
+        {
+            Some(i) => {
+                if !items[i].categories.contains(&item.categories[0]) {
+                    items[i].categories.push(item.clone().categories[0].clone());
+                }
+            }
+            None => items.push(item.clone()),
         }
-    });
+    }
 
     Ok(items)
 }
