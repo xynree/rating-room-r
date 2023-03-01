@@ -30,6 +30,17 @@ pub struct Item {
     pub img_path: String,
 }
 
+#[derive(Eq, PartialEq, Default, Serialize, Deserialize, Clone, Debug)]
+pub struct FullItem {
+    pub item_id: usize,
+    pub name: String,
+    pub description: String,
+    pub comments: String,
+    pub img_path: String,
+    pub categories: Vec<Category>,
+    pub rating: Rating,
+}
+
 /// Representation of `category` table in our schema.
 ///
 /// # Sqlite Representation
