@@ -1,3 +1,16 @@
-import { writable } from 'svelte/store';
+import { filterSortItems } from "service/filterSort";
+import { derived, writable } from "svelte/store";
 
-export const itemsStore = writable([] as Item[])
+let initialStore: ItemStore = {
+	items: [],
+	categories: new Set(),
+	filters: {
+		categories: new Set(),
+		ratings: new Set(),
+	},
+};
+
+export const itemsStore = writable(initialStore);
+export const itemView = derived(itemsStore, ($itemsStore) =>
+	filterSortItems($itemsStore),
+);
