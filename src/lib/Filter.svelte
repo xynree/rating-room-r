@@ -1,59 +1,49 @@
 <script lang="ts">
-  import { itemsStore, itemView } from 'store'
+  import { FilterType, itemsStore } from 'store'
   let showCategoryFilter = false
   let showRatingFilter = false
 
-  $: console.log({$itemsStore, $itemView})
+  $: hasFilters =
+    $itemsStore.filters.categories.size > 0 ||
+    $itemsStore.filters.ratings.size > 0
 
   function toggleRatingFilter() {
+    if (showCategoryFilter) showCategoryFilter = false
     showRatingFilter = !showRatingFilter
   }
 
   function toggleCategoryFilter() {
+    if (showRatingFilter) showRatingFilter = false
     showCategoryFilter = !showCategoryFilter
-  }
-
-  function handleRating(e) {
-    let rating = Number(e.target.value)
-    if ($itemsStore.filters.ratings.has(rating)) {
-      $itemsStore.filters.ratings.delete(rating)
-      $itemsStore = $itemsStore
-    } else {
-      if (rating > 0 && rating <= 5) {
-        $itemsStore.filters.ratings.add(rating)
-        $itemsStore = $itemsStore
-      }
-    }
-  }
-
-  function handleCategory(e) {
-    let category = e.target.value
-    if ($itemsStore.filters.categories.has(category)) {
-      $itemsStore.filters.categories.delete(category)
-      $itemsStore = $itemsStore
-    } else {
-      $itemsStore.filters.categories.add(category)
-      $itemsStore = $itemsStore
-    }
-
   }
 </script>
 
-<div class="flex flex-row gap-8">
-  <button on:click={toggleRatingFilter}> rating </button>
-  {#if showRatingFilter}
-    <div
-      on:click={toggleRatingFilter}
-      class="absolute w-screen h-screen opacity-0"
-    />
-    <div
-      class="flex fixed top-12 flex-col bg-white rounded-xl border border-black"
+<div class="flex flex-row gap-1 ml-auto mr-8">
+  {#if hasFilters}
+    <button
+      class="font-light bg-zinc-100 rounded-full px-4"
+      on:click={itemsStore.filters.reset}
     >
+      clear filters
+    </button>
+  {/if}
+  <button
+    on:click={toggleRatingFilter}
+    class="{showRatingFilter ? 'bg-zinc-100' : ''} rounded-full px-4 relative"
+  >
+    rating
+  </button>
+  {#if showRatingFilter}
+    <div class="modal right-48">
       <div class="overflow-y-auto py-2 px-4 max-h-36 w-fit">
         <ul>
           {#each Array(5) as _, i}
-            <li class="flex flex-row gap-2 justify-between space-x-4">
-              <button on:click={handleRating} value={i + 1}>
+            <li>
+              <button
+                on:click={() =>
+                  itemsStore.filters.toggle(FilterType.ratings, i + 1)}
+                value={i + 1}
+              >
                 {#each Array(i + 1) as _}★{/each}
               </button>
               <span>
@@ -65,20 +55,26 @@
     </div>
   {/if}
 
-  <button on:click={toggleCategoryFilter}> category </button>
+  <button
+    on:click={toggleCategoryFilter}
+    class="{showCategoryFilter ? 'bg-zinc-100' : ''} rounded-full px-4 relative"
+  >
+    category
+  </button>
   {#if showCategoryFilter}
-    <div
-      on:click={toggleCategoryFilter}
-      class="absolute w-screen h-screen opacity-0"
-    />
-    <div
-      class="flex fixed top-12 flex-col bg-white rounded-xl border border-black"
-    >
-      <div class="overflow-y-auto py-2 px-4 max-h-36 w-fit">
+    <div class="modal right-24">
+      <div class="py-2 px-4 w-fit">
         <ul>
           {#each Array.from($itemsStore.categories) as category}
-            <li class="flex flex-row gap-2 justify-between space-x-4">
-              <button on:click={handleCategory} value={category.name}>
+            <li>
+              <button
+                on:click={() =>
+                  itemsStore.filters.toggle(
+                    FilterType.categories,
+                    category.name
+                  )}
+                value={category.name}
+              >
                 {category.name}
               </button>
               <span>
@@ -90,3 +86,13 @@
     </div>
   {/if}
 </div>
+
+<style lang="postcss">
+  .modal {
+    @apply flex absolute max-h-72 top-12 flex-col bg-white rounded-xl border border-black;
+  }
+
+  li {
+    @apply flex flex-row gap-2 justify-between space-x-4 text-gray-700 hover:text-black;
+  }
+</style>
