@@ -1,13 +1,10 @@
 <script lang="ts">
-  import { afterUpdate, onDestroy, onMount } from 'svelte'
-  import { invoke } from '@tauri-apps/api'
+  import { onDestroy } from 'svelte'
   import { imgURL } from 'service/file'
   import RatingSelect from '$lib/RatingSelect.svelte'
   import CategorySelect from '$lib/CategorySelect.svelte'
   import { createEventDispatcher } from 'svelte'
-  import { goto } from '$app/navigation'
 
-  export let defaultRating = 0
   let imgUrl: string = ''
 
   const dispatch = createEventDispatcher()
@@ -34,14 +31,6 @@
   onDestroy(() => {
     window.URL.revokeObjectURL(imgUrl)
   })
-
-  function handleRating(e) {
-    editState.rating.rating = e.detail.rating
-  }
-
-  function handleCategory(e) {
-    editState.categories = e.detail.categories
-  }
 
   async function update() {
     const file = document.getElementById('imageInput') as HTMLInputElement
@@ -89,11 +78,8 @@
         placeholder="description"
       />
     </div>
-    <RatingSelect on:rating={handleRating} {defaultRating} />
-    <CategorySelect
-      on:categories={handleCategory}
-      categories={editState.categories}
-    />
+    <RatingSelect bind:defaultRating={editState.rating.rating} />
+    <CategorySelect bind:categories={editState.categories} />
     <div>
       <p class="tag">comments</p>
       <input
@@ -103,13 +89,15 @@
       />
     </div>
     <div class="flex flex-row gap-2">
-
-    <button on:click={() => dispatch('cancel') } class="py-1 px-4 rounded-full border-black border-[1.5px]"
-      >cancel</button
-    >
-    <button on:click={() => dispatch('sendItem', editState)} class="py-1 px-4 text-white bg-black rounded-full"
-      >update</button
-    >
+      <button
+        on:click={() => dispatch('cancel')}
+        class="py-1 px-4 rounded-full border-black border-[1.5px]"
+        >cancel</button
+      >
+      <button
+        on:click={() => dispatch('sendItem', editState)}
+        class="py-1 px-4 text-white bg-black rounded-full">update</button
+      >
     </div>
   </div>
 </div>

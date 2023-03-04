@@ -3,14 +3,12 @@
   import { itemsStore } from 'store'
 
   export let categories: Category[] = []
-  let allCategories: Category[] = []
 
-  import { createEventDispatcher, onMount } from 'svelte'
-  const dispatch = createEventDispatcher()
   let newCategory: string = ''
+  let showCategoryMenu = false
+
   function addCategory(e) {
     let category = JSON.parse(e.target.value)
-    console.log(e)
 
     if (
       categories.filter((cat) => cat.category_id === category.category_id)
@@ -20,47 +18,34 @@
       return
     }
 
-    categories.push(JSON.parse(e.target.value))
-    categories = categories
-    console.log(categories)
-    dispatch('categories', {
-      categories: categories,
-    })
+    categories = [...categories, JSON.parse(e.target.value)]
     showCategoryMenu = false
   }
 
   async function addNewCategory() {
-
-    let cat_id: number = await invoke("create_category", {name: newCategory, description: ""});
-
-    let newcat: Category =  {
-            category_id: cat_id,
-            name: newCategory,
-            description: ""
-        };
-
-    categories.push(newcat)
-    categories = categories
-    console.log(categories)
-    dispatch('categories', {
-      categories: categories,
+    const categoryId: number = await invoke('create_category', {
+      name: newCategory,
+      description: '',
     })
-    showCategoryMenu = false
 
-    }
+    categories = [
+      ...categories,
+      {
+        category_id: categoryId,
+        name: newCategory,
+        description: '',
+      },
+    ]
+    showCategoryMenu = false
+  }
 
   function removeCategory(e) {
     let category = JSON.parse(e.target.value)
     categories = categories.filter(
       (cat) => cat.category_id !== category.category_id
     )
-    console.log(categories)
-    dispatch('categories', {
-      categories: categories,
-    })
   }
 
-  let showCategoryMenu
   function toggleCategoryMenu() {
     showCategoryMenu = !showCategoryMenu
   }
@@ -107,9 +92,6 @@
       </form>
     </div>
   {/if}
-  <!-- <select class="badge" on:change={addCategory}> -->
-  <!--   <option>add category</option> -->
-  <!-- </select> -->
 </div>
 
 <style lang="postcss">
