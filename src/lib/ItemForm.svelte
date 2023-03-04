@@ -5,6 +5,7 @@
   import RatingSelect from '$lib/RatingSelect.svelte'
   import CategorySelect from '$lib/CategorySelect.svelte'
   import { createEventDispatcher } from 'svelte'
+  import { goto } from '$app/navigation'
 
   export let defaultRating = 0
   let imgUrl: string = ''
@@ -91,9 +92,10 @@
       <p class="tag">comments</p>
       <input bind:value={editState.item.comments} placeholder="Comments" />
     </div>
-    <button on:click={() => dispatch('sendItem', editState)} class="badge"
-      >Save Item</button
-    >
+    <div class="flex gap-1 py-6">
+      <button on:click={() => goto('/')}>cancel</button>
+      <button on:click={() => dispatch('sendItem', editState)}>update</button>
+    </div>
   </div>
 </div>
 
@@ -102,14 +104,37 @@
     @apply font-bold;
   }
 
+  button {
+    @apply border-black border-2 rounded-full px-4 text-sm transition-all;
+
+    &:hover {
+      @apply bg-gray-100;
+    }
+
+    &:nth-child(2) {
+      @apply bg-black text-white;
+
+      &:hover {
+        @apply bg-gray-900;
+      }
+    }
+  }
+
   .badge {
-    @apply rounded-full bg-slate-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
+    @apply rounded-full bg-zinc-100 text-xs px-3 py-1 transition-all;
+
+    &:hover {
+      @apply bg-zinc-300;
+    }
   }
 
   a {
     @apply text-sm p-6;
   }
-  input {
-    @apply border-2 border-blue-400;
+  input:not(#imageInput) {
+    @apply border-2 border-black rounded-lg px-1 my-1 bg-stone-100;
+    &:focus {
+      @apply outline-none ring ring-gray-800 border-white;
+    }
   }
 </style>

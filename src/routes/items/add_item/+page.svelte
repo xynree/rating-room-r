@@ -38,7 +38,6 @@
       itemId: newItemId,
     })
 
-    console.log('Create item ran!')
     goto(`/items/${newItemId}`)
   }
 </script>

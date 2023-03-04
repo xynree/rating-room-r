@@ -51,7 +51,7 @@
     {/each}
   </div>
   <select class="badge" on:change={addCategory}>
-    <option>add category</option>
+    <option>+ add category</option>
     {#each allCategories as category}
       <option value={JSON.stringify(category)}>{category.name}</option>{/each}
   </select>
@@ -59,6 +59,6 @@
 
 <style lang="postcss">
   .badge {
-    @apply rounded-full bg-slate-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
+    @apply rounded-full bg-zinc-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
   }
 </style>

@@ -3,6 +3,7 @@
   import { page } from '$app/stores'
   import Modal from '$lib/Modal.svelte'
   import { invoke } from '@tauri-apps/api/tauri'
+  import { itemsStore } from 'store'
 
   $: id = Number($page.params.id)
   let showModal = false
@@ -17,8 +18,8 @@
   }
 </script>
 
-<nav class="flex justify-between p-6 w-screen text-sm font-medium shadow-sm">
-  <a href="/">my collection</a>
+<nav class="flex justify-between p-4 px-6 w-screen text-sm font-medium">
+  <a href="/">my collection ({$itemsStore.length} items)</a>
   <div class="flex gap-5">
     <button on:click={toggleModal} class="underline">delete item</button>
     <a href={`/items/${id}/edit`} class="underline">+ edit item</a>

@@ -70,17 +70,17 @@
       </div>
       <div>
         <p class="tag">rating</p>
-        <div class="flex text-slate-600">
+        <div class="flex">
           {#if ratings}
             {#each Array(ratings[0].rating) as _}
-              <p class="text-yellow-400">★</p>
+              <p>★</p>
             {/each}
           {/if}
         </div>
       </div>
       <div>
         <p class="tag">categories</p>
-        <div class="flex gap-2">
+        <div class="flex gap-1">
           {#if categories}
             {#each categories as { name }}
               <p class="badge">{name}</p>
@@ -90,11 +90,11 @@
       </div>
       <div>
         <p class="tag">comments</p>
-        <p class="text-sm">{item?.comments || 'Nothing to say.'}</p>
+        <p>{item?.comments || 'Nothing to say.'}</p>
       </div>
       <div>
         <p class="tag">last rated</p>
-        <p class="text-sm">
+        <p class="badge">
           {ratings && new Date(ratings[0].date).toDateString()}
         </p>
       </div>
@@ -113,7 +113,7 @@
   }
 
   .badge {
-    @apply rounded-full bg-slate-200 text-xs px-3 py-1;
+    @apply rounded-full bg-zinc-200 text-xs px-4 py-1 mt-2;
   }
 
   a {
@@ -121,6 +121,6 @@
   }
 
   .navigation {
-    @apply text-sm font-black py-6 hover:text-gray-600 hover:cursor-pointer transition-all text-left;
+    @apply text-sm font-normal py-8 hover:text-gray-600 hover:cursor-pointer transition-all text-left;
   }
 </style>
