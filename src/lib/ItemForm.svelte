@@ -54,7 +54,10 @@
         id="imageInput"
         on:change={update}
       />
-      switch image
+      <span
+        class="rounded-full p-1 px-3 bg-white bg-opacity-40 text-gray-800 hover:text-black hover:bg-opacity-60 transition-all"
+        >switch image</span
+      >
     </label>
     <img
       alt="drawing of item"
