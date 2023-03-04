@@ -3,7 +3,7 @@
   import Filter from '$lib/Filter.svelte'
   import { onMount } from 'svelte'
   import { imgURL } from '../service/file'
-  import { itemsStore } from 'store'
+  import { itemsStore, itemView } from 'store'
 
   let items: FullItem[] = []
   let categories: Category[] = []
@@ -29,7 +29,7 @@
 </nav>
 <div class="flex flex-col items-start gap-6 m-3">
   <div class="flex flex-wrap w-full gap-2">
-    {#each items as { name, item_id, img_path }}
+    {#each $itemView as { name, item_id, img_path }}
       {#await imgURL(img_path) then url}
         <a href={`items/${item_id}`}>
           <div class="flex flex-col">

@@ -9,29 +9,26 @@
 
   export let defaultRating = 0
   let imgUrl: string = ''
-  let allCategories: Category[] = []
 
   const dispatch = createEventDispatcher()
 
-  export let editState: EditState = {
-    item: {
-      item_id: 0,
-      name: '',
-      description: '',
-      comments: '',
-      img_path: '',
-      date: '',
-    },
-    rating: 0,
+  export let editState: FullItem = {
+    item_id: 0,
+    name: '',
+    description: '',
+    comments: '',
+    img_path: '',
+    date: '',
     categories: [],
+    rating: {
+      date: '',
+      ratingId: 0,
+      rating: 0,
+    },
   }
 
-  $: invoke('get_categories').then((c) => {
-    allCategories = c as Category[]
-  })
-
-  $: if (editState.item.img_path && imgUrl === '') {
-    imgURL(editState.item.img_path).then((url) => (imgUrl = url))
+  $: if (editState.img_path && imgUrl === '') {
+    imgURL(editState.img_path).then((url) => (imgUrl = url))
   }
 
   onDestroy(() => {
@@ -39,12 +36,11 @@
   })
 
   function handleRating(e) {
-    editState.rating = e.detail.rating
+    editState.rating.rating = e.detail.rating
   }
 
   function handleCategory(e) {
     editState.categories = e.detail.categories
-    console.log(editState)
   }
 
   async function update() {
@@ -83,13 +79,13 @@
   <div class="flex flex-col gap-4">
     <div>
       <p class="tag">name</p>
-      <input class="input" bind:value={editState.item.name} />
+      <input class="input" bind:value={editState.name} />
     </div>
     <div>
       <p class="tag">description</p>
       <input
         class="input"
-        bind:value={editState.item.description}
+        bind:value={editState.description}
         placeholder="description"
       />
     </div>
@@ -102,7 +98,7 @@
       <p class="tag">comments</p>
       <input
         class="input"
-        bind:value={editState.item.comments}
+        bind:value={editState.comments}
         placeholder="Comments"
       />
     </div>

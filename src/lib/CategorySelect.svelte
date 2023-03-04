@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { invoke } from '@tauri-apps/api/tauri'
+  import { itemsStore } from 'store'
+
   export let categories: Category[] = []
   let allCategories: Category[] = []
 
@@ -81,7 +84,7 @@
     <div class="flex absolute flex-col bg-white rounded-xl border border-black">
       <div class="overflow-y-auto py-2 px-4 max-h-24">
         <ul>
-          {#each allCategories as category}
+          {#each Array.from($itemsStore.categories) as category}
             <li
               class="flex flex-col hover:bg-neutral-300"
               value={JSON.stringify(category)}
