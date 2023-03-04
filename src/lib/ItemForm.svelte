@@ -1,12 +1,15 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
+  import { invoke } from '@tauri-apps/api'
   import { imgURL } from 'service/file'
   import RatingSelect from '$lib/RatingSelect.svelte'
   import CategorySelect from '$lib/CategorySelect.svelte'
   import { createEventDispatcher } from 'svelte'
+  import DrawingPane from './DrawingPane.svelte'
 
   export let defaultRating = 0
   let imgUrl: string = ''
+  $: drawing = true
 
   const dispatch = createEventDispatcher()
 
@@ -46,7 +49,7 @@
 
 <div class="flex gap-12 justify-center items-center my-24 w-screen">
   <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
-  <div class="flex flex-col">
+  <div class="flex flex-col gap-2">
     <label class="absolute m-2 text-xs underline hover:cursor-pointer">
       <input
         class="hidden input"
@@ -60,13 +63,20 @@
         >switch image</span
       >
     </label>
-    <img
-      alt="drawing of item"
-      id="img"
-      src={imgUrl}
-      width={300}
-      class="bg-gray-500 rounded-2xl"
-    />
+    {#if drawing}
+      <DrawingPane />
+    {:else}
+      <img
+        alt="drawing of item"
+        id="img"
+        src={imgUrl}
+        width={300}
+        class="bg-gray-500 rounded-2xl"
+      />
+    {/if}
+    <button class="outline" on:click={() => (drawing = !drawing)}
+      >draw image</button
+    >
   </div>
 
   <div class="flex flex-col gap-4">
