@@ -16,7 +16,7 @@
 </script>
 
 <nav
-  class="flex justify-between w-screen p-12 pb-16 text-sm flex-0 font-medium"
+  class="flex justify-between items-center w-screen p-12 h-24 text-sm flex-0 font-medium"
 >
   <a href="/">my collection ({$itemsStore.length} items)</a>
   <a href="/items/add_item" class="underline">+ add item</a>
