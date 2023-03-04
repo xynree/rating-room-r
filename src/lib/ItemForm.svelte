@@ -5,6 +5,7 @@
   import CategorySelect from '$lib/CategorySelect.svelte'
   import { createEventDispatcher } from 'svelte'
 
+  export let defaultRating = 0
   let imgUrl: string = ''
 
   const dispatch = createEventDispatcher()
