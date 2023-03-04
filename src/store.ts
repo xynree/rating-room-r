@@ -1,4 +1,3 @@
-import { filterSortItems } from 'service/filterSort'
 import { derived, writable } from 'svelte/store'
 
 let initialStore: ItemStore = {
@@ -52,7 +51,23 @@ function createInitialStore() {
   }
 }
 
+function filterItemsStore($itemsStore:ItemStore){
+  let itemsView: FullItem[] = $itemsStore.items;
+
+  if ($itemsStore.filters.categories.size) {
+    itemsView = $itemsStore.items.filter((item) =>
+      item.categories.some((c) => $itemsStore.filters.categories.has(c.name)),
+    );
+  }
+  
+  if ($itemsStore.filters.ratings.size) {
+    itemsView = itemsView.filter(({rating}) =>
+      $itemsStore.filters.ratings.has(rating.rating),
+    );
+  }
+  
+  return itemsView;
+}
+
 export const itemsStore = createInitialStore()
-export const itemView = derived(itemsStore, ($itemsStore) =>
-  filterSortItems($itemsStore)
-)
+export const itemView = derived(itemsStore, filterItemsStore)
