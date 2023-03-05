@@ -4,25 +4,30 @@
   import { invoke } from '@tauri-apps/api'
   import { saveFile } from 'service/file'
   import ItemForm from '$lib/ItemForm.svelte'
+  import { itemsStore } from 'store'
 
   let imgUrl: string = ''
+  let imgBlob: Blob | File | null = null
 
-  onMount(async () => {})
+  function updateBlob(e: { detail: Blob | File | null }) {
+    imgBlob = e.detail
+  }
 
   async function createItem(e: { detail: FullItem }) {
     let editState = e.detail
     window.URL.revokeObjectURL(imgUrl)
-    const file = document.getElementById('imageInput') as HTMLInputElement
-    if (file && file.files && file.files[0]) {
-      const img_path = await saveFile(file.files[0])
+
+    if (imgBlob) {
+      const img_path = await saveFile(imgBlob)
       editState = { ...editState, img_path }
+      imgBlob = null
     }
 
     const newItemId = await invoke('create_item', {
       name: editState.name,
       description: editState.description,
       comments: editState.comments,
-      imgPath: editState.img_path,
+      imgPath: editState.img_path || '',
     })
     await invoke('add_categories_to_item', {
       itemId: newItemId,
@@ -33,8 +38,13 @@
       itemId: newItemId,
     })
 
+    // itemsStore.fetch()
+    await invoke('get_items').then(
+      (items) => ($itemsStore.items = items as FullItem[])
+    )
+
     goto(`/items/${newItemId}`)
   }
 </script>
 
-<ItemForm on:sendItem={createItem} />
+<ItemForm on:sendItem={createItem} on:updateBlob={updateBlob} />

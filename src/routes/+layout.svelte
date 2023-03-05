@@ -2,7 +2,7 @@
   import '../app.css'
 </script>
 
-<main class="container">
+<main class="w-screen h-screen">
   <slot />
 </main>
 

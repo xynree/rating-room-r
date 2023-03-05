@@ -71,13 +71,7 @@
     {#if drawing}
       <DrawingPane on:updateBlob />
     {:else}
-      <img
-        alt="drawing of item"
-        id="img"
-        src={imgUrl}
-        width={500}
-        class="bg-gray-500 rounded-2xl"
-      />
+      <img alt="drawing of item" id="img" src={imgUrl} width={500} />
     {/if}
   </div>
 
@@ -124,7 +118,7 @@
   }
 
   input {
-    @apply border-black border-[1.5px] rounded-md bg-neutral-100 px-1 mt-2;
+    @apply rounded-md px-1 mt-2;
   }
 
   a {
