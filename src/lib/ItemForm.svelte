@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { afterUpdate, onDestroy, onMount } from 'svelte'
-  import { invoke } from '@tauri-apps/api'
+  import { onDestroy } from 'svelte'
   import { imgURL } from 'service/file'
   import RatingSelect from '$lib/RatingSelect.svelte'
   import CategorySelect from '$lib/CategorySelect.svelte'
@@ -8,43 +7,31 @@
 
   export let defaultRating = 0
   let imgUrl: string = ''
-  let allCategories: Category[] = []
 
   const dispatch = createEventDispatcher()
 
-  export let editState: EditState = {
-    item: {
-      item_id: 0,
-      name: '',
-      description: '',
-      comments: '',
-      img_path: '',
-      date: '',
-    },
-    rating: 0,
+  export let editState: FullItem = {
+    item_id: 0,
+    name: '',
+    description: '',
+    comments: '',
+    img_path: '',
+    date: '',
     categories: [],
+    rating: {
+      date: '',
+      ratingId: 0,
+      rating: 0,
+    },
   }
 
-  $: invoke('get_categories').then((c) => {
-    allCategories = c as Category[]
-  })
-
-  $: if (editState.item.img_path && imgUrl === '') {
-    imgURL(editState.item.img_path).then((url) => (imgUrl = url))
+  $: if (editState.img_path && imgUrl === '') {
+    imgURL(editState.img_path).then((url) => (imgUrl = url))
   }
 
   onDestroy(() => {
     window.URL.revokeObjectURL(imgUrl)
   })
-
-  function handleRating(e) {
-    editState.rating = e.detail.rating
-  }
-
-  function handleCategory(e) {
-    editState.categories = e.detail.categories
-    console.log(editState)
-  }
 
   async function update() {
     const file = document.getElementById('imageInput') as HTMLInputElement
@@ -60,6 +47,19 @@
 <div class="flex gap-12 justify-center items-center my-24 w-screen">
   <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
   <div class="flex flex-col">
+    <label class="absolute m-2 text-xs underline hover:cursor-pointer">
+      <input
+        class="hidden input"
+        type="file"
+        accept="image/*"
+        id="imageInput"
+        on:change={update}
+      />
+      <span
+        class="rounded-full p-1 px-3 bg-white bg-opacity-40 text-gray-800 hover:text-black hover:bg-opacity-60 transition-all"
+        >switch image</span
+      >
+    </label>
     <img
       alt="drawing of item"
       id="img"
@@ -67,33 +67,42 @@
       width={300}
       class="bg-gray-500 rounded-2xl"
     />
-    <input type="file" accept="image/*" id="imageInput" on:change={update} />
   </div>
 
   <div class="flex flex-col gap-4">
     <div>
       <p class="tag">name</p>
-      <input bind:value={editState.item.name} />
+      <input class="input" bind:value={editState.name} />
     </div>
     <div>
       <p class="tag">description</p>
       <input
-        bind:value={editState.item.description}
+        class="input"
+        bind:value={editState.description}
         placeholder="description"
       />
     </div>
-    <RatingSelect on:rating={handleRating} {defaultRating} />
-    <CategorySelect
-      on:categories={handleCategory}
-      categories={editState.categories}
-    />
+    <RatingSelect bind:defaultRating={editState.rating.rating} />
+    <CategorySelect bind:categories={editState.categories} />
     <div>
       <p class="tag">comments</p>
-      <input bind:value={editState.item.comments} placeholder="Comments" />
+      <input
+        class="input"
+        bind:value={editState.comments}
+        placeholder="Comments"
+      />
     </div>
-    <button on:click={() => dispatch('sendItem', editState)} class="badge"
-      >Save Item</button
-    >
+    <div class="flex flex-row gap-2">
+      <button
+        on:click={() => dispatch('cancel')}
+        class="py-1 px-4 rounded-full border-black border-[1.5px]"
+        >cancel</button
+      >
+      <button
+        on:click={() => dispatch('sendItem', editState)}
+        class="py-1 px-4 text-white bg-black rounded-full">update</button
+      >
+    </div>
   </div>
 </div>
 
@@ -102,14 +111,15 @@
     @apply font-bold;
   }
 
+  input {
+    @apply border-black border-[1.5px] rounded-md bg-neutral-100 px-1 mt-2;
+  }
+
   .badge {
-    @apply rounded-full bg-slate-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
+    @apply rounded-full bg-neutral-100 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
   }
 
   a {
     @apply text-sm p-6;
-  }
-  input {
-    @apply border-2 border-blue-400;
   }
 </style>

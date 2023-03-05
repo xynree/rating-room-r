@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { invoke } from '@tauri-apps/api'
+  import { invoke } from '@tauri-apps/api/tauri'
+  import { itemsStore } from 'store'
+
   export let categories: Category[] = []
-  let allCategories: Category[] = []
 
-  import { createEventDispatcher, onMount } from 'svelte'
-  const dispatch = createEventDispatcher()
+  let newCategory: string = ''
+  let showCategoryMenu = false
 
-  onMount(async () => {
-    allCategories = await invoke('get_categories')
-  })
   function addCategory(e) {
     let category = JSON.parse(e.target.value)
 
@@ -16,15 +14,29 @@
       categories.filter((cat) => cat.category_id === category.category_id)
         .length != 0
     ) {
+      showCategoryMenu = false
       return
     }
 
-    categories.push(JSON.parse(e.target.value))
-    categories = categories
-    console.log(categories)
-    dispatch('categories', {
-      categories: categories,
+    categories = [...categories, JSON.parse(e.target.value)]
+    showCategoryMenu = false
+  }
+
+  async function addNewCategory() {
+    const categoryId: number = await invoke('create_category', {
+      name: newCategory,
+      description: '',
     })
+
+    categories = [
+      ...categories,
+      {
+        category_id: categoryId,
+        name: newCategory,
+        description: '',
+      },
+    ]
+    showCategoryMenu = false
   }
 
   function removeCategory(e) {
@@ -32,10 +44,10 @@
     categories = categories.filter(
       (cat) => cat.category_id !== category.category_id
     )
-    console.log(categories)
-    dispatch('categories', {
-      categories: categories,
-    })
+  }
+
+  function toggleCategoryMenu() {
+    showCategoryMenu = !showCategoryMenu
   }
 </script>
 
@@ -50,15 +62,40 @@
       </div>
     {/each}
   </div>
-  <select class="badge" on:change={addCategory}>
-    <option>add category</option>
-    {#each allCategories as category}
-      <option value={JSON.stringify(category)}>{category.name}</option>{/each}
-  </select>
+  <button on:click={toggleCategoryMenu} id="addCategory" class="badge">
+    + add category
+  </button>
+  {#if showCategoryMenu}
+    <div class="flex absolute flex-col bg-white rounded-xl border border-black">
+      <div class="overflow-y-auto py-2 px-4 max-h-24">
+        <ul>
+          {#each Array.from($itemsStore.categories) as category}
+            <li
+              class="flex flex-col hover:bg-neutral-300"
+              value={JSON.stringify(category)}
+            >
+              <button on:click={addCategory} value={JSON.stringify(category)}>
+                {category.name}
+              </button>
+            </li>{/each}
+        </ul>
+      </div>
+      <form
+        on:submit|preventDefault={addNewCategory}
+        class="p-2 border-t border-t-black"
+      >
+        <input
+          class="font-bold text-center"
+          bind:value={newCategory}
+          placeholder="new category"
+        />
+      </form>
+    </div>
+  {/if}
 </div>
 
 <style lang="postcss">
   .badge {
-    @apply rounded-full bg-slate-200 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
+    @apply rounded-full bg-neutral-100 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
   }
 </style>

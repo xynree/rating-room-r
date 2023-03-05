@@ -4,23 +4,17 @@
   import { invoke } from '@tauri-apps/api'
   import { getItem } from 'service/db'
   import { imgURL } from 'service/file'
-  import { itemsStore } from 'store'
+  import { itemView } from 'store'
 
-  let item: Item
+  let item: FullItem
   let url: string
-  let ratings: Rating[]
-  let categories: Category[]
 
   $: id = Number($page.params.id)
-  $: getItem(id).then(async (i) => {
-    item = i
-    url = await imgURL(i.img_path)
-    ratings = await invoke('get_ratings', { itemId: i.item_id })
-    categories = await invoke('get_categories_for_item', { id: i.item_id })
-  })
-  $: itemIdx = $itemsStore.findIndex((i) => i.item_id === id)
-  $: prev = itemIdx - 1 < 0 ? null : $itemsStore[itemIdx - 1]
-  $: next = itemIdx + 1 > $itemsStore.length ? null : $itemsStore[itemIdx + 1]
+  $: itemIdx = $itemView.findIndex((i) => i.item_id === id)
+  $: item = $itemView[itemIdx]
+  $: imgURL(item?.img_path).then(path => url = path)
+  $: prev = itemIdx - 1 < 0 ? null : $itemView[itemIdx - 1]
+  $: next = itemIdx + 1 > $itemView.length ? null : $itemView[itemIdx + 1]
 
   onkeydown = (e) => {
     switch (e.code) {
@@ -28,7 +22,7 @@
         itemIdx - 1 < 0 || navigate.prev()
         break
       case 'ArrowRight':
-        itemIdx + 1 >= $itemsStore.length || navigate.next()
+        itemIdx + 1 >= $itemView.length || navigate.next()
         break
       default:
         break
@@ -62,17 +56,17 @@
       {/if}
       <div>
         <p class="tag">name</p>
-        <p>{item?.name}</p>
+        <p>{item.name}</p>
       </div>
       <div>
         <p class="tag">description</p>
-        <p>{item?.description || 'no description'}</p>
+        <p>{item.description || 'no description'}</p>
       </div>
       <div>
         <p class="tag">rating</p>
         <div class="flex text-slate-600">
-          {#if ratings}
-            {#each Array(ratings[0].rating) as _}
+          {#if item.rating}
+            {#each Array(item.rating.rating) as _}
               <p class="text-yellow-400">★</p>
             {/each}
           {/if}
@@ -81,8 +75,8 @@
       <div>
         <p class="tag">categories</p>
         <div class="flex gap-2">
-          {#if categories}
-            {#each categories as { name }}
+          {#if item.categories}
+            {#each item.categories as { name }}
               <p class="badge">{name}</p>
             {/each}
           {/if}
@@ -90,12 +84,12 @@
       </div>
       <div>
         <p class="tag">comments</p>
-        <p class="text-sm">{item?.comments || 'Nothing to say.'}</p>
+        <p class="text-sm">{item.comments || 'Nothing to say.'}</p>
       </div>
       <div>
         <p class="tag">last rated</p>
         <p class="text-sm">
-          {ratings && new Date(ratings[0].date).toDateString()}
+          {item.rating && new Date(item.rating.date).toDateString()}
         </p>
       </div>
       {#if next}

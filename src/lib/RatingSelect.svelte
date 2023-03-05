@@ -1,16 +1,13 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
-  const dispatch = createEventDispatcher()
   export let defaultRating: number = 0
   export let adjustable = true
-  function handleChange() {
-    adjustable = !adjustable
-    if (!adjustable) {
-      dispatch('rating', {
-        rating: defaultRating,
-      })
-    }
+
+  function handleChange(i) {
+    adjustable = false
+    defaultRating = i + 1
   }
+
   function fillStar(i: number) {
     if (adjustable) {
       defaultRating = i + 1
