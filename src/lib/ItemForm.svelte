@@ -75,7 +75,7 @@
       />
     {/if}
     <button class="outline" on:click={() => (drawing = !drawing)}
-      >{drawing ? 'draw image' : 'upload image'}</button
+      >{drawing ? 'upload image' : 'draw image'}</button
     >
   </div>
 

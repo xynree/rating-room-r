@@ -25,7 +25,6 @@
     return canvas.toBlob(async (b) => {
       if (b) {
         let filename = await saveNewImage(b)
-        console.log(filename)
         return filename
       }
     })
