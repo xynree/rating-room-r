@@ -19,7 +19,7 @@
       y: canvas.getBoundingClientRect().top,
     }
     if (ctx) {
-      ctx.fillStyle = 'fff'
+      ctx.fillStyle = '#fff'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
     }
   })
