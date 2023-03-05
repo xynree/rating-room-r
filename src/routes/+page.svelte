@@ -22,26 +22,28 @@
   })
 </script>
 
-<nav class="flex justify-between w-screen p-6 text-sm">
+<nav class="flex justify-between w-screen p-6 text-sm font-medium shadow-sm">
   <a href="/">my collection ({$itemsStore.items.length} items)</a>
   <Filter />
   <a href="/items/add_item" class="underline">+ add item</a>
 </nav>
-<div class="flex flex-wrap gap-1 m-8">
-  {#each $itemView as { name, item_id, img_path }}
-    {#await imgURL(img_path) then url}
-      <a href={`items/${item_id}`}>
-        <div class="flex flex-col">
-          <img
-            alt="drawing of item"
-            src={url}
-            width={150}
-            class="bg-gray-500 object-cover rounded-sm hover:outline hover:outline-1 "
-          />
-        </div>
-      </a>
-    {/await}
-  {/each}
+<div class="flex flex-col gap-6 m-3 w-full">
+  <div class="flex flex-wrap gap-2">
+    {#each $itemView as { name, item_id, img_path }}
+      {#await imgURL(img_path) then url}
+        <a href={`items/${item_id}`}>
+          <div class="flex flex-col">
+            <img
+              alt="drawing of item"
+              src={url}
+              width={150}
+              class="bg-gray-500 object-cover rounded-sm hover:outline hover:outline-1 "
+            />
+          </div>
+        </a>
+      {/await}
+    {/each}
+  </div>
 </div>
 
 <style lang="postcss">
