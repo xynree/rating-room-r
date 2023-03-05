@@ -27,7 +27,6 @@
       }
       // editedItem.img_path = img_path
       editedItem = { ...editedItem, img_path }
-      console.log(editedItem)
     }
 
     await invoke('update_item', {

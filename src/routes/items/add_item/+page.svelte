@@ -10,7 +10,6 @@
   onMount(async () => {})
 
   async function createItem(e: { detail: FullItem }) {
-    console.log('running Create Item...')
     let editState = e.detail
     window.URL.revokeObjectURL(imgUrl)
     const file = document.getElementById('imageInput') as HTMLInputElement
@@ -25,7 +24,6 @@
       comments: editState.comments,
       imgPath: editState.img_path,
     })
-    console.log(newItemId)
     await invoke('add_categories_to_item', {
       itemId: newItemId,
       categories: editState.categories,
@@ -35,7 +33,6 @@
       itemId: newItemId,
     })
 
-    console.log('Create item ran!')
     goto(`/items/${newItemId}`)
   }
 </script>
