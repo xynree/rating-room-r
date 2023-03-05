@@ -9,8 +9,6 @@
   let imgUrl: string = ''
   let imgBlob: Blob | File | null = null
 
-<<<<<<< HEAD
-  let imgUrl: string
   let item: FullItem | undefined
   let editState: FullItem | undefined
 
@@ -19,14 +17,6 @@
     item = $itemView.find((i) => i.item_id == id)
     editState = item
   }
-=======
-  let imgUrl: string = ''
-  let imgBlob: Blob | File | null = null
-
-  $: id = Number($page.params.id)
-  $: item = $itemView.find((i) => i.item_id == id)
-  $: editState = item
->>>>>>> a628636 (generalized image saving functions to take file or blob)
 
   function updateBlob(e) {
     console.log('blob updated!', e.detail)
@@ -36,16 +26,6 @@
   async function saveItem(e: { detail: FullItem }) {
     let editedItem = e.detail
     window.URL.revokeObjectURL(imgUrl)
-<<<<<<< HEAD
-    const file = document.getElementById('imageInput') as HTMLInputElement
-    if (file && file.files && file.files[0]) {
-      const img_path = await saveFile(file.files[0])
-      if (item?.img_path) {
-        deleteImgFromPath(item.img_path)
-      }
-      // editedItem.img_path = img_path
-      editedItem = { ...editedItem, img_path }
-=======
 
     if (imgBlob) {
       const img_path = await saveFile(imgBlob)
@@ -54,9 +34,7 @@
         deleteImgFromPath(item.img_path)
       }
       imgBlob = null
->>>>>>> a628636 (generalized image saving functions to take file or blob)
     }
-
 
     await invoke('update_item', {
       item: editedItem,
@@ -69,7 +47,9 @@
     })
 
     // itemsStore.fetch()
-    await invoke('get_items').then((items) => ($itemsStore.items = items))
+    await invoke('get_items').then(
+      (items) => ($itemsStore.items = items as FullItem[])
+    )
     goto(`/items/${id}`)
   }
 </script>
