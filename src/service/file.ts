@@ -2,10 +2,18 @@ import { BaseDirectory, removeFile, writeBinaryFile } from '@tauri-apps/api/fs'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { appDataDir, join } from '@tauri-apps/api/path'
 
-export async function saveFile(file: File): Promise<string> {
+export function getFileType(file:File):string {
+  return '.' + file.name.split('.').slice(-1)[0]
+}
+
+export async function saveFile(file: Blob|File): Promise<string> {
   let binaryInput = await file.arrayBuffer()
-  const fileType = file.name.split('.').slice(-1)[0]
-  const generatedFileName = crypto.randomUUID() + '.' + fileType
+  let generatedFileName
+
+  if (file instanceof File){
+    generatedFileName = crypto.randomUUID() + getFileType(file)
+  } else generatedFileName = crypto.randomUUID() + ".jpg"
+
   await writeBinaryFile(
     { path: `imgs/${generatedFileName}`, contents: binaryInput },
     { dir: BaseDirectory.AppData }

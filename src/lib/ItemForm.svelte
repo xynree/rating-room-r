@@ -4,9 +4,10 @@
   import RatingSelect from '$lib/RatingSelect.svelte'
   import CategorySelect from '$lib/CategorySelect.svelte'
   import { createEventDispatcher } from 'svelte'
+  import DrawingPane from './DrawingPane.svelte'
 
-  export let defaultRating = 0
   let imgUrl: string = ''
+  $: drawing = false
 
   const dispatch = createEventDispatcher()
 
@@ -37,36 +38,47 @@
     const file = document.getElementById('imageInput') as HTMLInputElement
     if (file && file.files && file.files[0]) {
       const blob = file.files[0]
-      const url = window.URL.createObjectURL(blob)
       window.URL.revokeObjectURL(imgUrl)
-      imgUrl = url
+      imgUrl = window.URL.createObjectURL(blob)
+      dispatch('updateBlob', blob)
     }
   }
 </script>
 
 <div class="flex gap-12 justify-center items-center my-24 w-screen">
   <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
-  <div class="flex flex-col">
-    <label class="absolute m-2 text-xs underline hover:cursor-pointer">
-      <input
-        class="hidden input"
-        type="file"
-        accept="image/*"
-        id="imageInput"
-        on:change={update}
-      />
-      <span
-        class="rounded-full p-1 px-3 bg-white bg-opacity-40 text-gray-800 hover:text-black hover:bg-opacity-60 transition-all"
-        >switch image</span
+  <div class="flex flex-col gap-2 relative">
+    <div class="absolute -bottom-10 gap-2 items-center justify-center">
+      <label>
+        <input
+          class="hidden input"
+          type="file"
+          accept="image/*"
+          id="imageInput"
+          on:change={update}
+        />
+        {#if !drawing}
+          <span class="imgtool cursor-pointer">upload image </span>
+        {/if}
+      </label>
+      <button
+        class="imgtool cursor-pointer"
+        on:click={() => (drawing = !drawing)}
       >
-    </label>
-    <img
-      alt="drawing of item"
-      id="img"
-      src={imgUrl}
-      width={300}
-      class="bg-gray-500 rounded-2xl"
-    />
+        {drawing ? 'upload image' : 'draw image'}
+      </button>
+    </div>
+    {#if drawing}
+      <DrawingPane on:updateBlob />
+    {:else}
+      <img
+        alt="drawing of item"
+        id="img"
+        src={imgUrl}
+        width={500}
+        class="bg-gray-500 rounded-2xl"
+      />
+    {/if}
   </div>
 
   <div class="flex flex-col gap-4">
@@ -115,11 +127,11 @@
     @apply border-black border-[1.5px] rounded-md bg-neutral-100 px-1 mt-2;
   }
 
-  .badge {
-    @apply rounded-full bg-neutral-100 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
-  }
-
   a {
     @apply text-sm p-6;
+  }
+
+  .imgtool {
+    @apply px-4 py-1 transition-all bg-gray-100 hover:bg-gray-200 rounded-sm border text-xs;
   }
 </style>

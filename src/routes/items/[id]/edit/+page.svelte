@@ -6,7 +6,9 @@
   import { deleteImgFromPath, saveFile } from 'service/file'
   import ItemForm from '$lib/ItemForm.svelte'
 
-  let imgUrl: string
+  let imgUrl: string = ''
+  let imgBlob: Blob | File | null = null
+
   let item: FullItem | undefined
   let editState: FullItem | undefined
 
@@ -16,17 +18,22 @@
     editState = item
   }
 
+  function updateBlob(e) {
+    console.log('blob updated!', e.detail)
+    imgBlob = e.detail
+  }
+
   async function saveItem(e: { detail: FullItem }) {
     let editedItem = e.detail
     window.URL.revokeObjectURL(imgUrl)
-    const file = document.getElementById('imageInput') as HTMLInputElement
-    if (file && file.files && file.files[0]) {
-      const img_path = await saveFile(file.files[0])
+
+    if (imgBlob) {
+      const img_path = await saveFile(imgBlob)
+      editedItem = { ...editedItem, img_path }
       if (item?.img_path) {
         deleteImgFromPath(item.img_path)
       }
-      // editedItem.img_path = img_path
-      editedItem = { ...editedItem, img_path }
+      imgBlob = null
     }
 
     await invoke('update_item', {
@@ -40,7 +47,9 @@
     })
 
     // itemsStore.fetch()
-    await invoke('get_items').then((items) => ($itemsStore.items = items))
+    await invoke('get_items').then(
+      (items) => ($itemsStore.items = items as FullItem[])
+    )
     goto(`/items/${id}`)
   }
 </script>
@@ -50,5 +59,6 @@
     {editState}
     on:cancel={() => goto(`/items/${id}`)}
     on:sendItem={saveItem}
+    on:updateBlob={updateBlob}
   />
 {/if}
