@@ -17,28 +17,30 @@ export enum FilterType {
 function createInitialStore() {
   const { subscribe, set, update } = writable(initialStore)
 
-	// filter reset and toggle functions
-	function toggle(filterType: FilterType, value:string|number){
-		update((store) => {
-			let filterGroup = filterType
-				? store.filters.ratings
-				: store.filters.categories;
+  // filter reset and toggle functions
+  function toggle(filterType: FilterType, value: string | number) {
+    update((store) => {
+      let filterGroup = filterType
+        ? store.filters.ratings
+        : store.filters.categories
 
-			filterGroup.has(value)? filterGroup.delete(value): filterGroup.add(value)
+      filterGroup.has(value)
+        ? filterGroup.delete(value)
+        : filterGroup.add(value)
 
-			return store
-		})
-	}
+      return store
+    })
+  }
 
-	function reset(){
-		update((store) => ({
-			...store,
-			filters: {
-				categories: new Set(),
-				ratings: new Set(),
-			},
-		}))
-	}
+  function reset() {
+    update((store) => ({
+      ...store,
+      filters: {
+        categories: new Set(),
+        ratings: new Set(),
+      },
+    }))
+  }
 
   return {
     subscribe,
@@ -51,22 +53,22 @@ function createInitialStore() {
   }
 }
 
-function filterItemsStore($itemsStore:ItemStore){
-  let itemsView: FullItem[] = $itemsStore.items;
+function filterItemsStore($itemsStore: ItemStore) {
+  let itemsView: FullItem[] = $itemsStore.items
 
   if ($itemsStore.filters.categories.size) {
     itemsView = $itemsStore.items.filter((item) =>
-      item.categories.some((c) => $itemsStore.filters.categories.has(c.name)),
-    );
+      item.categories.some((c) => $itemsStore.filters.categories.has(c.name))
+    )
   }
-  
+
   if ($itemsStore.filters.ratings.size) {
-    itemsView = itemsView.filter(({rating}) =>
-      $itemsStore.filters.ratings.has(rating.rating),
-    );
+    itemsView = itemsView.filter(({ rating }) =>
+      $itemsStore.filters.ratings.has(rating.rating)
+    )
   }
-  
-  return itemsView;
+
+  return itemsView
 }
 
 export const itemsStore = createInitialStore()
