@@ -19,7 +19,6 @@
   }
 
   function updateBlob(e) {
-    console.log('blob updated!', e.detail)
     imgBlob = e.detail
   }
 

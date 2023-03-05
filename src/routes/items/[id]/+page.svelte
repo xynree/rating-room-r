@@ -45,12 +45,7 @@
 {#if item}
   <div class="flex gap-12 justify-center items-center my-24 w-screen">
     <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
-    <img
-      alt="drawing of item"
-      src={url}
-      width={500}
-      class="bg-gray-500 rounded-2xl"
-    />
+    <img alt="drawing of item" src={url} width={500} />
     <div class="flex flex-col gap-4">
       {#if prev}
         <button class="navigation" on:click={navigate.prev}>
@@ -68,11 +63,9 @@
       <div>
         <p class="tag">rating</p>
         <div class="flex text-slate-600">
-          {#if item.rating}
-            {#each Array(item.rating.rating) as _}
-              <p class="text-yellow-400">★</p>
-            {/each}
-          {/if}
+          {#each Array(item.rating.rating) as _}
+            <p class="text-yellow-400">★</p>
+          {/each}
         </div>
       </div>
       <div>
