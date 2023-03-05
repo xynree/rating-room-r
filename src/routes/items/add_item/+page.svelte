@@ -6,11 +6,8 @@
   import ItemForm from '$lib/ItemForm.svelte'
 
   let imgUrl: string = ''
-  let allCategories: Category[] = []
 
-  onMount(async () => {
-    allCategories = await invoke('get_categories')
-  })
+  onMount(async () => {})
 
   async function createItem(e: { detail: FullItem }) {
     console.log('running Create Item...')

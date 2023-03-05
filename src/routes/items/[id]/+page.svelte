@@ -1,20 +1,23 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
-  import { invoke } from '@tauri-apps/api'
-  import { getItem } from 'service/db'
   import { imgURL } from 'service/file'
   import { itemView } from 'store'
 
   let item: FullItem
   let url: string
+  let itemIdx: number
+  let prev: FullItem | null
+  let next: FullItem | null
 
   $: id = Number($page.params.id)
-  $: itemIdx = $itemView.findIndex((i) => i.item_id === id)
-  $: item = $itemView[itemIdx]
-  $: imgURL(item?.img_path).then(path => url = path)
-  $: prev = itemIdx - 1 < 0 ? null : $itemView[itemIdx - 1]
-  $: next = itemIdx + 1 > $itemView.length ? null : $itemView[itemIdx + 1]
+  $: {
+    itemIdx = $itemView.findIndex((i) => i.item_id === id)
+    item = $itemView[itemIdx]
+    imgURL(item.img_path).then((path) => (url = path))
+    prev = itemIdx - 1 < 0 ? null : $itemView[itemIdx - 1]
+    next = itemIdx + 1 > $itemView.length ? null : $itemView[itemIdx + 1]
+  }
 
   onkeydown = (e) => {
     switch (e.code) {

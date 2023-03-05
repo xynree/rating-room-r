@@ -2,7 +2,7 @@
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
-#![warn(clippy::style, clippy::pedantic)]
+#![warn(clippy::style)]
 #![allow(clippy::module_name_repetitions)]
 
 mod commands;
