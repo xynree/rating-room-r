@@ -4,7 +4,6 @@
   import Modal from '$lib/Modal.svelte'
   import { invoke } from '@tauri-apps/api/tauri'
   import { itemsStore } from 'store'
-  import { itemsStore } from 'store'
 
   $: id = Number($page.params.id)
   let showModal = false
