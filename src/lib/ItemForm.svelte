@@ -9,7 +9,7 @@
 
   export let defaultRating = 0
   let imgUrl: string = ''
-  $: drawing = true
+  $: drawing = false
 
   const dispatch = createEventDispatcher()
 
@@ -75,7 +75,7 @@
       />
     {/if}
     <button class="outline" on:click={() => (drawing = !drawing)}
-      >draw image</button
+      >{drawing ? 'draw image' : 'upload image'}</button
     >
   </div>
 

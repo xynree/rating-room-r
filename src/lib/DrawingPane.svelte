@@ -1,15 +1,17 @@
 <script lang="ts">
   import { DRAW_ICON, ERASE_ICON, ToolType } from 'service/canvas'
+  import { saveFile, saveNewImage } from 'service/file'
   import { onMount } from 'svelte'
 
   $: toolType = ToolType.draw
   let isDrawing = false
 
+  let canvas: HTMLCanvasElement
   let ctx: CanvasRenderingContext2D | null
   let coords: { x: number; y: number }
 
   onMount(() => {
-    let canvas = document.getElementById('canvas') as HTMLCanvasElement
+    canvas = document.getElementById('canvas') as HTMLCanvasElement
     ctx = canvas.getContext('2d')
     canvas.getBoundingClientRect().left
     coords = {
@@ -18,6 +20,16 @@
     }
     console.log(coords)
   })
+
+  async function saveImage() {
+    return canvas.toBlob(async (b) => {
+      if (b) {
+        let filename = await saveNewImage(b)
+        console.log(filename)
+        return filename
+      }
+    })
+  }
 
   function drawCircle(x: number, y: number) {
     console.log('draw circle run')
@@ -76,7 +88,7 @@
   on:mouseup={mouseUp}
   on:blur={mouseUp}
 />
-<button class="outline">Save Image</button>
+<button class="outline" on:click={saveImage}>Save Image</button>
 
 <style lang="postcss">
   #drawing > button {
