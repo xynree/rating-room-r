@@ -48,7 +48,7 @@
     <img
       alt="drawing of item"
       src={url}
-      width={300}
+      width={500}
       class="bg-gray-500 rounded-2xl"
     />
     <div class="flex flex-col gap-4">
