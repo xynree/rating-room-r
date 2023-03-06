@@ -1,11 +1,26 @@
 import { derived, writable } from 'svelte/store'
 
+export enum SortBy {
+  date = 'date',
+  name = 'name',
+  rating = 'rating',
+}
+
+export enum SortDir {
+  ascending,
+  descending,
+}
+
 let initialStore: ItemStore = {
   items: [],
   categories: new Set(),
   filters: {
     categories: new Set(),
     ratings: new Set(),
+  },
+  sort: {
+    by: SortBy.rating,
+    dir: SortDir.ascending,
   },
 }
 
@@ -30,6 +45,16 @@ function createInitialStore() {
 
       return store
     })
+  }
+
+  function sort(sortBy: SortBy, sortDir: SortDir) {
+    update((store) => ({
+      ...store,
+      sort: {
+        by: sortBy,
+        dir: sortDir,
+      },
+    }))
   }
 
   function reset() {
@@ -71,5 +96,51 @@ function filterItemsStore($itemsStore: ItemStore) {
   return itemsView
 }
 
+function sortItemsStore($itemsStore: ItemStore, itemsView: FullItem[]) {
+  let sortDir = $itemsStore.sort.dir
+  let sortBy = $itemsStore.sort.by
+
+  switch (sortBy) {
+    case SortBy.date:
+      if (sortDir == SortDir.ascending) {
+        itemsView = itemsView.sort(
+          (a, b) => Date.parse(a.date) - Date.parse(b.date)
+        )
+      } else {
+        itemsView = itemsView.sort(
+          (a, b) => Date.parse(b.date) - Date.parse(a.date)
+        )
+      }
+      break
+    case SortBy.name:
+      if (sortDir == SortDir.ascending) {
+        itemsView = itemsView.sort((a, b) => (a.name < b.name ? -1 : 1))
+      } else {
+        itemsView = itemsView.sort((a, b) => (a.name > b.name ? -1 : 1))
+      }
+      break
+    case SortBy.rating:
+      if (sortDir == SortDir.ascending) {
+        itemsView = itemsView.sort((a, b) =>
+          a.rating.rating < b.rating.rating ? -1 : 1
+        )
+      } else {
+        itemsView = itemsView.sort((a, b) =>
+          a.rating.rating > b.rating.rating ? -1 : 1
+        )
+      }
+      break
+  }
+
+  return itemsView
+}
+
+function refreshView($itemsStore: ItemStore) {
+  let itemsView = filterItemsStore($itemsStore)
+  itemsView = sortItemsStore($itemsStore, itemsView)
+  console.log(itemsView)
+  return itemsView
+}
+
 export const itemsStore = createInitialStore()
-export const itemView = derived(itemsStore, filterItemsStore)
+export const itemView = derived(itemsStore, refreshView)
