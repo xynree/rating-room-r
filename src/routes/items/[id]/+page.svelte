@@ -1,8 +1,9 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
+  import { invoke } from '@tauri-apps/api/tauri'
   import { imgURL } from 'service/file'
-  import { itemView } from 'store'
+  import { itemsStore, itemView } from 'store'
 
   let item: FullItem
   let url: string
@@ -12,9 +13,14 @@
 
   $: id = Number($page.params.id)
   $: {
+    if ($itemsStore.items.length == 0) {
+      invoke('get_items').then(
+        (items) => ($itemsStore.items = items as FullItem[])
+      )
+    }
     itemIdx = $itemView.findIndex((i) => i.item_id === id)
     item = $itemView[itemIdx]
-    imgURL(item.img_path).then((path) => (url = path))
+    imgURL(item?.img_path).then((path) => (url = path))
     prev = itemIdx - 1 < 0 ? null : $itemView[itemIdx - 1]
     next = itemIdx + 1 > $itemView.length ? null : $itemView[itemIdx + 1]
   }

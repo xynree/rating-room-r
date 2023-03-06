@@ -9,6 +9,12 @@
   let imgUrl: string = ''
   let imgBlob: Blob | File | null = null
 
+  if ($itemsStore.items.length == 0) {
+    invoke('get_items').then(
+      (items) => ($itemsStore.items = items as FullItem[])
+    )
+  }
+
   function updateBlob(e: { detail: Blob | File | null }) {
     imgBlob = e.detail
   }
