@@ -39,6 +39,7 @@ pub struct FullItem {
     pub img_path: String,
     pub categories: Vec<Category>,
     pub rating: Rating,
+    pub date: NaiveDateTime,
 }
 
 /// Representation of `category` table in our schema.
@@ -77,7 +78,8 @@ CREATE TABLE items (
 	name                 VARCHAR(255) NOT NULL UNIQUE,
 	description          TEXT     NOT NULL DEFAULT '',
 	comments             TEXT     NOT NULL DEFAULT '', 
-    img_path             TEXT     NOT NULL DEFAULT ''
+    img_path             TEXT     NOT NULL DEFAULT '',
+	date                 TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
  );
 
 CREATE TABLE ratings ( 

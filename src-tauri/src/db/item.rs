@@ -120,16 +120,27 @@ pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<FullItem>> 
             description: row.get(2).unwrap_or_default(),
             comments: row.get(3).unwrap_or_default(),
             img_path: row.get(4).unwrap_or_default(),
+            date: chrono::NaiveDateTime::parse_from_str(
+                row.get::<usize, String>(5)?.as_str(),
+                "%Y-%m-%d %H:%M:%S",
+            )
+            .map_err(|e| {
+                rusqlite::Error::FromSqlConversionFailure(
+                    0,
+                    rusqlite::types::Type::Text,
+                    Box::new(e),
+                )
+            })?,
             categories: vec![Category {
-                category_id: row.get(5)?,
-                name: row.get(6)?,
-                description: row.get(7).unwrap_or_default(),
+                category_id: row.get(6)?,
+                name: row.get(7)?,
+                description: row.get(8).unwrap_or_default(),
             }],
             rating: Rating {
-                rating_id: row.get(8)?,
-                rating: row.get(9)?,
+                rating_id: row.get(9)?,
+                rating: row.get(10)?,
                 date: chrono::NaiveDateTime::parse_from_str(
-                    row.get::<usize, String>(10)?.as_str(),
+                    row.get::<usize, String>(11)?.as_str(),
                     "%Y-%m-%d %H:%M:%S",
                 )
                 .map_err(|e| {
