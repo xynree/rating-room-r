@@ -14,6 +14,11 @@
 
   $: id = Number($page.params.id)
   $: {
+    if ($itemsStore.items.length == 0) {
+      invoke('get_items').then(
+        (items) => ($itemsStore.items = items as FullItem[])
+      )
+    }
     item = $itemView.find((i) => i.item_id == id)
     editState = item
   }
