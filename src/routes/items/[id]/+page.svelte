@@ -49,7 +49,7 @@
 </script>
 
 {#if item}
-  <div class="flex gap-12 justify-center items-center my-24 w-screen h-3/4">
+  <div class="flex gap-12 justify-center items-center my-24 w-screen h-7/8">
     <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
     <img alt="drawing of item" src={url} width={500} />
     <div class="flex flex-col gap-8">
