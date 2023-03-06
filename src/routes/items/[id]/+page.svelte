@@ -49,10 +49,10 @@
 </script>
 
 {#if item}
-  <div class="flex gap-12 justify-center items-center my-24 w-screen">
+  <div class="flex gap-12 justify-center items-center my-24 w-screen h-3/4">
     <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
     <img alt="drawing of item" src={url} width={500} />
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-8">
       {#if prev}
         <button class="navigation" on:click={navigate.prev}>
           ← {prev.name}
@@ -109,7 +109,7 @@
   }
 
   .badge {
-    @apply rounded-full bg-slate-200 text-xs px-3 py-1;
+    @apply rounded-full bg-zinc-200 text-xs px-3 py-1;
   }
 
   a {
@@ -117,6 +117,6 @@
   }
 
   .navigation {
-    @apply text-sm font-black py-6 hover:text-gray-600 hover:cursor-pointer transition-all text-left;
+    @apply text-sm py-6 hover:text-gray-600 hover:cursor-pointer transition-all text-left w-full font-light;
   }
 </style>

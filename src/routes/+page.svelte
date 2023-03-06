@@ -28,7 +28,7 @@
   <a href="/items/add_item" class="underline">+ add item</a>
 </nav>
 <div class="flex flex-wrap gap-1 m-8">
-  {#each $itemView as { name, item_id, img_path }}
+  {#each $itemView as { item_id, img_path }}
     {#await imgURL(img_path) then url}
       <a href={`items/${item_id}`}>
         <div class="flex flex-col">
@@ -36,7 +36,7 @@
             alt="drawing of item"
             src={url}
             width={150}
-            class="bg-gray-500 object-cover rounded-sm hover:outline hover:outline-1 "
+            class="object-cover rounded-sm hover:outline hover:outline-1"
           />
         </div>
       </a>
@@ -50,5 +50,9 @@
   }
   input {
     @apply bg-red-100;
+  }
+
+  a {
+    @apply text-zinc-800 hover:text-black;
   }
 </style>
