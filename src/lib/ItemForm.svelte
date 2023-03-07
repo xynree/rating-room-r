@@ -7,6 +7,11 @@
   import DrawingPane from './DrawingPane.svelte'
   import { page } from '$app/stores'
 
+  let showError: boolean = false
+  function toggleError() {
+    showError = true
+    setTimeout(() => (showError = false), 2000)
+  }
   let imgUrl: string = ''
   $: drawing = false
 
@@ -48,6 +53,10 @@
       dispatch('updateBlob', blob)
     }
   }
+
+  function formErrors() {
+    return editState.name === '' || !editState.categories.length
+  }
 </script>
 
 <div class="flex gap-12 justify-center items-center my-24 w-screen">
@@ -74,7 +83,7 @@
       </button>
     </div>
     {#if drawing}
-      <DrawingPane on:updateBlob />
+      <DrawingPane on:updateBlob {imgUrl} />
     {:else}
       <img alt="drawing of item" id="img" src={imgUrl} width={500} />
     {/if}
@@ -82,6 +91,13 @@
 
   <div class="flex flex-col gap-4">
     <div>
+      <p
+        class={`transition-all ${
+          showError ? 'opacity-100' : 'opacity-0'
+        } text-red-700  font-light text-xs`}
+      >
+        Missing name or categories
+      </p>
       <p class="tag flex items-center gap-1">
         name
         {#if editState.name === ''}<span class="alert">!</span>{/if}
@@ -118,7 +134,9 @@
         >cancel</button
       >
       <button
-        on:click={() => dispatch('sendItem', editState)}
+        on:click={() => {
+          formErrors() ? toggleError() : dispatch('sendItem', editState)
+        }}
         class="py-1 px-4 text-white bg-black rounded-full">{pageName}</button
       >
     </div>
