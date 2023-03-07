@@ -29,6 +29,15 @@ fn main() {
                 create_dir(data_dir.join("imgs"))?;
             }
 
+            if !data_dir.join("imgs").join("default.png").exists() {
+                let resource_path = app
+                    .path_resolver()
+                    .resolve_resource("resources/default.png")
+                    .expect("failed to resolve resource");
+
+                std::fs::copy(resource_path, data_dir.join("imgs").join("default.png")).unwrap();
+            }
+
             let db_doesnt_exist = !data_dir.join("ratings.db").exists();
 
             let conn = Connection::open(data_dir.join("ratings.db")).unwrap();

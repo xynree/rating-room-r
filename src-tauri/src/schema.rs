@@ -78,7 +78,7 @@ CREATE TABLE items (
 	name                 VARCHAR(255) NOT NULL UNIQUE,
 	description          TEXT     NOT NULL DEFAULT '',
 	comments             TEXT     NOT NULL DEFAULT '', 
-    img_path             TEXT     NOT NULL DEFAULT '',
+    img_path             TEXT     NOT NULL DEFAULT 'default.png',
 	date                 TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
  );
 
@@ -121,19 +121,19 @@ CREATE TABLE items_to_ratings (
 pub fn seed_db(conn: &Connection) -> anyhow::Result<()> {
     Ok(conn.execute_batch(
         r#"
-INSERT INTO items ( name, img_path )
+INSERT INTO items ( name )
 VALUES
-("Moisturizing Cream", "test.jpg"),
-("Zero Sugar Ginger Beer", "test.jpg"),
-("V60 Buono Electric Drip Kettle", "test.jpg"),
-("Slim Open Can 50L", "test.jpg"),
-("Reflections Double Sided LED Vanity Mirror", "test.jpg"),
-("16oz Narrow Mouth Water Bottle", "test.jpg"),
-("Dracaena Marginata", "test.jpg"),
-("Parla Scratching Post", "test.jpg"),
-("Airpods Pro", "test.jpg"),
-("M1 Macbook Pro", "test.jpg"),
-("Air Purifier", "test.jpg");
+("Moisturizing Cream"),
+("Zero Sugar Ginger Beer"),
+("V60 Buono Electric Drip Kettle"),
+("Slim Open Can 50L"),
+("Reflections Double Sided LED Vanity Mirror"),
+("16oz Narrow Mouth Water Bottle"),
+("Dracaena Marginata"),
+("Parla Scratching Post"),
+("Airpods Pro"),
+("M1 Macbook Pro"),
+("Air Purifier");
 
 
 INSERT INTO categories ( name )
