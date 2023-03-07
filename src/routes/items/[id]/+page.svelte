@@ -3,7 +3,7 @@
   import { page } from '$app/stores'
   import { invoke } from '@tauri-apps/api/tauri'
   import { imgURL } from 'service/file'
-  import { itemsStore, itemView } from 'store'
+  import { FilterType, itemsStore, itemView } from 'store'
 
   let item: FullItem
   let url: string
@@ -46,6 +46,13 @@
       goto(`/items/${next?.item_id}`)
     },
   }
+
+  function viewAllInCategory(e: { target: { name: string } }) {
+    const category = e.target.name
+    itemsStore.filters.reset()
+    itemsStore.filters.toggle(FilterType.categories, category)
+    goto('/')
+  }
 </script>
 
 {#if item}
@@ -82,7 +89,14 @@
         <div class="flex gap-2">
           {#if item.categories}
             {#each item.categories as { name }}
-              <p class="badge">{name}</p>
+              <button
+                class="badge"
+                on:click={viewAllInCategory}
+                on:keydown={viewAllInCategory}
+                {name}
+              >
+                {name}
+              </button>
             {/each}
           {/if}
         </div>
@@ -113,7 +127,7 @@
   }
 
   .badge {
-    @apply rounded-full bg-zinc-200 text-xs px-3 py-1;
+    @apply rounded-full transition-all bg-slate-200 hover:bg-slate-300 text-xs px-3 py-1;
   }
 
   a {

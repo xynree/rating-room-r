@@ -4,6 +4,7 @@
   import { onMount } from 'svelte'
   import { imgURL } from '../service/file'
   import { itemsStore, itemView } from 'store'
+  import Sort from '$lib/Sort.svelte'
 
   let items: FullItem[] = []
   let categories: Category[] = []
@@ -22,8 +23,9 @@
   })
 </script>
 
-<nav class="flex justify-between w-screen p-6 text-sm">
-  <a href="/">my collection ({$itemsStore.items.length} items)</a>
+<nav class="flex justify-between w-screen p-6 text-sm font-medium shadow-sm">
+  <a href="/">my collection</a>
+  <Sort />
   <Filter />
   <a href="/items/add_item" class="underline">+ add item</a>
 </nav>
