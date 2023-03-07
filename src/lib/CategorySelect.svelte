@@ -71,7 +71,7 @@
         <ul>
           {#each Array.from($itemsStore.categories) as category}
             <li
-              class="flex flex-col hover:bg-neutral-300"
+              class="flex flex-col hover:bg-zinc-300"
               value={JSON.stringify(category)}
             >
               <button on:click={addCategory} value={JSON.stringify(category)}>
@@ -96,6 +96,6 @@
 
 <style lang="postcss">
   .badge {
-    @apply rounded-full bg-neutral-100 text-xs px-3 py-1 hover:bg-slate-300 transition-all;
+    @apply rounded-full bg-zinc-200 text-xs px-3 py-1 hover:bg-zinc-300 transition-all;
   }
 </style>

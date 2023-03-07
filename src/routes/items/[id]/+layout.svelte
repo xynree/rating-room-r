@@ -18,7 +18,7 @@
   }
 </script>
 
-<nav class="flex justify-between p-6 w-screen text-sm">
+<nav class="flex justify-between p-6 w-screen text-sm h-1/8">
   <a href="/">my collection ({$itemsStore.items.length} items)</a>
   <div class="flex gap-5">
     <button on:click={toggleModal} class="underline">delete item</button>

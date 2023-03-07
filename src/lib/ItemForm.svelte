@@ -71,7 +71,13 @@
     {#if drawing}
       <DrawingPane on:updateBlob />
     {:else}
-      <img alt="drawing of item" id="img" src={imgUrl} width={500} />
+      <img
+        class="h-[500px] w-[500px]"
+        alt="drawing of item"
+        id="img"
+        src={imgUrl}
+        width={500}
+      />
     {/if}
   </div>
 
@@ -82,7 +88,7 @@
     </div>
     <div>
       <p class="tag">description</p>
-      <input
+      <textarea
         class="input"
         bind:value={editState.description}
         placeholder="description"
@@ -117,8 +123,13 @@
     @apply font-bold;
   }
 
-  input {
-    @apply rounded-md px-1 mt-2;
+  input,
+  textarea {
+    @apply px-2 py-1 mt-2 bg-neutral-100  border-black rounded-xl border-2 overflow-ellipsis text-sm w-full;
+  }
+
+  input:focus {
+    @apply outline-none ring border-black rounded-xl;
   }
 
   a {
