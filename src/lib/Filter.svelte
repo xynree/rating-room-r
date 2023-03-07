@@ -29,9 +29,13 @@
   {/if}
   <button
     on:click={toggleRatingFilter}
-    class="{showRatingFilter ? 'bg-zinc-100' : ''} rounded-full px-4 relative"
+    class="{showRatingFilter
+      ? 'bg-zinc-100'
+      : ''} rounded-full px-4 relative flex gap-1 items-center"
   >
-    rating
+    rating <span class="text-[9px] mt-[0.5px]"
+      >{showRatingFilter ? '▲' : '▼'}</span
+    >
   </button>
   {#if showRatingFilter}
     <div class="modal right-48">
@@ -57,9 +61,13 @@
 
   <button
     on:click={toggleCategoryFilter}
-    class="{showCategoryFilter ? 'bg-zinc-100' : ''} rounded-full px-4 relative"
+    class="{showCategoryFilter
+      ? 'bg-zinc-100'
+      : ''} rounded-full px-4 relative flex items-center gap-1"
   >
-    category
+    category <span class="text-[9px] mt-[0.5px]"
+      >{showCategoryFilter ? '▲' : '▼'}</span
+    >
   </button>
   {#if showCategoryFilter}
     <div class="modal right-24">
@@ -93,6 +101,6 @@
   }
 
   li {
-    @apply flex flex-row gap-2 justify-between space-x-4 text-gray-700 hover:text-black;
+    @apply flex flex-row gap-2 justify-between space-x-4 text-zinc-800 hover:text-black;
   }
 </style>

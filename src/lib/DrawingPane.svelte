@@ -4,6 +4,7 @@
 
   const dispatch = createEventDispatcher()
   let isDrawing = false
+  export let imgUrl: string
   let canvas: HTMLCanvasElement
   let ctx: CanvasRenderingContext2D | null
   let coords: { x: number; y: number }
@@ -18,13 +19,21 @@
       x: canvas.getBoundingClientRect().left,
       y: canvas.getBoundingClientRect().top,
     }
+    if (imgUrl) {
+      let img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.onload = function () {
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, 500, 500)
+        }
+      }
+      img.src = imgUrl
+    }
     if (ctx) {
       ctx.fillStyle = '#fff'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
     }
   })
-
-  function loadOldImage() {}
 
   function drawCircle(x: number, y: number) {
     if (ctx) {

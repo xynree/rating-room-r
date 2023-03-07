@@ -56,12 +56,17 @@
 </script>
 
 {#if item}
-  <div class="flex gap-12 justify-center items-center my-24 w-screen">
-    <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
+  <div class="flex gap-12 justify-center items-center my-24 w-screen h-7/8">
+    <a href="/" class="transition-all w-1/4 text-right hover:text-gray-600"
+      >☜ go back
+    </a>
     <img alt="drawing of item" src={url} width={500} />
-    <div class="flex flex-col gap-4">
+    <div class="flex relative flex-col gap-8 w-1/4">
       {#if prev}
-        <button class="navigation" on:click={navigate.prev}>
+        <button
+          class="navigation absolute top-[-6rem]"
+          on:click={navigate.prev}
+        >
           ← {prev.name}
         </button>
       {/if}
@@ -109,8 +114,9 @@
         </p>
       </div>
       {#if next}
-        <button class="navigation" on:click={navigate.next}
-          >{next.name} →</button
+        <button
+          class="navigation absolute bottom-[-6rem]"
+          on:click={navigate.next}>{next.name} →</button
         >
       {/if}
     </div>
@@ -131,6 +137,6 @@
   }
 
   .navigation {
-    @apply text-sm font-black py-6 hover:text-gray-600 hover:cursor-pointer transition-all text-left;
+    @apply text-sm py-6 hover:text-gray-600 hover:cursor-pointer transition-all text-left w-full font-light;
   }
 </style>
