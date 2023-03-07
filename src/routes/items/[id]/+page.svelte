@@ -52,9 +52,12 @@
   <div class="flex gap-12 justify-center items-center my-24 w-screen h-7/8">
     <a href="/" class="transition-all hover:text-gray-600">☜ go back </a>
     <img alt="drawing of item" src={url} width={500} />
-    <div class="flex flex-col gap-8">
+    <div class="flex relative flex-col gap-8 w-1/6">
       {#if prev}
-        <button class="navigation" on:click={navigate.prev}>
+        <button
+          class="navigation absolute top-[-6rem]"
+          on:click={navigate.prev}
+        >
           ← {prev.name}
         </button>
       {/if}
@@ -95,8 +98,9 @@
         </p>
       </div>
       {#if next}
-        <button class="navigation" on:click={navigate.next}
-          >{next.name} →</button
+        <button
+          class="navigation absolute bottom-[-6rem]"
+          on:click={navigate.next}>{next.name} →</button
         >
       {/if}
     </div>

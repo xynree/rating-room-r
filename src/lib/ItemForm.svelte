@@ -71,7 +71,13 @@
     {#if drawing}
       <DrawingPane on:updateBlob />
     {:else}
-      <img alt="drawing of item" id="img" src={imgUrl} width={500} />
+      <img
+        class="h-[500px] w-[500px]"
+        alt="drawing of item"
+        id="img"
+        src={imgUrl}
+        width={500}
+      />
     {/if}
   </div>
 
