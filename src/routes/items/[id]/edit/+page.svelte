@@ -29,6 +29,7 @@
 
   async function saveItem(e: { detail: FullItem }) {
     let editedItem = e.detail
+    if (editedItem.name === '') return
     window.URL.revokeObjectURL(imgUrl)
 
     if (imgBlob) {

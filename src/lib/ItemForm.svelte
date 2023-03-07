@@ -5,10 +5,15 @@
   import CategorySelect from '$lib/CategorySelect.svelte'
   import { createEventDispatcher } from 'svelte'
   import DrawingPane from './DrawingPane.svelte'
+  import { page } from '$app/stores'
 
   let imgUrl: string = ''
   $: drawing = false
 
+  let pageName =
+    $page.route.id?.split('/').slice(-1)[0] === 'add_item'
+      ? 'create item'
+      : 'update'
   const dispatch = createEventDispatcher()
 
   export let editState: FullItem = {
@@ -77,8 +82,16 @@
 
   <div class="flex flex-col gap-4">
     <div>
-      <p class="tag">name</p>
-      <input class="input" bind:value={editState.name} />
+      <p class="tag flex items-center gap-1">
+        name
+        {#if editState.name === ''}<span class="alert">!</span>{/if}
+      </p>
+      <input
+        class="input"
+        class:ring-2={editState.name === ''}
+        class:ring-red-500={editState.name === ''}
+        bind:value={editState.name}
+      />
     </div>
     <div>
       <p class="tag">description</p>
@@ -106,7 +119,7 @@
       >
       <button
         on:click={() => dispatch('sendItem', editState)}
-        class="py-1 px-4 text-white bg-black rounded-full">update</button
+        class="py-1 px-4 text-white bg-black rounded-full">{pageName}</button
       >
     </div>
   </div>
@@ -118,11 +131,15 @@
   }
 
   input {
-    @apply rounded-md px-1 mt-2;
+    @apply rounded-md px-1 mt-2 border;
   }
 
   a {
     @apply text-sm p-6;
+  }
+
+  .alert {
+    @apply text-white bg-red-500 rounded-full px-2 text-xs font-normal;
   }
 
   .imgtool {
