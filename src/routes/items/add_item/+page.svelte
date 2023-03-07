@@ -21,7 +21,7 @@
 
   async function createItem(e: { detail: FullItem }) {
     let editState = e.detail
-    if (editState.name === '') return
+    if (editState.name === '' || !editState.categories.length) return
     window.URL.revokeObjectURL(imgUrl)
 
     if (imgBlob) {

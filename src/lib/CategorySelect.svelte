@@ -52,7 +52,12 @@
 </script>
 
 <div>
-  <p class="font-bold">categories</p>
+  <p class="font-bold">
+    categories {#if !categories.length}<span
+        class="text-white bg-red-500 rounded-full px-2 text-xs font-normal"
+        >!</span
+      >{/if}
+  </p>
   <div class="flex">
     {#each categories as category}
       <div class="flex gap-2 badge">
@@ -62,7 +67,11 @@
       </div>
     {/each}
   </div>
-  <button on:click={toggleCategoryMenu} id="addCategory" class="badge">
+  <button
+    on:click={toggleCategoryMenu}
+    id="addCategory"
+    class="badge {categories.length ? '' : 'ring-2 ring-red-500'}"
+  >
     + add category
   </button>
   {#if showCategoryMenu}
