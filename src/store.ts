@@ -138,7 +138,6 @@ function sortItemsStore($itemsStore: ItemStore, itemsView: FullItem[]) {
 function refreshView($itemsStore: ItemStore) {
   let itemsView = filterItemsStore($itemsStore)
   itemsView = sortItemsStore($itemsStore, itemsView)
-  console.log(itemsView)
   return itemsView
 }
 
