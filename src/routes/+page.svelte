@@ -31,15 +31,15 @@
   <Filter />
   <a href="/items/add_item" class="underline">+ add item</a>
 </nav>
-<div class="flex flex-wrap gap-1 m-8">
+<div class="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-1 m-8">
   {#if $itemsStore.items.length}
     {#each $itemView as { item_id, img_path }}
       {#await imgURL(img_path) then url}
-        <a class="flex-1 w-32" href={`items/${item_id}`}>
+        <a href={`items/${item_id}`}>
           <img
             alt="drawing of item"
             src={url}
-            class=" w-full object-cover rounded-sm hover:outline hover:outline-1"
+            class="object-cover w-full rounded-sm hover:outline hover:outline-1"
           />
         </a>
       {/await}
