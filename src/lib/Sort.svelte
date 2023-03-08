@@ -25,8 +25,8 @@
     <button on:click={toggleSortSelect} class="relative pr-1">
       {$itemsStore.sort.by}
     </button>
-    <button on:click={changeDir}>
-      {$itemsStore.sort.dir == SortDir.ascending ? '⏶' : '⏷'}
+    <button class="text-[9px] mt-[0.5px]" on:click={changeDir}>
+      {$itemsStore.sort.dir == SortDir.ascending ? '▲' : '▼'}
     </button>
   </div>
   {#if showSortSelect}
