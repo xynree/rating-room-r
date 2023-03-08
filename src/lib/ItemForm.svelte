@@ -100,7 +100,7 @@
       <p
         class={`transition-all ${
           showError ? 'opacity-100' : 'opacity-0'
-        } text-red-700  font-light text-xs`}
+        } text-red-700 font-light text-xs`}
       >
         Missing name or categories
       </p>
