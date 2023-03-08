@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
   import { goto } from '$app/navigation'
   import { invoke } from '@tauri-apps/api'
   import { saveFile } from 'service/file'
@@ -21,6 +20,9 @@
 
   async function createItem(e: { detail: FullItem }) {
     let editState = e.detail
+    if (editState.name === '' || !editState.categories.length) {
+      return
+    }
     window.URL.revokeObjectURL(imgUrl)
 
     if (imgBlob) {
@@ -34,7 +36,8 @@
       description: editState.description,
       comments: editState.comments,
       imgPath: editState.img_path || '',
-    })
+    }).catch((e) => console.log(e))
+
     await invoke('add_categories_to_item', {
       itemId: newItemId,
       categories: editState.categories,
@@ -53,4 +56,8 @@
   }
 </script>
 
-<ItemForm on:sendItem={createItem} on:updateBlob={updateBlob} />
+<ItemForm
+  on:sendItem={createItem}
+  on:cancel={() => goto('/')}
+  on:updateBlob={updateBlob}
+/>
