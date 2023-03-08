@@ -110,8 +110,8 @@
       </p>
       <input
         class="input"
-        class:ring-2={editState.name === ''}
-        class:ring-red-500={editState.name === ''}
+        class:ring-2={!editState.name}
+        class:ring-red-500={!editState.name}
         bind:value={editState.name}
       />
     </div>
