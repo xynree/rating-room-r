@@ -4,7 +4,7 @@
 
   export let categories: Category[] = []
 
-  let newCategory: string = ''
+  let categoryName: string = ''
   let showCategoryMenu = false
 
   function addCategory(e) {
@@ -24,19 +24,20 @@
 
   async function addNewCategory() {
     const categoryId: number = await invoke('create_category', {
-      name: newCategory,
+      name: categoryName,
       description: '',
     })
 
-    categories = [
-      ...categories,
-      {
-        category_id: categoryId,
-        name: newCategory,
-        description: '',
-      },
-    ]
+    let newCategory = {
+      category_id: categoryId,
+      name: categoryName,
+      description: '',
+    }
+
+    categories = [...categories, newCategory]
+    $itemsStore.categories.add(newCategory)
     showCategoryMenu = false
+    categoryName = ''
   }
 
   function removeCategory(e) {
@@ -67,7 +68,7 @@
   </button>
   {#if showCategoryMenu}
     <div class="flex absolute flex-col bg-white rounded-xl border border-black">
-      <div class="overflow-y-auto py-2 px-4 max-h-24">
+      <div class="overflow-y-auto py-2 px-4 max-h-40">
         <ul>
           {#each Array.from($itemsStore.categories) as category}
             <li
@@ -86,7 +87,7 @@
       >
         <input
           class="font-bold text-center"
-          bind:value={newCategory}
+          bind:value={categoryName}
           placeholder="new category"
         />
       </form>
