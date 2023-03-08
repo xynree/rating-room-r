@@ -5,6 +5,8 @@
   import { imgURL } from '../service/file'
   import { itemsStore, itemView } from 'store'
   import Sort from '$lib/Sort.svelte'
+  import { isRegistered, register } from '@tauri-apps/api/globalShortcut'
+  import { goto } from '$app/navigation'
 
   let items: FullItem[] = []
   let categories: Category[] = []
@@ -23,27 +25,34 @@
   })
 </script>
 
-<nav class="flex justify-between w-screen p-6 text-sm font-medium shadow-sm">
-  <a href="/">my collection</a>
+<nav class="flex justify-between w-screen p-6 text-sm">
+  <a href="/">my collection ({$itemsStore.items.length} items)</a>
   <Sort />
   <Filter />
   <a href="/items/add_item" class="underline">+ add item</a>
 </nav>
 <div class="flex flex-wrap gap-1 m-8">
-  {#each $itemView as { item_id, img_path }}
-    {#await imgURL(img_path) then url}
-      <a href={`items/${item_id}`}>
-        <div class="flex flex-col">
+  {#if $itemsStore.items.length}
+    {#each $itemView as { item_id, img_path }}
+      {#await imgURL(img_path) then url}
+        <a class="flex-1 w-32" href={`items/${item_id}`}>
           <img
             alt="drawing of item"
             src={url}
-            width={150}
-            class="object-cover rounded-sm hover:outline hover:outline-1"
+            class=" w-full object-cover rounded-sm hover:outline hover:outline-1"
           />
-        </div>
-      </a>
-    {/await}
-  {/each}
+        </a>
+      {/await}
+    {/each}
+  {:else}
+    <div class="m-auto mt-20 text-center">
+      <h1 class="font-bold text-lg">No Items Found</h1>
+      <p class="pt-2">
+        <a href="/items/add_item" class="underline">+ add item</a>
+        to start your collection
+      </p>
+    </div>
+  {/if}
 </div>
 
 <style lang="postcss">
