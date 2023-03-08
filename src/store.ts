@@ -47,16 +47,6 @@ function createInitialStore() {
     })
   }
 
-  function sort(sortBy: SortBy, sortDir: SortDir) {
-    update((store) => ({
-      ...store,
-      sort: {
-        by: sortBy,
-        dir: sortDir,
-      },
-    }))
-  }
-
   function reset() {
     update((store) => ({
       ...store,

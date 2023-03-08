@@ -5,9 +5,20 @@
   import CategorySelect from '$lib/CategorySelect.svelte'
   import { createEventDispatcher } from 'svelte'
   import DrawingPane from './DrawingPane.svelte'
+  import { page } from '$app/stores'
 
-  $: imgUrl = ''
+  let showError: boolean = false
+  function toggleError() {
+    showError = true
+    setTimeout(() => (showError = false), 2000)
+  }
+  let imgUrl: string = ''
+  $: drawing = false
 
+  let pageName =
+    $page.route.id?.split('/').slice(-1)[0] === 'add_item'
+      ? 'create item'
+      : 'update'
   const dispatch = createEventDispatcher()
 
   export let editState: FullItem = {
@@ -40,6 +51,10 @@
       imgUrl = window.URL.createObjectURL(blob)
       dispatch('updateBlob', blob)
     }
+  }
+
+  function formErrors() {
+    return editState.name === '' || !editState.categories.length
   }
 </script>
 
@@ -79,8 +94,23 @@
 
   <div class="flex flex-col gap-4">
     <div>
-      <p class="tag">name</p>
-      <input class="input" bind:value={editState.name} />
+      <p
+        class={`transition-all ${
+          showError ? 'opacity-100' : 'opacity-0'
+        } text-red-700 font-light text-xs`}
+      >
+        Missing name or categories
+      </p>
+      <p class="tag flex items-center gap-1">
+        name
+        {#if editState.name === ''}<span class="alert">!</span>{/if}
+      </p>
+      <input
+        class="input"
+        class:ring-2={!editState.name}
+        class:ring-red-500={!editState.name}
+        bind:value={editState.name}
+      />
     </div>
     <div>
       <p class="tag">description</p>
@@ -107,9 +137,10 @@
         >cancel</button
       >
       <button
-        on:click={() => dispatch('sendItem', editState)}
-        class="py-1 px-4 text-white hover:bg-neutral-800  bg-black rounded-full"
-        >update</button
+        on:click={() => {
+          formErrors() ? toggleError() : dispatch('sendItem', editState)
+        }}
+        class="py-1 px-4 text-white bg-black rounded-full">{pageName}</button
       >
     </div>
   </div>
@@ -131,6 +162,10 @@
 
   a {
     @apply text-sm p-6;
+  }
+
+  .alert {
+    @apply text-white bg-red-500 rounded-full px-2 text-xs font-normal;
   }
 
   .imgtool {
