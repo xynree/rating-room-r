@@ -10,6 +10,7 @@
     "productName": "Rating Room",
     "version": "0.0.1"
   },
+
   "tauri": {
     "allowlist": {
       "path": {
@@ -70,8 +71,9 @@
     "windows": [
       {
         "fullscreen": false,
-        "width": 800,
-        "height": 600,
+        "width": 1200,
+        "minWidth": 800,
+        "height": 800,
         "resizable": true,
         "title": "Rating Room",
         "titleBarStyle": "Transparent",
