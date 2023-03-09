@@ -29,7 +29,7 @@
   <a href="/">my collection ({$itemsStore.items.length} items)</a>
   <Sort />
   <Filter />
-  <a href="/items/add_item" class="underline">+ add item</a>
+  <a href="/items/add_item" class="hover:underline">+ add item</a>
 </nav>
 <div class="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-1 m-8">
   {#if $itemsStore.items.length}

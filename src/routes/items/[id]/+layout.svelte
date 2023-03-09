@@ -21,8 +21,8 @@
 <nav class="flex justify-between p-6 w-screen text-sm">
   <a href="/">my collection ({$itemsStore.items.length} items)</a>
   <div class="flex gap-5">
-    <button on:click={toggleModal} class="underline">delete item</button>
-    <a href={`/items/${id}/edit`} class="underline">+ edit item</a>
+    <button on:click={toggleModal}>delete item</button>
+    <a href={`/items/${id}/edit`}>+ edit item</a>
   </div>
 </nav>
 {#if showModal}
@@ -33,6 +33,6 @@
 
 <style lang="postcss">
   a {
-    @apply hover:text-gray-800 transition-all text-sm;
+    @apply hover:text-gray-800 transition-all text-sm hover:underline;
   }
 </style>
