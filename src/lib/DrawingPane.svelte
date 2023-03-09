@@ -11,6 +11,19 @@
 
   $: toolType = ToolType.draw
 
+  let backgroundImg: string = ''
+  $: if (imgUrl != backgroundImg) {
+    let img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = function () {
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, 500, 500)
+      }
+    }
+    img.src = imgUrl
+    backgroundImg = imgUrl
+  }
+
   onMount(() => {
     canvas = document.getElementById('canvas') as HTMLCanvasElement
     ctx = canvas.getContext('2d')
@@ -18,16 +31,6 @@
     coords = {
       x: canvas.getBoundingClientRect().left,
       y: canvas.getBoundingClientRect().top,
-    }
-    if (imgUrl) {
-      let img = new Image()
-      img.crossOrigin = 'anonymous'
-      img.onload = function () {
-        if (ctx) {
-          ctx.drawImage(img, 0, 0, 500, 500)
-        }
-      }
-      img.src = imgUrl
     }
     if (ctx) {
       ctx.fillStyle = '#fff'

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
-  import { imgURL } from 'service/file'
+  import { imgURL, saveFile } from 'service/file'
   import RatingSelect from '$lib/RatingSelect.svelte'
   import CategorySelect from '$lib/CategorySelect.svelte'
   import { createEventDispatcher } from 'svelte'
@@ -39,7 +39,6 @@
   $: if (editState.img_path && imgUrl === '') {
     imgURL(editState.img_path).then((url) => (imgUrl = url))
   }
-
   onDestroy(() => {
     window.URL.revokeObjectURL(imgUrl)
   })
@@ -71,28 +70,26 @@
           id="imageInput"
           on:change={update}
         />
-        {#if !drawing}
-          <span class="imgtool cursor-pointer">upload image </span>
-        {/if}
+        <span class="imgtool cursor-pointer">upload image </span>
       </label>
-      <button
-        class="imgtool cursor-pointer"
-        on:click={() => (drawing = !drawing)}
-      >
-        {drawing ? 'upload image' : 'draw image'}
-      </button>
+      <!-- <button -->
+      <!--   class="imgtool cursor-pointer" -->
+      <!--   on:click={() => (drawing = !drawing)} -->
+      <!-- > -->
+      <!--   {drawing ? 'upload image' : 'draw image'} -->
+      <!-- </button> -->
     </div>
-    {#if drawing}
-      <DrawingPane on:updateBlob {imgUrl} />
-    {:else}
-      <img
-        class="h-[500px] w-[500px]"
-        alt="drawing of item"
-        id="img"
-        src={imgUrl}
-        width={500}
-      />
-    {/if}
+    <!-- {#if drawing} -->
+    <DrawingPane bind:imgUrl on:updateBlob />
+    <!-- {:else} -->
+    <!--   <img -->
+    <!--     class="h-[500px] w-[500px]" -->
+    <!--     alt="drawing of item" -->
+    <!--     id="img" -->
+    <!--     src={imgUrl} -->
+    <!--     width={500} -->
+    <!--   /> -->
+    <!-- {/if} -->
   </div>
 
   <div class="flex flex-col gap-4">
@@ -136,7 +133,7 @@
     <div class="flex flex-row gap-2">
       <button
         on:click={() => dispatch('cancel')}
-        class="py-1 px-4 rounded-full border-black border-[1.5px]"
+        class="py-1 px-4 rounded-full hover:bg-neutral-50 border-black border-[1.5px]"
         >cancel</button
       >
       <button

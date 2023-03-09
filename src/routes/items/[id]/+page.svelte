@@ -72,11 +72,11 @@
       {/if}
       <div>
         <p class="tag">name</p>
-        <p>{item.name}</p>
+        <p class="text-lg">{item.name}</p>
       </div>
       <div>
         <p class="tag">description</p>
-        <p>{item.description || 'no description'}</p>
+        <p class="text-lg">{item.description || 'no description'}</p>
       </div>
       <div>
         <p class="tag">rating</p>
@@ -92,7 +92,7 @@
           {#if item.categories}
             {#each item.categories as { name }}
               <button
-                class="badge"
+                class="badge mt-1"
                 on:click={viewAllInCategory}
                 on:keydown={viewAllInCategory}
                 {name}
@@ -105,11 +105,11 @@
       </div>
       <div>
         <p class="tag">comments</p>
-        <p class="text-sm">{item.comments || 'Nothing to say.'}</p>
+        <p class="text-lg">{item.comments || 'Nothing to say.'}</p>
       </div>
       <div>
         <p class="tag">last rated</p>
-        <p class="text-sm">
+        <p class="text-lg">
           {item.rating && new Date(item.rating.date).toDateString()}
         </p>
       </div>
@@ -125,11 +125,11 @@
 
 <style lang="postcss">
   .tag {
-    @apply font-bold;
+    @apply font-semibold;
   }
 
   .badge {
-    @apply rounded-full transition-all bg-slate-200 hover:bg-slate-300 text-xs px-3 py-1;
+    @apply rounded-full transition-all bg-neutral-200 hover:bg-neutral-300 px-3 py-1;
   }
 
   a {

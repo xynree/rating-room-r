@@ -45,7 +45,7 @@ fn main() {
             if db_doesnt_exist {
                 create_tables(&conn)?;
                 // if dev
-                seed_db(&conn)?;
+                // seed_db(&conn)?;
             }
 
             app.manage(AppState {
