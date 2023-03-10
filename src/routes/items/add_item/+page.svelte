@@ -36,8 +36,7 @@
       description: editState.description,
       comments: editState.comments,
       imgPath: editState.img_path || '',
-    }).catch((e) => console.log(e))
-
+    })
     await invoke('add_categories_to_item', {
       itemId: newItemId,
       categories: editState.categories,
@@ -56,8 +55,4 @@
   }
 </script>
 
-<ItemForm
-  on:sendItem={createItem}
-  on:cancel={() => goto('/')}
-  on:updateBlob={updateBlob}
-/>
+<ItemForm on:sendItem={createItem} on:updateBlob={updateBlob} />
