@@ -1,0 +1,452 @@
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'   width='864' height='750' viewBox='0 0 864 750' >
+  <script type='text/ecmascript'>
+  <![CDATA[
+  function hghl(el) { for ( var i in el ){ var elem = document.getElementById(el[i]); if ( elem != null ) elem.setAttribute('class','highlight');  }  }
+  function uhghl(el) { for ( var i in el ){ var elem = document.getElementById(el[i]); if ( elem != null ) elem.setAttribute('class','unhighlight'); }  } 
+  ]]>
+  </script> 
+
+<style type='text/css'>
+  text                { fill:#1c1d1f; font-weight:normal;stroke:#2a2b2c;stroke-width:.1px; font-family: System, 'Segoe UI', Dialog; font-size:14.083333015441895px; }
+  a text:hover        { font-weight:500; }
+  text.highlight      { font-weight:500; }
+  text.white          { fill:#ffffff; }
+  text.colType        { fill:#b3b3b3; }
+  text.relName        { fill:#9c9a9a; stroke-width:0; }
+  text.legendTitle    { fill:#2b3b64; font-weight:500; }
+  text.legendSubTitle { fill:#616161; font-size:12px; }
+  path, circle        { stroke:#939391; stroke-width:1.65; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .filled             { fill:#939391; }
+  path.virtual        { stroke:#6e377e; }
+  path.logo           { fill:#fbeac0;fill-opacity:1;stroke-width:0.3;stroke:#222222; }
+  path.dotted         { stroke-dasharray:3,3; }
+  path.unhighlight    { stroke-width:5; opacity:0; pointer-events:all; }
+  path.highlight      { stroke-width:3; stroke:#a19f9b; opacity:0.8; pointer-events:all; }
+  path.line           { stroke-width:10; stroke-linecap:round; stroke-linejoin:round; }
+  rect.entity         { fill:#ffffff; stroke-width:0; shape-rendering:crispEdges;  filter:url(#shadow); }
+  line.delim          { stroke-width:1px; shape-rendering:crispEdges; }
+  line.topLine        { stroke-width:2.5px; shape-rendering:crispEdges; }
+  text.callout        { fill:#201a10; font-family: System, 'Segoe UI', Dialog; font-size:14.083333015441895px; }
+  rect.callout        { fill:url(#calloutGradient); stroke-width:1px; stroke:#b0b0b0; }
+  rect.shape          { stroke:#bebdbd; stroke-width:0.5; }
+  text.grp            { fill:#b1b1b1; }
+  rect.grp            { stroke:#919171; stroke-width:3; opacity:0.34; }
+  path.bgPattern      { fill:none;stroke-width:0.6;stroke:#e5e9ee; }
+  path.eval           { fill:#ececec;fill-opacity:1;stroke-width:0.6;stroke:#dddddd; }
+  rect.palpable       { fill:#fffbe5; }
+</style>
+<defs>
+  <pattern id="layoutBgA" width="60" height="34.64" patternUnits="userSpaceOnUse">
+    <rect x="0" y="0"  width="60" height="34.64" fill="#f4f4f6" />
+  </pattern>
+  <pattern id='layoutBgEval'  width='300' height='300' x='0' y='0' patternUnits="userSpaceOnUse">
+    <path class='eval' d='m 62.011835,91.267143 c 3.536475,3.175214 2.262669,8.705999 -1.637711,11.015197 -3.594697,5.8423 -6.34682,-2.892623 -9.715478,-4.653898 -5.609222,-2.838926 2.050802,-6.680123 4.77004,-8.319046 2.334696,-0.724067 4.935143,0.312302 6.583149,1.957747 z m -2.720492,2.538595 c -2.698397,-3.517732 -9.282815,1.269287 -3.69635,3.568637 2.765331,5.605665 7.052809,-0.56184 3.69635,-3.568637 z' />
+    <path class='eval' d='m 72.25864,84.624638 c 4.108046,3.143003 -0.737059,6.895259 -1.994918,8.323564 -3.586718,5.561143 -6.495079,-4.197379 -10.07759,-5.582178 -4.443422,-1.088878 1.349298,-7.249213 2.503526,-2.503449 2.464639,4.517161 2.304019,-3.70697 6.291113,-1.995914 1.280083,0.137865 2.410691,0.864819 3.277869,1.757977 z m -2.646109,2.323242 c -4.797162,-3.078383 -2.810517,6.305507 0.515161,1.990646 0.296432,-0.688582 0.01209,-1.493412 -0.515161,-1.990646 z' />
+    <path class='eval' d='m 78.230641,79.436735 c 4.142121,3.027466 -2.020102,10.435276 -3.450543,5.477315 3.306312,-5.248112 -9.186019,-2.220094 -5.805994,-8.77679 -0.544141,-3.93011 6.797826,-2.102227 3.386015,0.245477 -0.181085,2.915838 4.637371,1.019311 5.870522,3.053982 z' />
+    <path class='eval' d='m 82.744502,72.597397 c -4.901605,1.926521 1.146497,6.285555 2.559694,2.225783 6.21817,3.539297 -6.640186,8.416664 -7.590325,1.997457 -2.24365,-2.914883 4.026676,-10.148618 5.030631,-4.22324 z' />
+    <path class='eval' d='m 90.727458,64.259158 c 1.583987,1.690029 3.321317,3.2696 4.81267,5.026353 -2.535706,6.849794 -6.445583,-5.918773 -8.388458,-0.167017 0.782768,2.03426 5.877405,3.752079 2.670979,5.711199 -3.315119,1.519161 -5.782422,-5.157931 -8.858893,-6.780537 -4.229842,-1.139816 1.510134,-7.074128 2.586227,-2.385939 3.141198,5.495193 1.840537,-5.598295 7.177489,-1.404062 z' />
+    <path class='eval' d='m 99.622027,58.374253 c 1.493293,1.9548 -6.281936,7.024659 -0.885258,4.740447 0.386238,-4.434477 6.131941,-1.133173 2.175851,1.618005 -4.421491,6.12739 -13.666659,-3.151506 -7.058299,-7.136537 1.785129,-1.119329 4.348209,-0.743179 5.767706,0.778085 z m -2.900824,1.89746 c -3.608188,-2.208543 -2.280489,5.00803 -0.12563,0.329531 z' />
+    <path class='eval' d='m 115.18023,50.570441 c -1.61703,5.201678 -4.6204,-0.364502 -7.01598,-1.749619 -4.40977,2.122562 4.89641,4.913939 1.89606,7.018157 -2.48061,3.877635 -4.11404,-4.060614 -7.01192,-2.6391 -1.76318,3.107252 7.28394,6.252304 0.87346,7.876177 -1.74515,-2.956649 -9.055498,-5.610518 -3.950378,-8.66062 1.696478,1.897023 1.770418,-5.43503 5.347308,-3.072411 -0.44014,-5.474701 6.11995,-4.950882 7.7846,-0.815355 0.69076,0.682329 1.39587,1.351469 2.07685,2.042771 z' />
+    <path class='eval' d='m 120.54891,39.417125 c 2.50681,1.334124 4.80466,4.941837 0.75044,5.297362 -0.46414,1.89865 -5.25369,5.602652 -8.01742,1.815475 -3.87345,-2.809139 -0.0676,-7.603869 2.3036,-8.133924 1.6795,-3.853018 3.16703,-1.199465 4.96338,1.021087 z m -2.2464,2.175828 c -4.8049,-2.992167 -3.08987,6.380358 0.42374,2.036159 0.33052,-0.677508 0.12099,-1.525836 -0.42374,-2.036159 z' />
+    <path class='eval' d='m 128.50836,24.06821 c -5.10403,3.035506 3.20535,6.383175 5.05938,9.450276 -0.91853,2.95886 -4.06493,3.650723 -5.34691,0.265618 -2.25715,-2.089033 -4.65672,-6.948595 -7.07024,-2.584686 -4.71758,-3.764394 3.81217,-5.812054 5.12382,-9.226328 0.75738,0.677487 1.38637,1.498638 2.23389,2.095175 z' />
+    <path class='eval' d='m 137.14366,22.299812 c -3.09615,2.259885 0.71537,4.412454 1.99042,6.435866 -3.08975,5.080354 -5.91384,-2.98648 -8.92144,-4.094939 1.44369,-3.219573 3.3497,-1.335928 4.27156,-4.41058 0.97822,-0.894325 1.75044,1.871047 2.65946,2.069653 z' />
+    <path class='eval' d='m 136.85093,14.890174 c 2.31562,5.283511 -7.17975,1.771993 -1.29675,-0.475107 l 0.7108,0.08973 z m 4.867,5.317354 c 2.56912,1.439678 4.26517,4.725219 0.30678,5.233637 -1.56592,-3.098864 -9.51683,-5.749448 -3.64502,-8.633714 1.17746,0.325095 2.15375,2.591149 3.33824,3.400077 z' />
+    <path class='eval' d='m 149.95578,11.976423 c 2.50679,1.334142 4.80455,4.94192 0.75041,5.297394 -0.4641,1.898604 -5.25368,5.602645 -8.0174,1.81545 -3.87347,-2.80918 -0.0676,-7.603844 2.30366,-8.133968 1.67949,-3.8530525 3.16695,-1.1993573 4.96333,1.021124 z m -2.24641,2.175828 c -4.80489,-2.992177 -3.08986,6.380343 0.42374,2.036167 0.33055,-0.677518 0.121,-1.52585 -0.42374,-2.036167 z' />
+    <path class='eval' d='m 153.26135,7.538431 c 2.60497,1.5799548 6.03999,5.944272 1.08117,6.050232 -2.53319,-3.231828 -7.20316,-6.4304525 -8.84748,-9.4582682 1.89121,-2.8664883 3.78452,-2.247699 5.38514,0.8929426 0.78017,0.8503859 1.57195,1.6911437 2.38118,2.5150667 z' />
+  </pattern>
+  <!-- https://norbat.de/svg-pattern-3d-webmuster/ -->
+  <radialGradient id='calloutGradient' cx='25%' cy='20%' r='80%' fx='10%' fy='10%'>
+    <stop offset='0%' stop-color='#fefdf7aa' />
+    <stop offset='100%' stop-color='#fcf9e7aa' />
+  </radialGradient>
+  <filter id="shadow">
+    <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#444444" flood-opacity="0.6" />
+  </filter>
+  <!--
+  <filter id='shadow2' width='120%' height='120%'>
+    <feOffset result='offOut' in='SourceGraphic' dx='0' dy='0' />
+    <feColorMatrix result='matrixOut' in='offOut'
+                   values='0.5 0 0 0 0 0 0.5 0 0 0 0 0 0.5 0 0 0 0 0 0.5 0' />
+    <feGaussianBlur result='blurOut' in='matrixOut' stdDeviation='3' />
+    <feBlend in='SourceGraphic' in2='blurOut' />
+  </filter>
+  -->
+  <filter id='fkShadow' height='130%'>
+    <feGaussianBlur in='SourceAlpha' stdDeviation='1.5'/> <!-- stdDeviation is how much to blur -->
+    <feOffset dx='1.2' dy='1.2' result='offsetblur'/> <!-- how much to offset -->
+    <feMerge>
+      <feMergeNode/> <!-- this contains the offset blurred image -->
+      <feMergeNode in='SourceGraphic'/> <!-- this contains the element that the filter is applied to -->
+    </feMerge>
+  </filter>
+  <radialGradient id='legendGradient' cx='5%' cy='5%' r='100%' >
+    <stop offset='0%' stop-color='#fdfeff' stop-opacity='1'/>
+    <stop offset='100%' stop-color='#e1eafa' stop-opacity='1' />
+  </radialGradient>
+  <symbol id='calloutArrowDown' >
+    <path d='M 0,0 L 8,12 L 16,0 z' style='fill:#f8f6d1;stroke:none; filter: url(#shadow);' />
+    <path d='M 0,0 L 8,12 L 16,0' style='stroke:#bebdbd; stroke-width:0.5;' />
+  </symbol>
+  <symbol id='calloutArrowUp' >
+    <path d='M 0,16 L 8,4 L 16,16 z' style='fill:#ffffff; stroke:none; filter: url(#shadow);' />
+    <path d='M 0,16 L 8,4 L 16,16' style='stroke:#bebdbd; stroke-width:0.5;' />
+  </symbol>
+  <symbol id='pk' width="13" height="13">
+    <g transform='scale(0.99)'>
+      <path style='fill:#f0d938;stroke:#906b25;stroke-width:0.6;stroke-linecap:round;stroke-linejoin:round;'
+            d='M 9.3678877,3.5695485 C 9.1030218,3.2729386 9.0796382,2.7628519 9.3396185,2.4517097 9.5449651,2.1956495 9.9040386,2.0980533 10.199638,2.2169415 10.533525,2.3415459 10.775153,2.706942 10.750675,3.0842709 10.737029,3.3980003 10.541153,3.699122 10.258248,3.8066067 9.966649,3.9250429 9.6169668,3.8418805 9.4008073,3.6062324 9.3894892,3.5943518 9.3785264,3.582104 9.3678886,3.5695487 z M 11.226617,6.9916004 C 11.888137,6.3548946 12.293488,5.4172188 12.311087,4.442353 12.378144,2.7379364 11.248678,1.0541269 9.7322318,0.44767357 8.3887112,-0.1280313 6.7865012,0.26822889 5.8918395,1.4007929 5.080823,2.3839145 4.9336815,3.8452096 5.3635544,5.101615 L 4.3670905,5.315913 C 4.0664984,5.3682645 4.0967703,5.6316724 4.2574957,5.8208829 L 4.9124,6.5655244 4.1543436,7.2512357 3.2136002,7.2163506 3.1674775,8.5586827 2.0406832,8.5086512 1.5965306,8.9299953 1.5471661,10.179833 0.75616674,10.195223 0.2112857,10.758575 0.15354288,11.735988 0.07199052,12.765553 c 0.36440953,0.238225 0.79006967,0.195492 1.44938278,-0.02675 L 6.3033562,8.1282037 6.8217102,8.6765688 C 6.9985465,8.8799427 7.3003699,8.7497574 7.358381,8.5016252 L 7.4938877,7.5084164 c 0.8537488,0.3985387 1.8303125,0.4711541 2.6851793,0.1427713 0.393927,-0.1407258 0.746858,-0.3701772 1.04755,-0.6595873 z'/>
+      <path d='M 6.8014948,6.3102123 0.15369063,13.024481 0.21560535,12.141962 6.0062342,6.2683782 z'
+            style='fill:#ffe5a5;fill-opacity:1;stroke:#906b25;stroke-width:0.06912433;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:3.00300009'/>
+    </g>
+  </symbol>
+  <symbol id='idx1' width="13" height="13">
+    <g transform='scale(0.99)'>
+      <rect width='4' height='4' x='7' y='1' style='fill:#ffff3f;stroke:#b48333;stroke-width:0.6;' ry='0.83'/>
+      <rect width='4' height='4' x='1' y='7' style='fill:#ffff3f;stroke:#b48333;stroke-width:0.6;' ry='0.832'/>
+      <rect width='4' height='4' x='7' y='7' style='fill:#ffff3f;stroke:#b48333;stroke-width:0.6;' ry='0.832'/>
+    </g>
+  </symbol>
+  <symbol id='idx2' width="13" height="13">
+    <g transform='scale(0.99)'>
+      <rect width='4' height='3' x='6' y='1' style='fill:#7fc8e9;stroke:#2f6f8c;stroke-width:0.6;' ry='0.83'/>
+      <rect width='7' height='3' x='3' y='6' style='fill:#7fc8e9;stroke:#2f6f8c;stroke-width:0.6;' ry='0.832'/>
+    </g>
+  </symbol>
+  <symbol id='unq' width="13" height="13">
+    <g transform='scale(0.99)'>
+      <rect style='fill:none;stroke:#7e4d31;stroke-width:0.71934468;stroke-linecap:round;stroke-linejoin:round;'
+            width='2.29' height='8.43' x='7.48' y='-0.76' ry='1.14' transform='matrix(0.701,0.713,-0.727,0.685,0,0)' />
+      <path style='fill:white;stroke:#858585;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;'
+            d='m 26.04,8.64 a 4.13,4.13 0 1 1 -8.26,0 4.13,4.13 0 1 1 8.26,0 z'
+            transform='matrix(1.025,0,0,0.987,-14.690,-3.862)' />
+      <text x='5.8' y='7.4' style='font-size:7px;fill:#8a8a8a;'>U</text>
+    </g>
+  </symbol>
+  <symbol id='idx' width="13" height="13">
+    <g transform='scale(0.99)'>
+      <rect style='fill:none;stroke:#7e4d31;stroke-width:0.71934468;stroke-linecap:round;stroke-linejoin:round;'
+            width='2.29' height='8.43' x='7.48' y='-0.76' ry='1.14' transform='matrix(0.701,0.713,-0.727,0.685,0,0)' />
+      <path style='fill:white;stroke:#858585;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;'
+            d='m 26.04,8.64 a 4.13,4.13 0 1 1 -8.26,0 4.13,4.13 0 1 1 8.26,0 z'
+            transform='matrix(1.025,0,0,0.987,-14.690,-3.862)' />
+    </g>
+  </symbol>
+  <symbol id='fk' width="13" height="13">
+    <g transform='scale(0.87)'>
+      <path style='fill:#6a88cd;stroke:#5a72a8;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;'
+            d='M 12.48,0.33 7.07,0.89 9.067,2.974 0.329,11.731 1.073,12.597 9.811,3.841 11.77,5.78 z' />
+    </g>
+  </symbol>
+  <symbol id='ref' width="13" height="13">
+    <g transform='scale(0.87)'>
+      <path style='fill:#f0d938;stroke:#906b25;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;'
+            d='M 0.10,12.70 5.31,12.15 3.40,10.06 11.82,1.32 11.11,0.45 2.68,9.19 0.80,7.24 z'/>
+    </g>
+  </symbol>
+  <symbol id='flag0' width="13" height="13">
+    <g transform='scale(0.92)'>
+      <path style='fill:#b7d0f6;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;'
+            d='M 0.12,12.67 0.16,7.22 C 2.59,7.22 4.13,8.78 9.22,4.22 5.68,4.98 2.53,4.50 0.09,1.80 z'/>
+    </g>
+  </symbol>
+  <symbol id='flag1' width="13" height="13">
+    <g transform='scale(0.92)'>
+      <path style='fill:#f4a393;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;'
+            d='M 0.12,12.67 0.16,7.22 C 2.59,7.22 4.13,8.78 9.22,4.22 5.68,4.98 2.53,4.50 0.09,1.80 z'/>
+    </g>
+  </symbol>
+  <symbol id='flag2' width="13" height="13">
+    <g transform='scale(0.92)'>
+      <path style='fill:#77ec8b;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;'
+            d='M 0.12,12.67 0.16,7.22 C 2.59,7.22 4.13,8.78 9.22,4.22 5.68,4.98 2.53,4.50 0.09,1.80 z'/>
+    </g>
+  </symbol>
+  <symbol id='nn' width="3" height="3">
+    <path style='stroke:#9b3e50;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;'
+          d='M 0,0 3,3 M 0,3 3,0 z'/>
+  </symbol>
+  <symbol id='virtual' width="13" height="13">
+    <circle cx='6' cy='6.5' r='5.5' fill='#a3dda3' stroke='#4c6a4c' stroke-width='0.5'/>
+    <path style='stroke:#ffffff;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;'
+          d='M 3,4 6,10 9,4'/>
+  </symbol>
+  <symbol id='view' width="13" height="13">
+    <g transform='scale(0.99)'>
+      <line x1='12' y1='6' x2='19' y2='0' stroke='black' stroke-width='0.5' />
+      <line x1='0' y1='6' x2='7' y2='0' stroke='black' stroke-width='0.5' />
+      <circle cx='3' cy='6' r='3' fill='#f9ebbc' stroke='black' stroke-width='0.5'/>
+      <circle cx='10' cy='6' r='3' fill='#f9ebbc' stroke='black' stroke-width='0.5'/>
+    </g>
+  </symbol>
+  <symbol id='logo' width="100" height="100">
+    <path style='stroke:#4d6086;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;'
+          d='M 15,1 29,8 29,22 15,29 1,22 1,9 Z'/>
+    <path style='stroke:#e37d00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;'
+          d='M 25,10 25,20 15,25 5,20 5,10 15,15 25,10 15,5 9,8'/>
+    <path style='stroke:#e37d00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;'
+          d='M 15,15 15,25'/>
+  </symbol>
+
+</defs>
+
+<defs>  <marker id='ZeroMore' viewBox='0 0 8.00 8.00' refX='4.00' refY='4.00' markerWidth='8.00' markerHeight='8.00' orient='auto-start-reverse'>
+    <circle cx='2.00' cy='4.00' r='2.00' style='stroke-width:1;' />
+    <path d='M 8.00,0.00 L 4.00,4.00 L 8.00,8.00' style='stroke-width:1;'/>
+    <path d='M 0.00,4.00 L 8.00,4.00 z' style='stroke-width:1;'/>
+  </marker>
+  <marker id='ZeroOne' viewBox='0 0 8.00 8.00' refX='4.00' refY='4.00' markerWidth='8.00' markerHeight='8.00' orient='auto-start-reverse'>
+    <path d='M 0.00,4.00 L 8.00,4.00 z' style='stroke-width:1;'/>
+    <circle cx='2.00' cy='4.00' r='2.00' style='stroke-width:1;' />
+    <path d='M 4.00,0.00 L 4.00, 8.00 z' style='stroke-width:1;'/>
+  </marker>
+  <marker id='OneMore' viewBox='0 0 8.00 8.00' refX='4.00' refY='4.00' markerWidth='8.00' markerHeight='8.00' orient='auto-start-reverse'>
+    <path d='M 0.00,4.00 L 8.00,4.00 z' style='stroke-width:1;'/>
+    <path d='M 4.00,0.00 L 4.00, 8.00 z' style='stroke-width:1;'/>
+    <path d='M 8.00,0.00 L 4.00,4.00 L 8.00,8.00' style='stroke-width:1;'/>
+    <path d='M 0.00,4.00 L 8.00,4.00 z' style='stroke-width:1;'/>
+  </marker>
+  <marker id='One' viewBox='0 0 8.00 8.00' refX='4.00' refY='4.00' markerWidth='8.00' markerHeight='8.00' orient='auto-start-reverse'>
+    <path d='M 0.00,4.00 L 8.00,4.00 z' style='stroke-width:1;'/>
+    <path d='M 4.00,0.00 L 4.00, 8.00 z' style='stroke-width:1;'/>
+  </marker>
+  <marker id='Range' viewBox='0 0 8.00 8.00' refX='4.00' refY='4.00' markerWidth='8.00' markerHeight='8.00' orient='auto-start-reverse'>
+    <path d='M 0.00,4.00 L 8.00,4.00 z' style='stroke-width:1;'/>
+  </marker>
+  <marker id='Arrow' viewBox='0 0 8.00 8.00' refX='4.00' refY='4.00' markerWidth='8.00' markerHeight='8.00' orient='auto-start-reverse'>
+    <path d='M 4.000,2.000 L 8.000,4.000 L 4.000,6.000 z' style='stroke-width:1;' class='filled'/>
+  </marker>
+  <linearGradient id='tbg_BED3F4' x1='0%' y1='0%' x2='0%' y2='100%' >
+     <stop offset='0%' stop-color='#FBFCFF' /> 
+     <stop offset='40%' stop-color='#DDE8FB' /> 
+     <stop offset='100%' stop-color='#DDE8FB' /> 
+  </linearGradient>
+  <linearGradient id='tbg_C1D8EE' x1='0%' y1='0%' x2='0%' y2='100%' >
+     <stop offset='0%' stop-color='#FBFDFF' /> 
+     <stop offset='40%' stop-color='#DDECFB' /> 
+     <stop offset='100%' stop-color='#DDECFB' /> 
+  </linearGradient>
+</defs>
+
+<!-- == Shape Colors == -->
+<!-- == Desktop == -->
+<rect x='1' y='1' width='862' height='748' rx='8' ry='8' style='fill:url(#layoutBgA); stroke:#aaa; stroke-width:1px;' />
+<rect x='1' y='1' width='862' height='748' rx='8' ry='8' style='fill:url(#layoutBgEval);' />
+
+<!-- == Legend == -->
+<g transform='translate(10,10)'>
+  <rect x='10' y='10' width='310' height='70' rx='6' ry='6' style='fill:url(#legendGradient);filter:url(#shadow);'/> 
+  <use id='logo' x='20' y='40' xlink:href='#logo'><title>DbSchema Database Designer </title></use>  <text x='20' y='30' class='legendTitle' >Main Layout</text> 
+  <text x='57' y='52' class='legendSubTitle'><tspan>Comments as mouse-over tips, zoom and pan.<title>Read column and table comments by hovering the columns and tables.
+Zoom with CTRL+whell mouse button, pan by dragging the diagram with the right-mouse button</title></tspan></text> 
+  <a xlink:href='https%3A%2F%2Fdbschema.com'><text x='57' y='69' class='legendSubTitle'><tspan>by DbSchema.com - Wise Coders<title>DbSchema is an universal database designer.
+DbSchema has a free Community Edition.</title></tspan></text></a> 
+</g>
+
+<g transform='translate(0,110)'>
+<!-- == Fk 'items_to_categories_fk_items_to_categories' == -->
+<path id='items_to_categories_fk_items_to_categories'  onmouseover="hghl(['items_to_categories_fk_items_to_categories','Default.items_to_categories.item_id','Default.items.item_id'])" onmouseout="uhghl(['items_to_categories_fk_items_to_categories','Default.items_to_categories.item_id','Default.items.item_id'])" transform='translate(8,0)' class='unhighlight' d='M 400,80L 464,80' >
+	<title>&#x1F517;  Foreign Key fk_items_to_categories
+items_to_categories ref items ( item_id )</title>
+</path>
+<path transform='translate(8,0)' marker-start='url(#ZeroMore)' marker-end='url(#Arrow)'    d='M 400,80L 464,80' ><title>&#x1F517;  Foreign Key fk_items_to_categories
+items_to_categories ref items ( item_id )</title></path>
+<text x='410' y='75' transform='rotate(0 410,75)' class='relName'>item&#95;id</text>
+<!-- == Fk 'items_to_categories_fk_items_to_categories_0' == -->
+<path id='items_to_categories_fk_items_to_categories_0'  onmouseover="hghl(['items_to_categories_fk_items_to_categories_0','Default.items_to_categories.category_id','Default.categories.category_id'])" onmouseout="uhghl(['items_to_categories_fk_items_to_categories_0','Default.items_to_categories.category_id','Default.categories.category_id'])" transform='translate(8,0)' class='unhighlight' d='M 240,80L 160,80' >
+	<title>&#x1F517;  Foreign Key fk_items_to_categories_0
+items_to_categories ref categories ( category_id )</title>
+</path>
+<path transform='translate(8,0)' marker-start='url(#ZeroMore)' marker-end='url(#Arrow)'    d='M 240,80L 160,80' ><title>&#x1F517;  Foreign Key fk_items_to_categories_0
+items_to_categories ref categories ( category_id )</title></path>
+<text x='180' y='75' transform='rotate(0 180,75)' class='relName'>category&#95;id</text>
+<!-- == Fk 'items_to_ratings_fk_items_to_ratings' == -->
+<path id='items_to_ratings_fk_items_to_ratings'  onmouseover="hghl(['items_to_ratings_fk_items_to_ratings','Default.items_to_ratings.rating_id','Default.ratings.rating_id'])" onmouseout="uhghl(['items_to_ratings_fk_items_to_ratings','Default.items_to_ratings.rating_id','Default.ratings.rating_id'])" transform='translate(8,0)' class='unhighlight' d='M 736,128L 736,208' >
+	<title>&#x1F517;  Foreign Key fk_items_to_ratings
+items_to_ratings ref ratings ( rating_id )</title>
+</path>
+<path transform='translate(8,0)' marker-start='url(#ZeroMore)' marker-end='url(#Arrow)'    d='M 736,128L 736,208' ><title>&#x1F517;  Foreign Key fk_items_to_ratings
+items_to_ratings ref ratings ( rating_id )</title></path>
+<text x='749' y='130' transform='rotate(90 749,130)' class='relName'>rating&#95;id</text>
+<!-- == Fk 'items_to_ratings_fk_items_to_ratings_0' == -->
+<path id='items_to_ratings_fk_items_to_ratings_0'  onmouseover="hghl(['items_to_ratings_fk_items_to_ratings_0','Default.items_to_ratings.item_id','Default.items.item_id'])" onmouseout="uhghl(['items_to_ratings_fk_items_to_ratings_0','Default.items_to_ratings.item_id','Default.items.item_id'])" transform='translate(8,0)' class='unhighlight' d='M 656,64L 592,64' >
+	<title>&#x1F517;  Foreign Key fk_items_to_ratings_0
+items_to_ratings ref items ( item_id )</title>
+</path>
+<path transform='translate(8,0)' marker-start='url(#ZeroMore)' marker-end='url(#Arrow)'    d='M 656,64L 592,64' ><title>&#x1F517;  Foreign Key fk_items_to_ratings_0
+items_to_ratings ref items ( item_id )</title></path>
+<text x='623' y='59' transform='rotate(0 623,59)' class='relName'>item&#95;id</text>
+<!-- == Fk 'categories_to_traits_fk_categories_to_traits' == -->
+<path id='categories_to_traits_fk_categories_to_traits'  onmouseover="hghl(['categories_to_traits_fk_categories_to_traits','Default.categories_to_traits.trait_id','Default.traits.trait_id'])" onmouseout="uhghl(['categories_to_traits_fk_categories_to_traits','Default.categories_to_traits.trait_id','Default.traits.trait_id'])" transform='translate(8,0)' class='unhighlight' d='M 128,400L 128,464' >
+	<title>&#x1F517;  Foreign Key fk_categories_to_traits
+categories_to_traits ref traits ( trait_id )</title>
+</path>
+<path transform='translate(8,0)' marker-start='url(#ZeroMore)' marker-end='url(#Arrow)'  class='dotted '  d='M 128,400L 128,464' ><title>&#x1F517;  Foreign Key fk_categories_to_traits
+categories_to_traits ref traits ( trait_id )</title></path>
+<text x='141' y='402' transform='rotate(90 141,402)' class='relName'>trait&#95;id</text>
+<!-- == Fk 'categories_to_traits_fk_categories_to_traits_0' == -->
+<path id='categories_to_traits_fk_categories_to_traits_0'  onmouseover="hghl(['categories_to_traits_fk_categories_to_traits_0','Default.categories_to_traits.category_id','Default.categories.category_id'])" onmouseout="uhghl(['categories_to_traits_fk_categories_to_traits_0','Default.categories_to_traits.category_id','Default.categories.category_id'])" transform='translate(8,0)' class='unhighlight' d='M 64,304L 64,160' >
+	<title>&#x1F517;  Foreign Key fk_categories_to_traits_0
+categories_to_traits ref categories ( category_id )</title>
+</path>
+<path transform='translate(8,0)' marker-start='url(#ZeroMore)' marker-end='url(#Arrow)'  class='dotted '  d='M 64,304L 64,160' ><title>&#x1F517;  Foreign Key fk_categories_to_traits_0
+categories_to_traits ref categories ( category_id )</title></path>
+<text x='67' y='302' transform='rotate(270 67,302)' class='relName'>category&#95;id</text>
+<!-- == Fk 'items_to_traits_fk_items_to_traits' == -->
+<path id='items_to_traits_fk_items_to_traits'  onmouseover="hghl(['items_to_traits_fk_items_to_traits','Default.items_to_traits.item_id','Default.items.item_id'])" onmouseout="uhghl(['items_to_traits_fk_items_to_traits','Default.items_to_traits.item_id','Default.items.item_id'])" transform='translate(8,0)' class='unhighlight' d='M 448,480L 448,168Q 448,160 456,160L 464,160' >
+	<title>&#x1F517;  Foreign Key fk_items_to_traits
+items_to_traits ref items ( item_id )</title>
+</path>
+<path transform='translate(8,0)' marker-start='url(#ZeroMore)' marker-end='url(#Arrow)'  class='dotted '  d='M 448,480L 448,168Q 448,160 456,160L 464,160' ><title>&#x1F517;  Foreign Key fk_items_to_traits
+items_to_traits ref items ( item_id )</title></path>
+<text x='451' y='478' transform='rotate(270 451,478)' class='relName'>item&#95;id</text>
+<!-- == Fk 'items_to_traits_fk_items_to_traits_0' == -->
+<path id='items_to_traits_fk_items_to_traits_0'  onmouseover="hghl(['items_to_traits_fk_items_to_traits_0','Default.items_to_traits.trait_id','Default.traits.trait_id'])" onmouseout="uhghl(['items_to_traits_fk_items_to_traits_0','Default.items_to_traits.trait_id','Default.traits.trait_id'])" transform='translate(8,0)' class='unhighlight' d='M 368,496L 224,496' >
+	<title>&#x1F517;  Foreign Key fk_items_to_traits_0
+items_to_traits ref traits ( trait_id )</title>
+</path>
+<path transform='translate(8,0)' marker-start='url(#ZeroMore)' marker-end='url(#Arrow)'  class='dotted '  d='M 368,496L 224,496' ><title>&#x1F517;  Foreign Key fk_items_to_traits_0
+items_to_traits ref traits ( trait_id )</title></path>
+<text x='338' y='491' transform='rotate(0 338,491)' class='relName'>trait&#95;id</text>
+<!-- == Table 'categories' == -->
+<rect id='depict_Default&#46;categories' class='entity' style='stroke:none;' x='48' y='56' width='112' height='96' rx='4' ry='4' />
+<path d='M 48 84 L 48 60 Q 48 56 52 56 L 156 56 Q 160 56 160 60 L 160 84 L48 84 ' style='fill:url(#tbg_BED3F4);stroke-width:0;' />
+<rect class='entity' x='48' y='56' width='112' height='96' rx='4' ry='4' style='fill:none;stroke:#E1E7F2'/>
+<a xlink:href='#Default.categories'><text x='69' y='75' >categories</text><title>Table Default.categories</title></a>
+  <use id='nn' x='50' y='93' xlink:href='#nn'/><use id='pk' x='50' y='92' xlink:href='#pk'><title>&#x1F511;  Pk pk_categories ( category_id ) </title></use><a xlink:href='#Default.categories_category_id'><text id='Default&#46;categories&#46;category&#95;id' x='67' y='103' onmouseover="hghl(['items_to_categories_fk_items_to_categories_0','Default.items_to_categories.category_id','categories_to_traits_fk_categories_to_traits_0','Default.categories_to_traits.category_id'])" onmouseout="uhghl(['items_to_categories_fk_items_to_categories_0','Default.items_to_categories.category_id','categories_to_traits_fk_categories_to_traits_0','Default.categories_to_traits.category_id'])">category&#95;id</text><title>&#10697;  category_id
+     * integer
+ &#8601; items_to_categories( category_id )
+ &#8601; categories_to_traits( category_id )</title></a>
+<a xlink:href='#Default.categories.category_id'><use id='ref' x='148' y='92' xlink:href='#ref'/><title>&amp;#1F517;  
+Referred by items_to_categories ( category_id ) 
+Referred by categories_to_traits ( category_id ) </title></a>
+  <use id='nn' x='50' y='109' xlink:href='#nn'/><use id='unq' x='50' y='108' xlink:href='#unq'><title>&#x1F50D;  Unq unq_categories_name ( name ) </title></use><a xlink:href='#Default.categories_name'><text id='Default&#46;categories&#46;name' x='67' y='119'>name</text><title>&#10697;  name
+     * varchar(255)</title></a>
+<text x='157' y='116' text-anchor='end' class='colType'>t</text>  <use id='nn' x='50' y='125' xlink:href='#nn'/><a xlink:href='#Default.categories_description'><text id='Default&#46;categories&#46;description' x='67' y='135'>description</text><title>&#10697;  description
+     * text default &apos;&apos;</title></a>
+<text x='157' y='132' text-anchor='end' class='colType'>t</text>
+<!-- == Table 'items' == -->
+<rect id='depict_Default&#46;items' class='entity' style='stroke:none;' x='480' y='40' width='112' height='144' rx='4' ry='4' />
+<path d='M 480 68 L 480 44 Q 480 40 484 40 L 588 40 Q 592 40 592 44 L 592 68 L480 68 ' style='fill:url(#tbg_BED3F4);stroke-width:0;' />
+<rect class='entity' x='480' y='40' width='112' height='144' rx='4' ry='4' style='fill:none;stroke:#E1E7F2'/>
+<a xlink:href='#Default.items'><text x='516' y='59' >items</text><title>Table Default.items</title></a>
+  <use id='nn' x='482' y='77' xlink:href='#nn'/><use id='pk' x='482' y='76' xlink:href='#pk'><title>&#x1F511;  Pk pk_items ( item_id ) </title></use><a xlink:href='#Default.items_item_id'><text id='Default&#46;items&#46;item&#95;id' x='499' y='87' onmouseover="hghl(['items_to_ratings_fk_items_to_ratings_0','Default.items_to_ratings.item_id','items_to_categories_fk_items_to_categories','Default.items_to_categories.item_id','items_to_traits_fk_items_to_traits','Default.items_to_traits.item_id'])" onmouseout="uhghl(['items_to_ratings_fk_items_to_ratings_0','Default.items_to_ratings.item_id','items_to_categories_fk_items_to_categories','Default.items_to_categories.item_id','items_to_traits_fk_items_to_traits','Default.items_to_traits.item_id'])">item&#95;id</text><title>&#10697;  item_id
+     * integer
+ &#8601; items_to_ratings( item_id )
+ &#8601; items_to_categories( item_id )
+ &#8601; items_to_traits( item_id )</title></a>
+<a xlink:href='#Default.items.item_id'><use id='ref' x='580' y='76' xlink:href='#ref'/><title>&amp;#1F517;  
+Referred by items_to_ratings ( item_id ) 
+Referred by items_to_categories ( item_id ) 
+Referred by items_to_traits ( item_id ) </title></a>
+  <use id='nn' x='482' y='93' xlink:href='#nn'/><use id='unq' x='482' y='92' xlink:href='#unq'><title>&#x1F50D;  Unq unq_items_name ( name ) </title></use><a xlink:href='#Default.items_name'><text id='Default&#46;items&#46;name' x='499' y='103'>name</text><title>&#10697;  name
+     * varchar(255)</title></a>
+<text x='589' y='100' text-anchor='end' class='colType'>t</text>  <use id='nn' x='482' y='109' xlink:href='#nn'/><a xlink:href='#Default.items_description'><text id='Default&#46;items&#46;description' x='499' y='119'>description</text><title>&#10697;  description
+     * text default &apos;&apos;</title></a>
+<text x='589' y='116' text-anchor='end' class='colType'>t</text>  <use id='nn' x='482' y='125' xlink:href='#nn'/><a xlink:href='#Default.items_comments'><text id='Default&#46;items&#46;comments' x='499' y='135'>comments</text><title>&#10697;  comments
+     * text default &apos;&apos;</title></a>
+<text x='589' y='132' text-anchor='end' class='colType'>t</text>  <use id='nn' x='482' y='141' xlink:href='#nn'/><a xlink:href='#Default.items_img_path'><text id='Default&#46;items&#46;img&#95;path' x='499' y='151'>img&#95;path</text><title>&#10697;  img_path
+     * text default &apos;default.png&apos;</title></a>
+<text x='589' y='148' text-anchor='end' class='colType'>t</text>  <use id='nn' x='482' y='157' xlink:href='#nn'/><a xlink:href='#Default.items_date'><text id='Default&#46;items&#46;date' x='499' y='167'>date</text><title>&#10697;  date
+     * text default CURRENT_TIMESTAMP</title></a>
+<text x='589' y='164' text-anchor='end' class='colType'>t</text>
+<!-- == Table 'items_to_categories' == -->
+<rect id='depict_Default&#46;items&#95;to&#95;categories' class='entity' style='stroke:none;' x='256' y='56' width='144' height='80' rx='4' ry='4' />
+<path d='M 256 84 L 256 60 Q 256 56 260 56 L 396 56 Q 400 56 400 60 L 400 84 L256 84 ' style='fill:url(#tbg_BED3F4);stroke-width:0;' />
+<rect class='entity' x='256' y='56' width='144' height='80' rx='4' ry='4' style='fill:none;stroke:#E1E7F2'/>
+<a xlink:href='#Default.items_to_categories'><text x='264' y='75' >items&#95;to&#95;categories</text><title>Table Default.items_to_categories</title></a>
+  <use id='nn' x='258' y='93' xlink:href='#nn'/><use id='pk' x='258' y='92' xlink:href='#pk'><title>&#x1F511;  Pk pk_items_to_categories ( item_id, category_id ) </title></use><a xlink:href='#Default.items_to_categories_item_id'><text id='Default&#46;items&#95;to&#95;categories&#46;item&#95;id' x='275' y='103' onmouseover="hghl(['items_to_categories_fk_items_to_categories','Default.items.item_id'])" onmouseout="uhghl(['items_to_categories_fk_items_to_categories','Default.items.item_id'])">item&#95;id</text><title>&#10697;  item_id
+     * integer
+ &#8599; items_to_categories( item_id )</title></a>
+<a xlink:href='#Default.items_to_categories.item_id'><use id='fk' x='388' y='92' xlink:href='#fk'/><title>&amp;#1F517;  
+References items ( item_id ) </title></a>
+  <use id='nn' x='258' y='109' xlink:href='#nn'/><use id='pk' x='258' y='108' xlink:href='#pk'><title>&#x1F511;  Pk pk_items_to_categories ( item_id, category_id ) </title></use><a xlink:href='#Default.items_to_categories_category_id'><text id='Default&#46;items&#95;to&#95;categories&#46;category&#95;id' x='275' y='119' onmouseover="hghl(['items_to_categories_fk_items_to_categories_0','Default.categories.category_id'])" onmouseout="uhghl(['items_to_categories_fk_items_to_categories_0','Default.categories.category_id'])">category&#95;id</text><title>&#10697;  category_id
+     * integer
+ &#8599; items_to_categories( category_id )</title></a>
+<a xlink:href='#Default.items_to_categories.category_id'><use id='fk' x='388' y='108' xlink:href='#fk'/><title>&amp;#1F517;  
+References categories ( category_id ) </title></a>
+
+<!-- == Table 'items_to_ratings' == -->
+<rect id='depict_Default&#46;items&#95;to&#95;ratings' class='entity' style='stroke:none;' x='672' y='40' width='128' height='80' rx='4' ry='4' />
+<path d='M 672 68 L 672 44 Q 672 40 676 40 L 796 40 Q 800 40 800 44 L 800 68 L672 68 ' style='fill:url(#tbg_BED3F4);stroke-width:0;' />
+<rect class='entity' x='672' y='40' width='128' height='80' rx='4' ry='4' style='fill:none;stroke:#E1E7F2'/>
+<a xlink:href='#Default.items_to_ratings'><text x='682' y='59' >items&#95;to&#95;ratings</text><title>Table Default.items_to_ratings</title></a>
+  <use id='nn' x='674' y='77' xlink:href='#nn'/><use id='pk' x='674' y='76' xlink:href='#pk'><title>&#x1F511;  Pk pk_items_to_ratings ( item_id, rating_id ) </title></use><a xlink:href='#Default.items_to_ratings_item_id'><text id='Default&#46;items&#95;to&#95;ratings&#46;item&#95;id' x='691' y='87' onmouseover="hghl(['items_to_ratings_fk_items_to_ratings_0','Default.items.item_id'])" onmouseout="uhghl(['items_to_ratings_fk_items_to_ratings_0','Default.items.item_id'])">item&#95;id</text><title>&#10697;  item_id
+     * integer
+ &#8599; items_to_ratings( item_id )</title></a>
+<a xlink:href='#Default.items_to_ratings.item_id'><use id='fk' x='788' y='76' xlink:href='#fk'/><title>&amp;#1F517;  
+References items ( item_id ) </title></a>
+  <use id='nn' x='674' y='93' xlink:href='#nn'/><use id='pk' x='674' y='92' xlink:href='#pk'><title>&#x1F511;  Pk pk_items_to_ratings ( item_id, rating_id ) </title></use><a xlink:href='#Default.items_to_ratings_rating_id'><text id='Default&#46;items&#95;to&#95;ratings&#46;rating&#95;id' x='691' y='103' onmouseover="hghl(['items_to_ratings_fk_items_to_ratings','Default.ratings.rating_id'])" onmouseout="uhghl(['items_to_ratings_fk_items_to_ratings','Default.ratings.rating_id'])">rating&#95;id</text><title>&#10697;  rating_id
+     * integer
+ &#8599; items_to_ratings( rating_id )</title></a>
+<a xlink:href='#Default.items_to_ratings.rating_id'><use id='fk' x='788' y='92' xlink:href='#fk'/><title>&amp;#1F517;  
+References ratings ( rating_id ) </title></a>
+
+<!-- == Table 'ratings' == -->
+<rect id='depict_Default&#46;ratings' class='entity' style='stroke:none;' x='720' y='216' width='96' height='96' rx='4' ry='4' />
+<path d='M 720 244 L 720 220 Q 720 216 724 216 L 812 216 Q 816 216 816 220 L 816 244 L720 244 ' style='fill:url(#tbg_BED3F4);stroke-width:0;' />
+<rect class='entity' x='720' y='216' width='96' height='96' rx='4' ry='4' style='fill:none;stroke:#E1E7F2'/>
+<a xlink:href='#Default.ratings'><text x='744' y='235' >ratings</text><title>Table Default.ratings</title></a>
+  <use id='nn' x='722' y='253' xlink:href='#nn'/><use id='pk' x='722' y='252' xlink:href='#pk'><title>&#x1F511;  Pk pk_ratings ( rating_id ) </title></use><a xlink:href='#Default.ratings_rating_id'><text id='Default&#46;ratings&#46;rating&#95;id' x='739' y='263' onmouseover="hghl(['items_to_ratings_fk_items_to_ratings','Default.items_to_ratings.rating_id'])" onmouseout="uhghl(['items_to_ratings_fk_items_to_ratings','Default.items_to_ratings.rating_id'])">rating&#95;id</text><title>&#10697;  rating_id
+     * integer
+ &#8601; items_to_ratings( rating_id )</title></a>
+<a xlink:href='#Default.ratings.rating_id'><use id='ref' x='804' y='252' xlink:href='#ref'/><title>&amp;#1F517;  
+Referred by items_to_ratings ( rating_id ) </title></a>
+  <use id='nn' x='722' y='269' xlink:href='#nn'/><a xlink:href='#Default.ratings_rating'><text id='Default&#46;ratings&#46;rating' x='739' y='279'>rating</text><title>&#10697;  rating
+     * integer</title></a>
+<text x='813' y='276' text-anchor='end' class='colType'>&#35;</text>  <use id='nn' x='722' y='285' xlink:href='#nn'/><a xlink:href='#Default.ratings_date'><text id='Default&#46;ratings&#46;date' x='739' y='295'>date</text><title>&#10697;  date
+     * text default CURRENT_TIMESTAMP</title></a>
+<text x='813' y='292' text-anchor='end' class='colType'>t</text>
+<!-- == Table 'categories_to_traits' == -->
+<rect id='depict_Default&#46;categories&#95;to&#95;traits' class='entity' style='stroke:none;' x='48' y='312' width='144' height='80' rx='4' ry='4' />
+<path d='M 48 340 L 48 316 Q 48 312 52 312 L 188 312 Q 192 312 192 316 L 192 340 L48 340 ' style='fill:url(#tbg_C1D8EE);stroke-width:0;' />
+<rect class='entity' x='48' y='312' width='144' height='80' rx='4' ry='4' style='fill:none;stroke:#E1E9F2'/>
+<a xlink:href='#Default.categories_to_traits'><text x='57' y='331' >categories&#95;to&#95;traits</text><title>Table Default.categories_to_traits</title></a>
+  <a xlink:href='#Default.categories_to_traits_category_id'><text id='Default&#46;categories&#95;to&#95;traits&#46;category&#95;id' x='67' y='359' onmouseover="hghl(['categories_to_traits_fk_categories_to_traits_0','Default.categories.category_id'])" onmouseout="uhghl(['categories_to_traits_fk_categories_to_traits_0','Default.categories.category_id'])">category&#95;id</text><title>&#10697;  category_id
+     integer
+ &#8599; categories_to_traits( category_id )</title></a>
+<a xlink:href='#Default.categories_to_traits.category_id'><use id='fk' x='180' y='348' xlink:href='#fk'/><title>&amp;#1F517;  
+References categories ( category_id ) </title></a>
+  <a xlink:href='#Default.categories_to_traits_trait_id'><text id='Default&#46;categories&#95;to&#95;traits&#46;trait&#95;id' x='67' y='375' onmouseover="hghl(['categories_to_traits_fk_categories_to_traits','Default.traits.trait_id'])" onmouseout="uhghl(['categories_to_traits_fk_categories_to_traits','Default.traits.trait_id'])">trait&#95;id</text><title>&#10697;  trait_id
+     integer
+ &#8599; categories_to_traits( trait_id )</title></a>
+<a xlink:href='#Default.categories_to_traits.trait_id'><use id='fk' x='180' y='364' xlink:href='#fk'/><title>&amp;#1F517;  
+References traits ( trait_id ) </title></a>
+
+<!-- == Table 'traits' == -->
+<rect id='depict_Default&#46;traits' class='entity' style='stroke:none;' x='112' y='472' width='112' height='112' rx='4' ry='4' />
+<path d='M 112 500 L 112 476 Q 112 472 116 472 L 220 472 Q 224 472 224 476 L 224 500 L112 500 ' style='fill:url(#tbg_C1D8EE);stroke-width:0;' />
+<rect class='entity' x='112' y='472' width='112' height='112' rx='4' ry='4' style='fill:none;stroke:#E1E9F2'/>
+<a xlink:href='#Default.traits'><text x='149' y='491' >traits</text><title>Table Default.traits</title></a>
+  <use id='nn' x='114' y='509' xlink:href='#nn'/><use id='pk' x='114' y='508' xlink:href='#pk'><title>&#x1F511;  Pk pk_traits ( trait_id ) </title></use><a xlink:href='#Default.traits_trait_id'><text id='Default&#46;traits&#46;trait&#95;id' x='131' y='519' onmouseover="hghl(['items_to_traits_fk_items_to_traits_0','Default.items_to_traits.trait_id','categories_to_traits_fk_categories_to_traits','Default.categories_to_traits.trait_id'])" onmouseout="uhghl(['items_to_traits_fk_items_to_traits_0','Default.items_to_traits.trait_id','categories_to_traits_fk_categories_to_traits','Default.categories_to_traits.trait_id'])">trait&#95;id</text><title>&#10697;  trait_id
+     * integer
+ &#8601; items_to_traits( trait_id )
+ &#8601; categories_to_traits( trait_id )</title></a>
+<a xlink:href='#Default.traits.trait_id'><use id='ref' x='212' y='508' xlink:href='#ref'/><title>&amp;#1F517;  
+Referred by items_to_traits ( trait_id ) 
+Referred by categories_to_traits ( trait_id ) </title></a>
+  <a xlink:href='#Default.traits_name'><text id='Default&#46;traits&#46;name' x='131' y='535'>name</text><title>&#10697;  name
+     varchar(100)</title></a>
+<text x='221' y='532' text-anchor='end' class='colType'>t</text>  <a xlink:href='#Default.traits_range_low'><text id='Default&#46;traits&#46;range&#95;low' x='131' y='551'>range&#95;low</text><title>&#10697;  range_low
+     varchar(255)</title></a>
+<text x='221' y='548' text-anchor='end' class='colType'>t</text>  <a xlink:href='#Default.traits_range_high'><text id='Default&#46;traits&#46;range&#95;high' x='131' y='567'>range&#95;high</text><title>&#10697;  range_high
+     varchar(255)</title></a>
+<text x='221' y='564' text-anchor='end' class='colType'>t</text>
+<!-- == Table 'items_to_traits' == -->
+<rect id='depict_Default&#46;items&#95;to&#95;traits' class='entity' style='stroke:none;' x='384' y='488' width='112' height='96' rx='4' ry='4' />
+<path d='M 384 516 L 384 492 Q 384 488 388 488 L 492 488 Q 496 488 496 492 L 496 516 L384 516 ' style='fill:url(#tbg_C1D8EE);stroke-width:0;' />
+<rect class='entity' x='384' y='488' width='112' height='96' rx='4' ry='4' style='fill:none;stroke:#E1E9F2'/>
+<a xlink:href='#Default.items_to_traits'><text x='392' y='507' >items&#95;to&#95;traits</text><title>Table Default.items_to_traits</title></a>
+  <a xlink:href='#Default.items_to_traits_item_id'><text id='Default&#46;items&#95;to&#95;traits&#46;item&#95;id' x='403' y='535' onmouseover="hghl(['items_to_traits_fk_items_to_traits','Default.items.item_id'])" onmouseout="uhghl(['items_to_traits_fk_items_to_traits','Default.items.item_id'])">item&#95;id</text><title>&#10697;  item_id
+     integer
+ &#8599; items_to_traits( item_id )</title></a>
+<a xlink:href='#Default.items_to_traits.item_id'><use id='fk' x='484' y='524' xlink:href='#fk'/><title>&amp;#1F517;  
+References items ( item_id ) </title></a>
+  <a xlink:href='#Default.items_to_traits_trait_id'><text id='Default&#46;items&#95;to&#95;traits&#46;trait&#95;id' x='403' y='551' onmouseover="hghl(['items_to_traits_fk_items_to_traits_0','Default.traits.trait_id'])" onmouseout="uhghl(['items_to_traits_fk_items_to_traits_0','Default.traits.trait_id'])">trait&#95;id</text><title>&#10697;  trait_id
+     integer
+ &#8599; items_to_traits( trait_id )</title></a>
+<a xlink:href='#Default.items_to_traits.trait_id'><use id='fk' x='484' y='540' xlink:href='#fk'/><title>&amp;#1F517;  
+References traits ( trait_id ) </title></a>
+  <a xlink:href='#Default.items_to_traits_val'><text id='Default&#46;items&#95;to&#95;traits&#46;val' x='403' y='567'>val</text><title>&#10697;  val
+     integer</title></a>
+<text x='493' y='564' text-anchor='end' class='colType'>&#35;</text>
+</g></svg>

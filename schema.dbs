@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Sqlite" id="Project-2204" database="Sqlite" >
+	<schema name="Default" >
+		<table name="categories" spec="" >
+			<column name="category_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="description" type="TEXT" jt="-1" mandatory="y" >
+				<defo><![CDATA['']]></defo>
+			</column>
+			<index name="pk_categories" unique="PRIMARY_KEY" >
+				<column name="category_id" />
+			</index>
+			<index name="unq_categories_name" unique="UNIQUE_KEY" >
+				<column name="name" />
+			</index>
+		</table>
+		<table name="categories_to_traits" >
+			<column name="category_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="trait_id" type="INTEGER" jt="4" mandatory="y" />
+			<index name="pk_categories_to_traits" unique="PRIMARY_KEY" >
+				<column name="category_id" />
+				<column name="trait_id" />
+			</index>
+			<fk name="fk_categories_to_traits" to_schema="Default" to_table="traits" >
+				<fk_column name="trait_id" pk="trait_id" />
+			</fk>
+			<fk name="fk_categories_to_traits_0" to_schema="Default" to_table="categories" >
+				<fk_column name="category_id" pk="category_id" />
+			</fk>
+		</table>
+		<table name="items" spec="" >
+			<column name="item_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="description" type="TEXT" jt="-1" mandatory="y" >
+				<defo><![CDATA['']]></defo>
+			</column>
+			<column name="comments" type="TEXT" jt="-1" mandatory="y" >
+				<defo><![CDATA['']]></defo>
+			</column>
+			<column name="img_path" type="TEXT" jt="-1" mandatory="y" >
+				<defo><![CDATA['default.png']]></defo>
+			</column>
+			<column name="date" type="TEXT" jt="-1" mandatory="y" >
+				<defo><![CDATA[CURRENT_TIMESTAMP]]></defo>
+			</column>
+			<index name="pk_items" unique="PRIMARY_KEY" >
+				<column name="item_id" />
+			</index>
+			<index name="unq_items_name" unique="UNIQUE_KEY" >
+				<column name="name" />
+			</index>
+		</table>
+		<table name="items_to_categories" spec="" >
+			<column name="item_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="category_id" type="INTEGER" jt="4" mandatory="y" />
+			<index name="pk_items_to_categories" unique="PRIMARY_KEY" options="CONSTRAINT fk_items FOREIGN KEY ( item_id) REFERENCES items( item_id) ON DELETE CASCADE CONSTRAINT fk_categories FOREIGN KEY ( category_id) REFERENCES categories( category_id) ON DELETE CASCADE" >
+				<column name="item_id" />
+				<column name="category_id" />
+			</index>
+			<fk name="fk_items_to_categories" to_schema="Default" to_table="items" >
+				<fk_column name="item_id" pk="item_id" />
+			</fk>
+			<fk name="fk_items_to_categories_0" to_schema="Default" to_table="categories" >
+				<fk_column name="category_id" pk="category_id" />
+			</fk>
+		</table>
+		<table name="items_to_ratings" spec="" >
+			<column name="item_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="rating_id" type="INTEGER" jt="4" mandatory="y" />
+			<index name="pk_items_to_ratings" unique="PRIMARY_KEY" options="CONSTRAINT fk_items FOREIGN KEY ( item_id) REFERENCES items( item_id) ON DELETE CASCADE CONSTRAINT fk_ratings FOREIGN KEY ( rating_id) REFERENCES ratings( rating_id) ON DELETE CASCADE" >
+				<column name="item_id" />
+				<column name="rating_id" />
+			</index>
+			<fk name="fk_items_to_ratings" to_schema="Default" to_table="ratings" >
+				<fk_column name="rating_id" pk="rating_id" />
+			</fk>
+			<fk name="fk_items_to_ratings_0" to_schema="Default" to_table="items" >
+				<fk_column name="item_id" pk="item_id" />
+			</fk>
+		</table>
+		<table name="items_to_traits" >
+			<column name="item_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="trait_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="val" type="INTEGER" jt="4" />
+			<index name="pk_items_to_traits" unique="PRIMARY_KEY" >
+				<column name="item_id" />
+				<column name="trait_id" />
+			</index>
+			<fk name="fk_items_to_traits" to_schema="Default" to_table="items" >
+				<fk_column name="item_id" pk="item_id" />
+			</fk>
+			<fk name="fk_items_to_traits_0" to_schema="Default" to_table="traits" >
+				<fk_column name="trait_id" pk="trait_id" />
+			</fk>
+		</table>
+		<table name="ratings" spec="" >
+			<column name="rating_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="rating" type="INTEGER" jt="4" mandatory="y" />
+			<column name="date" type="TEXT" jt="-1" mandatory="y" >
+				<defo><![CDATA[CURRENT_TIMESTAMP]]></defo>
+			</column>
+			<index name="pk_ratings" unique="PRIMARY_KEY" >
+				<column name="rating_id" />
+			</index>
+			<constraint name="Cns_ratings_rating" >
+				<string><![CDATA[ rating <= 5 AND rating >= 0]]></string>
+			</constraint>
+		</table>
+		<table name="traits" >
+			<column name="trait_id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="name" type="VARCHAR" length="100" jt="12" />
+			<column name="range_low" type="VARCHAR" length="255" jt="12" />
+			<column name="range_high" type="VARCHAR" length="255" jt="12" />
+			<index name="pk_traits" unique="PRIMARY_KEY" >
+				<column name="trait_id" />
+			</index>
+			<index name="unq_traits" unique="UNIQUE_KEY" >
+				<column name="name" />
+			</index>
+		</table>
+	</schema>
+	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.40.0.0.jar" driver_desc="Standard" host="localhost" port="7210" instance="/Users/z/Library/Application Support/com.rating.room/ratings.db" useSystemProxy="false" />
+	<layout name="Main Layout" id="Layout-1feb" show_relation="columns" >
+		<comment><![CDATA[Main Layout]]></comment>
+		<entity schema="Default" name="categories" color="BED3F4" x="64" y="48" />
+		<entity schema="Default" name="categories_to_traits" color="C1D8EE" x="64" y="256" />
+		<entity schema="Default" name="items" color="BED3F4" x="512" y="48" />
+		<entity schema="Default" name="items_to_categories" color="BED3F4" x="272" y="48" />
+		<entity schema="Default" name="items_to_ratings" color="BED3F4" x="688" y="64" />
+		<entity schema="Default" name="items_to_traits" color="C1D8EE" x="448" y="464" />
+		<entity schema="Default" name="ratings" color="BED3F4" x="688" y="464" />
+		<entity schema="Default" name="traits" color="C1D8EE" x="48" y="464" />
+	</layout>
+	<layout name="~Layout with Sample Tools" id="Layout-1484" show_column_type="y" show_relation="columns" >
+		<entity schema="Default" name="categories" color="BED3F4" x="48" y="48" />
+		<entity schema="Default" name="items" color="BED3F4" x="304" y="48" />
+		<entity schema="Default" name="items_to_categories" color="BED3F4" x="560" y="48" />
+		<entity schema="Default" name="items_to_ratings" color="BED3F4" x="816" y="48" />
+		<entity schema="Default" name="ratings" color="BED3F4" x="48" y="240" />
+		<script name="SQL Editor" id="Editor-d71" language="SQL" >
+			<string><![CDATA[SELECT
+	category_id, name, description
+FROM
+	categories s;]]></string>
+		</script>
+		<browser id="Browse-25ac" name="Relational Data Explorer" confirm_updates="y" >
+			<browse_table schema="Default" entity="categories" x="20" y="20" width="400" height="300" />
+		</browser>
+		<query id="Query-f07" name="Query Builder" >
+			<query_table schema="Default" name="categories" alias="c" x="48" y="48" >
+				<column name="category_id" />
+				<column name="name" />
+				<column name="description" />
+			</query_table>
+		</query>
+		<form name="Report" id="Report-323" template="Page" css="container-fluid" view="frame" >
+			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
+			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2,-2}}" scroll="n" html="n" >
+				<cell type="label" name="Categories Data" template="H3" pos="0,0,1,0,l,c" />
+				<cell type="chart" name="Pie" template="Pie" pos="0,1,4,1,l,c" max_records="20" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="category_id" type="4" />
+						<var name="name" />
+						<var name="description" type="-1" />
+						<script ><![CDATA[SELECT * FROM categories]]></script>
+					</form_script>
+					<param name="i0" value="description" />
+					<param name="width" value="100%" />
+					<param name="v0" value="category_id" />
+					<param name="title" value="Sample Chart" />
+					<param name="height" value="400px" />
+				</cell>
+				<tableview name="sample" template="Table" css="table table-striped table-sm table-hover" pos="0,2,4,2,f,f" layout="{{-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="category_id" type="4" />
+						<var name="name" />
+						<var name="description" type="-1" />
+						<script ><![CDATA[SELECT * FROM categories]]></script>
+					</form_script>
+					<cell type="label" name="category_id" pos="0,0,0,0,c,c" />
+					<cell type="label" name="name" pos="1,0,1,0,c,c" />
+					<cell type="label" name="description" pos="2,0,2,0,c,c" />
+					<cell type="label" name="Button can open other pages." pos="3,0,3,0,c,c" />
+					<cell type="label" name="${category_id}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${name}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${description}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="button" name="More" template="Plain" css="btn btn-sm btn-secondary" pos="3,1,3,1,c,c" ref_id="Report-323" />
+				</tableview>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="0,3,0,3,l,c" glyph="bi-chevron_double_left" ref_id="Report-323" >
+					<var name="samplePageNumber" value="0" />
+				</cell>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="1,3,1,3,l,c" glyph="bi-chevron_left" ref_id="Report-323" >
+					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
+				</cell>
+				<cell type="label" name="Page ${samplePageNumber+1}" pos="2,3,2,3,l,c" />
+				<cell type="href" name="" disabled="${!sampleHasNextPage}" pos="3,3,3,3,l,c" glyph="bi-chevron_right" ref_id="Report-323" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>

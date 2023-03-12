@@ -88,9 +88,45 @@ CREATE TABLE ratings (
 	date                 TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 ); 
 
+CREATE TABLE traits (
+    trait_id            INTEGER PRIMARY KEY,
+    name                TEXT NOT NULL UNIQUE,
+    range_low           TEXT NOT NULL DEFAULT '',
+    range_high          TEXT NOT NULL DEFAULT '',
+);
+
+CREATE TABLE items_to_traits ( 
+	item_id            INTEGER NOT NULL,
+	trait_id        INTEGER NOT NULL,
+    val             INTEGER NOT NULL,
+    PRIMARY KEY ( item_id, trait_id )
+    CONSTRAINT fk_items
+        FOREIGN KEY ( item_id )
+        REFERENCES items( item_id )
+        ON DELETE CASCADE
+    CONSTRAINT fk_traits
+        FOREIGN KEY ( trait_id )
+        REFERENCES traits( trait_id )
+        ON DELETE CASCADE
+ );
+
+CREATE TABLE categories_to_traits ( 
+	category_id            INTEGER NOT NULL,
+	trait_id        INTEGER NOT NULL
+    PRIMARY KEY ( category_id, trait_id )
+    CONSTRAINT fk_categories
+        FOREIGN KEY ( category_id )
+        REFERENCES categories( category_id )
+        ON DELETE CASCADE
+    CONSTRAINT fk_traits
+        FOREIGN KEY ( trait_id )
+        REFERENCES traits( trait_id )
+        ON DELETE CASCADE
+ );
+
 CREATE TABLE items_to_categories ( 
 	item_id            INTEGER NOT NULL,
-	category_id        INTEGER NOT NULL,
+	category_id        INTEGER NOT NULL
     PRIMARY KEY ( item_id, category_id )
     CONSTRAINT fk_items
         FOREIGN KEY ( item_id )
