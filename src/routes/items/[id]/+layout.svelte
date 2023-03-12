@@ -2,14 +2,14 @@
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
   import Modal from '$lib/Modal.svelte'
-  import { invoke } from '@tauri-apps/api/tauri'
+  import { deleteItem } from 'service/db'
   import { itemsStore } from 'store'
 
   $: id = Number($page.params.id)
   let showModal = false
 
-  async function deleteItem() {
-    await invoke('delete_item', { id })
+  async function delItem() {
+    await deleteItem(id)
     goto('/')
   }
 
@@ -26,7 +26,7 @@
   </div>
 </nav>
 {#if showModal}
-  <Modal on:modalClose={toggleModal} on:modalSubmit={deleteItem} />
+  <Modal on:modalClose={toggleModal} on:modalSubmit={delItem} />
 {/if}
 
 <slot />

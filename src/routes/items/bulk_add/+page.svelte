@@ -1,8 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import CategorySelect from '$lib/CategorySelect.svelte'
-  import { invoke } from '@tauri-apps/api'
-  import { getTable } from 'service/db'
+  import { addItem, getTable } from 'service/db'
   import { itemsStore } from 'store'
   import { onMount } from 'svelte'
 
@@ -53,35 +51,14 @@
   }
 
   function submitItems() {
-    const res = cells.forEach(async (c) => await createItem(c))
+    cells.forEach(async (c) => await createItem(c))
     goto('/')
   }
 
   async function createItem(item) {
     item = { ...item, img_path: '' }
 
-    if (item.name === '' || !item.categories.length) {
-      return
-    }
-    const newItemId = await invoke('create_item', {
-      name: item.name,
-      description: item.description,
-      comments: item.comments,
-      imgPath: 'default.png',
-    })
-    await invoke('add_categories_to_item', {
-      itemId: newItemId,
-      categories: item.categories,
-    })
-    await invoke('create_rating', {
-      rating: Number(item.rating),
-      itemId: newItemId,
-    })
-
-    // itemsStore.fetch()
-    await invoke('get_items').then(
-      (items) => ($itemsStore.items = items as FullItem[])
-    )
+    await addItem(item)
   }
 </script>
 
@@ -108,6 +85,7 @@
               value={name}
               placeholder="item name"
               id="name"
+              autocomplete="off"
               on:change={(e) => updateItem(e, i)}
             /></td
           >

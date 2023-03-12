@@ -1,17 +1,15 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { invoke } from '@tauri-apps/api'
   import { saveFile } from 'service/file'
   import ItemForm from '$lib/ItemForm.svelte'
   import { itemsStore } from 'store'
+  import { addItem } from 'service/db'
 
   let imgUrl: string = ''
   let imgBlob: Blob | File | null = null
 
   if ($itemsStore.items.length == 0) {
-    invoke('get_items').then(
-      (items) => ($itemsStore.items = items as FullItem[])
-    )
+    itemsStore.refresh()
   }
 
   function updateBlob(e: { detail: Blob | File | null }) {
@@ -31,26 +29,7 @@
       imgBlob = null
     }
 
-    const newItemId = await invoke('create_item', {
-      name: editState.name,
-      description: editState.description,
-      comments: editState.comments,
-      imgPath: editState.img_path || '',
-    })
-    await invoke('add_categories_to_item', {
-      itemId: newItemId,
-      categories: editState.categories,
-    })
-    await invoke('create_rating', {
-      rating: editState.rating.rating,
-      itemId: newItemId,
-    })
-
-    // itemsStore.fetch()
-    await invoke('get_items').then(
-      (items) => ($itemsStore.items = items as FullItem[])
-    )
-
+    const newItemId = await addItem(editState)
     goto(`/items/${newItemId}`)
   }
 </script>

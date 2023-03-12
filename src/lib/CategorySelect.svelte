@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { invoke } from '@tauri-apps/api/tauri'
+  import { createCategory } from 'service/db'
   import { itemsStore } from 'store'
 
   export let categories: Category[] = []
@@ -23,7 +23,7 @@
   }
 
   async function addNewCategory() {
-    const categoryId: number = await invoke('create_category', {
+    const categoryId = await createCategory({
       name: categoryName,
       description: '',
     })
