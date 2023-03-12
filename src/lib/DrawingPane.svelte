@@ -7,8 +7,6 @@
   export let imgUrl: string
   let canvas: HTMLCanvasElement
   let ctx: CanvasRenderingContext2D | null
-  let coords: { x: number; y: number }
-
   $: toolType = ToolType.draw
 
   let backgroundImg: string = ''
@@ -17,7 +15,7 @@
     img.crossOrigin = 'anonymous'
     img.onload = function () {
       if (ctx) {
-        ctx.drawImage(img, 0, 0, 500, 500)
+        ctx.drawImage(img, 0, 0, 480, 480)
       }
     }
     img.src = imgUrl
@@ -28,25 +26,49 @@
     canvas = document.getElementById('canvas') as HTMLCanvasElement
     ctx = canvas.getContext('2d')
     canvas.getBoundingClientRect().left
-    coords = {
-      x: canvas.getBoundingClientRect().left,
-      y: canvas.getBoundingClientRect().top,
-    }
     if (ctx) {
       ctx.fillStyle = '#fff'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
     }
   })
 
-  function drawCircle(x: number, y: number) {
+  function findPixel(x: number, y: number) {
+    let start = { x: 0, y: 0 }
+    if (x % 4 == 0) {
+      start.x = x
+    } else {
+      start.x = x - (x % 4)
+    }
+    if (y % 4 == 0) {
+      start.y = y
+    } else {
+      start.y = y - (y % 4)
+    }
+    return start
+  }
+
+  function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect()
+    return {
+      x: Math.floor(
+        ((evt.clientX - rect.left) / (rect.right - rect.left)) * canvas.width
+      ),
+      y: Math.floor(
+        ((evt.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height
+      ),
+    }
+  }
+
+  function drawPixel(x: number, y: number) {
     if (ctx) {
       if (toolType == ToolType.erase) {
-        ctx.arc(x - coords.x, y - coords.y, 10, 0, Math.PI * 2, true)
-
+        let pos = findPixel(x, y)
+        ctx.fillRect(pos.x, pos.y, 4, 4)
         ctx.strokeStyle = '#fff'
         ctx.fillStyle = '#fff'
       } else {
-        ctx.arc(x - coords.x, y - coords.y, 3, 0, Math.PI * 2, true)
+        let pos = findPixel(x, y)
+        ctx.fillRect(pos.x, pos.y, 4, 4)
         ctx.strokeStyle = '#000'
         ctx.fillStyle = '#000'
       }
@@ -64,7 +86,8 @@
   function handleDrawing(e) {
     if (isDrawing) {
       ctx?.beginPath()
-      drawCircle(e.clientX, e.clientY)
+      let { x, y } = getMousePos(canvas, e)
+      drawPixel(x, y)
     }
   }
 
@@ -94,9 +117,10 @@
 </div>
 <canvas
   id="canvas"
-  width="500"
-  height="500"
-  class="hover:cursor-pointer border"
+  width="480"
+  height="480"
+  style="image-rendering:pixelated"
+  class="hover:cursor-pointer "
   on:mousedown={mouseDown}
   on:mousemove={handleDrawing}
   on:mouseup={mouseUp}

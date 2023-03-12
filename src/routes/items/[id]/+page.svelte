@@ -60,7 +60,13 @@
     <a href="/" class="transition-all w-1/4 text-right hover:text-gray-600"
       >☜ go back
     </a>
-    <img alt="drawing of item" src={url} width={500} />
+    <img
+      style="image-rendering:pixelated"
+      alt="drawing of item"
+      src={url}
+      height={480}
+      width={480}
+    />
     <div class="flex relative flex-col gap-8 w-1/4">
       {#if prev}
         <button

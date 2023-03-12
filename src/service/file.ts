@@ -12,7 +12,7 @@ export async function saveFile(file: Blob | File): Promise<string> {
 
   if (file instanceof File) {
     generatedFileName = crypto.randomUUID() + getFileType(file)
-  } else generatedFileName = crypto.randomUUID() + '.jpg'
+  } else generatedFileName = crypto.randomUUID() + '.png'
 
   await writeBinaryFile(
     { path: `imgs/${generatedFileName}`, contents: binaryInput },

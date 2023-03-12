@@ -31,15 +31,17 @@
   <Filter />
   <a href="/items/add_item" class="underline">+ add item</a>
 </nav>
-<div class="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-1 m-8">
+
+<div class="flex flex-wrap gap-1 m-8 ">
   {#if $itemsStore.items.length}
     {#each $itemView as { item_id, img_path }}
       {#await imgURL(img_path) then url}
-        <a href={`items/${item_id}`}>
+        <a href={`items/${item_id}`} class="w-[120px]">
           <img
             alt="drawing of item"
             src={url}
-            class="object-cover w-full rounded-sm hover:outline hover:outline-1"
+            width={120}
+            class="object-cover imgs w-full rounded-sm hover:outline hover:outline-1"
           />
         </a>
       {/await}
@@ -59,6 +61,14 @@
   button {
     @apply border border-red-500 text-red-500 px-2 py-1 rounded-sm;
   }
+
+  .imgs {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
   input {
     @apply bg-red-100;
   }
