@@ -12,12 +12,19 @@
     setTimeout(() => (showError = false), 2000)
   }
 
-  const defaultCell = {
+  const defaultCell: FullItem = {
     name: '',
     description: '',
-    rating: 1,
     categories: [] as Category[],
     comments: '',
+    item_id: 0,
+    img_path: '',
+    date: '',
+    rating: {
+      date: '',
+      ratingId: 0,
+      rating: 0,
+    },
   }
 
   onMount(async () => {
@@ -35,31 +42,12 @@
     return cells.every((c) => c.name === '' || !c.categories.length)
   }
 
-  function toggleMenu(i: number) {
-    const menu = document.getElementById(`menu_${i}`)
-    if (menu) {
-      menu.classList.contains('invisible')
-        ? menu.classList.remove('invisible')
-        : menu.classList.add('invisible')
-    }
-  }
-
-  function updateItem(e, i: number) {
-    const val = e.target?.id as keyof typeof defaultCell
+  function updateItem(e: Event, i: number) {
+    const target = e.target as HTMLInputElement
+    const val = target.id as keyof typeof defaultCell
     if (val) {
-      cells[i][val] = e.target.value
+      cells[i][val] = target.value as never
     }
-  }
-
-  function addCategory(i: number, category: Category) {
-    cells[i].categories = [...cells[i].categories, category]
-    document.getElementById(`menu_${i}`)?.classList.add('invisible')
-  }
-
-  function removeCategory(i: number, category: Category) {
-    cells[i].categories = cells[i].categories.filter(
-      (c) => c.category_id !== category.category_id
-    )
   }
 
   function submitItems() {
@@ -67,7 +55,7 @@
     goto('/')
   }
 
-  async function createItem(item) {
+  async function createItem(item: FullItem) {
     item = { ...item, img_path: '' }
 
     await addItem(item)
@@ -120,7 +108,7 @@
             />
           </td>
           <td>
-            <RatingSelect bind:defaultRating={rating} />
+            <RatingSelect bind:defaultRating={rating.rating} />
           </td>
           <td>
             <CategorySelect bind:categories />
@@ -135,7 +123,7 @@
           >
           <td
             ><button
-              on:click={() => (cells = cells.filter((c, idx) => idx !== i))}
+              on:click={() => (cells = cells.filter((_, idx) => idx !== i))}
               >delete</button
             ></td
           >
