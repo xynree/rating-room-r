@@ -31,11 +31,11 @@
   <Filter />
   <a href="/items/add_item" class="hover:underline">+ add item</a>
 </nav>
-<div class="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-1 m-8">
+<div class="grid grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] gap-1 m-8">
   {#if $itemsStore.items.length}
     {#each $itemView as { item_id, img_path }}
       {#await imgURL(img_path) then url}
-        <a href={`items/${item_id}`}>
+        <a class="max-w-[200px]" href={`items/${item_id}`}>
           <img
             alt="drawing of item"
             src={url}

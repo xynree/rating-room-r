@@ -53,13 +53,7 @@
 </script>
 
 <div>
-  <p class="font-bold">
-    categories {#if !categories.length}<span
-        class="text-white bg-red-500 rounded-full px-2 text-xs font-normal"
-        >!</span
-      >{/if}
-  </p>
-  <div class="flex">
+  <div class="flex flex-wrap max-w-xs">
     {#each categories as category}
       <div class="flex gap-2 badge">
         <button value={JSON.stringify(category)} on:click={removeCategory}
@@ -67,14 +61,14 @@
         >{category.name}
       </div>
     {/each}
+    <button
+      on:click={toggleCategoryMenu}
+      id="addCategory"
+      class="badge {categories.length ? '' : 'ring-2 ring-red-500'}"
+    >
+      + add category
+    </button>
   </div>
-  <button
-    on:click={toggleCategoryMenu}
-    id="addCategory"
-    class="badge {categories.length ? '' : 'ring-2 ring-red-500'}"
-  >
-    + add category
-  </button>
   {#if showCategoryMenu}
     <div class="flex absolute flex-col bg-white rounded-xl border border-black">
       <div class="overflow-y-auto py-2 px-4 max-h-40">
@@ -106,6 +100,6 @@
 
 <style lang="postcss">
   .badge {
-    @apply rounded-full bg-zinc-200 text-xs px-3 py-1 hover:bg-zinc-300 transition-all;
+    @apply m-0.5 w-fit rounded-full bg-zinc-200 text-xs px-3 py-1 hover:bg-zinc-300 transition-all;
   }
 </style>

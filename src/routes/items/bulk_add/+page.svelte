@@ -1,8 +1,16 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import CategorySelect from '$lib/CategorySelect.svelte'
+  import RatingSelect from '$lib/RatingSelect.svelte'
   import { addItem, getTable } from 'service/db'
   import { itemsStore } from 'store'
   import { onMount } from 'svelte'
+
+  let showError: boolean = false
+  function toggleError() {
+    showError = true
+    setTimeout(() => (showError = false), 2000)
+  }
 
   const defaultCell = {
     name: '',
@@ -22,6 +30,10 @@
       ...defaultCell,
     },
   ]
+
+  function formErrors() {
+    return cells.every((c) => c.name === '' || !c.categories.length)
+  }
 
   function toggleMenu(i: number) {
     const menu = document.getElementById(`menu_${i}`)
@@ -66,6 +78,14 @@
   class="w-screen flex-col gap-8 items-center justify-center m-auto text-sm text-center"
 >
   <div class="my-2 text-xl font-bold">Bulk Add Items</div>
+  <p
+    class={`py-2 transition-all ${
+      showError ? 'opacity-100' : 'opacity-0'
+    } text-red-700 font-light text-xs`}
+  >
+    Missing name or categories
+  </p>
+
   <table>
     <thead>
       <tr>
@@ -86,69 +106,24 @@
               placeholder="item name"
               id="name"
               autocomplete="off"
-              on:change={(e) => updateItem(e, i)}
-            /></td
-          >
-          <td
-            ><input
-              value={description}
-              placeholder="description"
-              id="description"
-              on:change={(e) => updateItem(e, i)}
-            /></td
-          >
-          <td
-            ><input
-              type="number"
-              value={rating}
-              max="5"
-              min="1"
-              placeholder="rating"
-              id="rating"
+              class:ring-2={!name}
+              class:ring-red-500={!name}
               on:change={(e) => updateItem(e, i)}
             /></td
           >
           <td>
-            <div class="flex flex-wrap">
-              {#each categories as category}
-                <div class="flex gap-1 px-3 bg-gray-100 rounded-full text-xs">
-                  {category.name}
-                  <span
-                    class="cursor-pointer"
-                    on:click={() => removeCategory(i, category)}>x</span
-                  >
-                </div>
-              {/each}
-              <div
-                on:click={() => toggleMenu(i)}
-                class="px-3 text-xs bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300"
-              >
-                + add category
-              </div>
-            </div>
-
-            <div
-              class="flex absolute flex-col bg-white rounded-xl border border-black invisible"
-              id={`menu_${i}`}
-            >
-              <div class="overflow-y-auto py-2 px-4 max-h-40">
-                <ul>
-                  {#each [...$itemsStore.categories] as category}
-                    <div
-                      class="cursor-pointer"
-                      on:click={() => addCategory(i, category)}
-                    >
-                      {category.name}
-                    </div>{/each}
-                </ul>
-              </div>
-              <form class="p-2 border-t border-t-black">
-                <input
-                  class="font-bold text-center"
-                  placeholder="new category"
-                />
-              </form>
-            </div>
+            <input
+              value={description}
+              placeholder="description"
+              id="description"
+              on:change={(e) => updateItem(e, i)}
+            />
+          </td>
+          <td>
+            <RatingSelect bind:defaultRating={rating} />
+          </td>
+          <td>
+            <CategorySelect bind:categories />
           </td>
           <td
             ><input
@@ -175,7 +150,11 @@
     >
       +Add a New Item
     </button>
-    <button on:click={submitItems}>Submit Items</button>
+    <button
+      on:click={() => {
+        formErrors() ? toggleError() : submitItems()
+      }}>Submit Items</button
+    >
   </div>
 </div>
 

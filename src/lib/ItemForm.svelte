@@ -32,7 +32,7 @@
     rating: {
       date: '',
       ratingId: 0,
-      rating: 0,
+      rating: 1,
     },
   }
 
@@ -105,7 +105,9 @@
         placeholder="description"
       />
     </div>
+    <p class="tag">rating</p>
     <RatingSelect bind:defaultRating={editState.rating.rating} />
+    <p class="tag">categories</p>
     <CategorySelect bind:categories={editState.categories} />
     <div>
       <p class="tag">comments</p>
