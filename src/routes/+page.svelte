@@ -1,26 +1,22 @@
 <script lang="ts">
-  import { getItems, getTable } from '../service/db'
+  import { getCategories, getItems } from '../service/api'
   import Filter from '$lib/Filter.svelte'
   import { onMount } from 'svelte'
   import { imgURL } from '../service/file'
   import { itemsStore, itemView } from 'store'
   import Sort from '$lib/Sort.svelte'
-  import { isRegistered, register } from '@tauri-apps/api/globalShortcut'
-  import { goto } from '$app/navigation'
 
   let items: FullItem[] = []
   let categories: Category[] = []
 
   async function refresh() {
-    items = (await getTable('get_items')) as FullItem[]
-    categories = (await getTable('get_categories')) as Category[]
+    items = await getItems()
+    categories = await getCategories()
   }
 
   onMount(async () => {
-    const allItems = await getItems()
-    $itemsStore.items = allItems
-    const allCategories = (await getTable('get_categories')) as Category[]
-    $itemsStore.categories = new Set(allCategories)
+    $itemsStore.items = await getItems()
+    $itemsStore.categories = new Set(await getCategories())
     refresh()
   })
 </script>

@@ -3,7 +3,7 @@
   import { saveFile } from 'service/file'
   import ItemForm from '$lib/ItemForm.svelte'
   import { itemsStore } from 'store'
-  import { addItem } from 'service/db'
+  import { addItem } from 'service/api'
 
   let imgUrl: string = ''
   let imgBlob: Blob | File | null = null

@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation'
   import CategorySelect from '$lib/CategorySelect.svelte'
   import RatingSelect from '$lib/RatingSelect.svelte'
-  import { addItem, getTable } from 'service/db'
+  import { addItem, getCategories } from 'service/api'
   import { itemsStore } from 'store'
   import { onMount } from 'svelte'
 
@@ -28,8 +28,7 @@
   }
 
   onMount(async () => {
-    const allCategories = (await getTable('get_categories')) as Category[]
-    $itemsStore.categories = new Set(allCategories)
+    $itemsStore.categories = new Set(await getCategories())
   })
 
   $: cells = [
@@ -133,7 +132,11 @@
   </table>
   <div class="my-6">
     <button
-      on:click={() => (cells = [...cells, { ...defaultCell }])}
+      on:click={() =>
+        (cells = [
+          ...cells,
+          { ...defaultCell, rating: { ...defaultCell.rating } },
+        ])}
       class="hover:underline"
     >
       +Add a New Item

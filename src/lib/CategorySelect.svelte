@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createCategory } from 'service/db'
+  import { createCategory } from 'service/api'
   import { itemsStore } from 'store'
 
   export let categories: Category[] = []

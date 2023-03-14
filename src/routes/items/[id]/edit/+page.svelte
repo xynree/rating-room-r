@@ -4,7 +4,7 @@
   import { itemsStore, itemView } from 'store'
   import { deleteImgFromPath, saveFile } from 'service/file'
   import ItemForm from '$lib/ItemForm.svelte'
-  import { createRating, updateItem } from 'service/db'
+  import { createRating, updateItem } from 'service/api'
 
   let imgUrl: string = ''
   let imgBlob: Blob | File | null = null

@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
   import Modal from '$lib/Modal.svelte'
-  import { deleteItem } from 'service/db'
+  import { deleteItem } from 'service/api'
   import { itemsStore } from 'store'
 
   $: id = Number($page.params.id)
