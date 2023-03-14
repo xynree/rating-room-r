@@ -4,7 +4,7 @@
 
 <nav class="flex justify-between p-6 w-screen text-sm">
   <a href="/">my collection ({$itemsStore.items.length} items)</a>
-  <a href="/items/bulk_add">bulk add</a>
+  <a href="/items/add_item">single add</a>
 </nav>
 
 <slot />

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
-  import { invoke } from '@tauri-apps/api/tauri'
   import { imgURL } from 'service/file'
   import { FilterType, itemsStore, itemView } from 'store'
 
@@ -14,9 +13,7 @@
   $: id = Number($page.params.id)
   $: {
     if ($itemsStore.items.length == 0) {
-      invoke('get_items').then(
-        (items) => ($itemsStore.items = items as FullItem[])
-      )
+      itemsStore.refresh()
     }
     itemIdx = $itemView.findIndex((i) => i.item_id === id)
     item = $itemView[itemIdx]
@@ -47,7 +44,7 @@
     },
   }
 
-  function viewAllInCategory(e: { target: { name: string } }) {
+  function viewAllInCategory(e) {
     const category = e.target.name
     itemsStore.filters.reset()
     itemsStore.filters.toggle(FilterType.categories, category)

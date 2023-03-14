@@ -1,3 +1,4 @@
+import { invoke } from '@tauri-apps/api'
 import { derived, writable } from 'svelte/store'
 
 export enum SortBy {
@@ -32,6 +33,16 @@ export enum FilterType {
 function createInitialStore() {
   const { subscribe, set, update } = writable(initialStore)
 
+  // refresh db
+
+  async function refresh(){
+      await invoke("get_items").then((items)=>{
+        update((store)=>({
+          ...store, items:items as FullItem[]
+        }))
+      })
+  }
+
   // filter reset and toggle functions
   function toggle(filterType: FilterType, value: string | number) {
     update((store) => {
@@ -61,6 +72,7 @@ function createInitialStore() {
     subscribe,
     set,
     update,
+    refresh,
     filters: {
       reset,
       toggle,
