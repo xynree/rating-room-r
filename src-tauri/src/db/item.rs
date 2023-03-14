@@ -5,7 +5,7 @@ use tauri::utils::config::parse::folder_has_configuration_file;
 
 use crate::{
     errors::{CommandError, CommandResult},
-    schema::{Category, FullItem, Item, Rating},
+    schema::{Category, FullItem, Item, Rating, Trait},
 };
 
 pub fn get_item(conn: &MutexGuard<Connection>, id: usize) -> CommandResult<Item> {
@@ -112,7 +112,8 @@ pub fn filter_by_rating(
 
 pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<FullItem>> {
     let mut items = Vec::new();
-    let mut stmt = conn.prepare("SELECT i.*, c.*, r.* FROM items i JOIN items_to_ratings itr ON itr.item_id = i.item_id JOIN ratings r ON itr.rating_id = r.rating_id JOIN items_to_categories itc ON itc.item_id = i.item_id JOIN categories c on itc.category_id = c.category_id ")?;
+    let mut stmt = conn.prepare(
+        "SELECT i.*, c.*, r.*, t.* FROM items i JOIN items_to_ratings itr ON itr.item_id = i.item_id JOIN ratings r ON itr.rating_id = r.rating_id JOIN items_to_categories itc ON itc.item_id = i.item_id JOIN categories c ON itc.category_id = c.category_id LEFT JOIN items_to_traits itt ON itt.item_id = i.item_id LEFT JOIN traits t ON itt.trait_id = t.trait_id",)?;
     let rows = stmt.query_map([], |row| {
         let item = FullItem {
             item_id: row.get(0)?,
@@ -151,12 +152,19 @@ pub fn get_items(conn: &MutexGuard<Connection>) -> CommandResult<Vec<FullItem>> 
                     )
                 })?,
             },
+            traits: vec![Trait {
+                trait_id: row.get(12).unwrap_or_default(),
+                name: row.get(13).unwrap_or_default(),
+                range_low: row.get(14).unwrap_or_default(),
+                range_high: row.get(15).unwrap_or_default(),
+            }],
         };
 
         Ok(item)
     })?;
 
     for item in rows {
+        dbg!(&item);
         let item = item?;
         match items
             .iter()
@@ -608,7 +616,7 @@ mod tests {
 
         let item_id = conn.last_insert_rowid() as usize;
 
-        delete_item(&conn, item_id).unwrap();
+        delete_item(conn, item_id).unwrap();
 
         let result = conn
             .query_row("SELECT * FROM items WHERE item_id = ?", [item_id], |row| {

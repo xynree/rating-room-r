@@ -39,7 +39,16 @@ pub struct FullItem {
     pub img_path: String,
     pub categories: Vec<Category>,
     pub rating: Rating,
+    pub traits: Vec<Trait>,
     pub date: NaiveDateTime,
+}
+
+#[derive(Eq, PartialEq, Default, Serialize, Deserialize, Clone, Debug)]
+pub struct Trait {
+    pub trait_id: usize,
+    pub name: usize,
+    pub range_low: String,
+    pub range_high: String,
 }
 
 /// Representation of `category` table in our schema.
@@ -69,13 +78,13 @@ pub fn create_tables(conn: &Connection) -> anyhow::Result<()> {
         "
 CREATE TABLE categories ( 
     category_id                   INTEGER PRIMARY KEY,
-	name                 VARCHAR(255) NOT NULL UNIQUE,
+	name                 TEXT NOT NULL UNIQUE,
 	description          TEXT     NOT NULL DEFAULT ''
  );
 
 CREATE TABLE items ( 
     item_id                   INTEGER PRIMARY KEY, 
-	name                 VARCHAR(255) NOT NULL UNIQUE,
+	name                 TEXT NOT NULL UNIQUE,
 	description          TEXT     NOT NULL DEFAULT '',
 	comments             TEXT     NOT NULL DEFAULT '', 
     img_path             TEXT     NOT NULL DEFAULT 'default.png',
@@ -92,14 +101,14 @@ CREATE TABLE traits (
     trait_id            INTEGER PRIMARY KEY,
     name                TEXT NOT NULL UNIQUE,
     range_low           TEXT NOT NULL DEFAULT '',
-    range_high          TEXT NOT NULL DEFAULT '',
+    range_high          TEXT NOT NULL DEFAULT ''
 );
 
 CREATE TABLE items_to_traits ( 
 	item_id            INTEGER NOT NULL,
 	trait_id        INTEGER NOT NULL,
     val             INTEGER NOT NULL,
-    PRIMARY KEY ( item_id, trait_id )
+    PRIMARY KEY ( item_id, trait_id ),
     CONSTRAINT fk_items
         FOREIGN KEY ( item_id )
         REFERENCES items( item_id )
@@ -112,8 +121,8 @@ CREATE TABLE items_to_traits (
 
 CREATE TABLE categories_to_traits ( 
 	category_id            INTEGER NOT NULL,
-	trait_id        INTEGER NOT NULL
-    PRIMARY KEY ( category_id, trait_id )
+	trait_id        INTEGER NOT NULL,
+    PRIMARY KEY ( category_id, trait_id ),
     CONSTRAINT fk_categories
         FOREIGN KEY ( category_id )
         REFERENCES categories( category_id )
@@ -126,8 +135,8 @@ CREATE TABLE categories_to_traits (
 
 CREATE TABLE items_to_categories ( 
 	item_id            INTEGER NOT NULL,
-	category_id        INTEGER NOT NULL
-    PRIMARY KEY ( item_id, category_id )
+	category_id        INTEGER NOT NULL,
+    PRIMARY KEY ( item_id, category_id ),
     CONSTRAINT fk_items
         FOREIGN KEY ( item_id )
         REFERENCES items( item_id )
@@ -140,8 +149,8 @@ CREATE TABLE items_to_categories (
 
 CREATE TABLE items_to_ratings (
     item_id INTEGER NOT NULL,
-    rating_id INTEGER  NOT NULL    ,
-    PRIMARY KEY ( item_id, rating_id )
+    rating_id INTEGER  NOT NULL,
+    PRIMARY KEY ( item_id, rating_id ),
     CONSTRAINT fk_items
         FOREIGN KEY ( item_id )
         REFERENCES items( item_id )
