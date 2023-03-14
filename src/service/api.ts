@@ -27,7 +27,7 @@ export async function updateItem({
   })
 }
 
-export async function addItem(item): Promise<number | undefined> {
+export async function addItem(item:FullItem): Promise<number | undefined> {
   if (item.name === '' || !item.categories.length) {
     return
   }
@@ -44,7 +44,7 @@ export async function addItem(item): Promise<number | undefined> {
   })
 
   await invoke('create_rating', {
-    rating: item.rating.rating || Number(item.rating),
+    rating: item.rating.rating,
     itemId: newItemId,
   })
 
