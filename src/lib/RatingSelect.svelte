@@ -16,7 +16,6 @@
 </script>
 
 <div>
-  <p class="font-bold">rating</p>
   {#each Array(5) as _, i}
     <button
       on:click={() => handleChange(i)}

@@ -2,9 +2,9 @@
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
   import { itemsStore, itemView } from 'store'
-  import { invoke } from '@tauri-apps/api'
   import { deleteImgFromPath, saveFile } from 'service/file'
   import ItemForm from '$lib/ItemForm.svelte'
+  import { createRating, updateItem } from 'service/api'
 
   let imgUrl: string = ''
   let imgBlob: Blob | File | null = null
@@ -15,9 +15,7 @@
   $: id = Number($page.params.id)
   $: {
     if ($itemsStore.items.length == 0) {
-      invoke('get_items').then(
-        (items) => ($itemsStore.items = items as FullItem[])
-      )
+      itemsStore.refresh()
     }
     item = $itemView.find((i) => i.item_id == id)
     editState = item
@@ -41,20 +39,14 @@
       imgBlob = null
     }
 
-    await invoke('update_item', {
+    await updateItem({
       item: editedItem,
       categories: editState?.categories,
     })
 
-    await invoke('create_rating', {
-      rating: editedItem.rating.rating,
-      itemId: id,
-    })
+    await createRating({ rating: editedItem.rating.rating, itemId: id })
 
-    // itemsStore.fetch()
-    await invoke('get_items').then(
-      (items) => ($itemsStore.items = items as FullItem[])
-    )
+    itemsStore.refresh()
     goto(`/items/${id}`)
   }
 </script>

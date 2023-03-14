@@ -1,26 +1,22 @@
 <script lang="ts">
-  import { getItems, getTable } from '../service/db'
+  import { getCategories, getItems } from '../service/api'
   import Filter from '$lib/Filter.svelte'
   import { onMount } from 'svelte'
   import { imgURL } from '../service/file'
   import { itemsStore, itemView } from 'store'
   import Sort from '$lib/Sort.svelte'
-  import { isRegistered, register } from '@tauri-apps/api/globalShortcut'
-  import { goto } from '$app/navigation'
 
   let items: FullItem[] = []
   let categories: Category[] = []
 
   async function refresh() {
-    items = (await getTable('get_items')) as FullItem[]
-    categories = (await getTable('get_categories')) as Category[]
+    items = await getItems()
+    categories = await getCategories()
   }
 
   onMount(async () => {
-    const allItems = await getItems()
-    $itemsStore.items = allItems
-    const allCategories = (await getTable('get_categories')) as Category[]
-    $itemsStore.categories = new Set(allCategories)
+    $itemsStore.items = await getItems()
+    $itemsStore.categories = new Set(await getCategories())
     refresh()
   })
 </script>
@@ -29,13 +25,13 @@
   <a href="/">my collection ({$itemsStore.items.length} items)</a>
   <Sort />
   <Filter />
-  <a href="/items/add_item" class="underline">+ add item</a>
+  <a href="/items/add_item" class="hover:underline">+ add item</a>
 </nav>
-<div class="grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-1 m-8">
+<div class="grid grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] gap-1 m-8">
   {#if $itemsStore.items.length}
     {#each $itemView as { item_id, img_path }}
       {#await imgURL(img_path) then url}
-        <a href={`items/${item_id}`}>
+        <a class="max-w-[200px]" href={`items/${item_id}`}>
           <img
             alt="drawing of item"
             src={url}

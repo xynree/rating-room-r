@@ -32,7 +32,7 @@
     rating: {
       date: '',
       ratingId: 0,
-      rating: 0,
+      rating: 1,
     },
   }
 
@@ -72,24 +72,8 @@
         />
         <span class="imgtool cursor-pointer">upload image </span>
       </label>
-      <!-- <button -->
-      <!--   class="imgtool cursor-pointer" -->
-      <!--   on:click={() => (drawing = !drawing)} -->
-      <!-- > -->
-      <!--   {drawing ? 'upload image' : 'draw image'} -->
-      <!-- </button> -->
     </div>
-    <!-- {#if drawing} -->
     <DrawingPane bind:imgUrl on:updateBlob />
-    <!-- {:else} -->
-    <!--   <img -->
-    <!--     class="h-[500px] w-[500px]" -->
-    <!--     alt="drawing of item" -->
-    <!--     id="img" -->
-    <!--     src={imgUrl} -->
-    <!--     width={500} -->
-    <!--   /> -->
-    <!-- {/if} -->
   </div>
 
   <div class="flex flex-col gap-4">
@@ -107,6 +91,7 @@
       </p>
       <input
         class="input"
+        autocomplete="off"
         class:ring-2={!editState.name}
         class:ring-red-500={!editState.name}
         bind:value={editState.name}
@@ -120,7 +105,9 @@
         placeholder="description"
       />
     </div>
+    <p class="tag">rating</p>
     <RatingSelect bind:defaultRating={editState.rating.rating} />
+    <p class="tag">categories</p>
     <CategorySelect bind:categories={editState.categories} />
     <div>
       <p class="tag">comments</p>
