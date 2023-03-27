@@ -27,7 +27,7 @@ export async function updateItem({
   })
 }
 
-export async function addItem(item:FullItem): Promise<number | undefined> {
+export async function addItem(item: FullItem): Promise<number | undefined> {
   if (item.name === '' || !item.categories.length) {
     return
   }
@@ -65,6 +65,13 @@ export async function createCategory({
   return await invoke('create_category', {
     name,
     description,
+  })
+}
+
+export async function createTrait(trait: Trait, categoryName: string) {
+  return await invoke('create_trait', {
+    trait,
+    categoryName,
   })
 }
 

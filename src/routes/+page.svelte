@@ -6,18 +6,9 @@
   import { itemsStore, itemView } from 'store'
   import Sort from '$lib/Sort.svelte'
 
-  let items: FullItem[] = []
-  let categories: Category[] = []
-
-  async function refresh() {
-    items = await getItems()
-    categories = await getCategories()
-  }
-
   onMount(async () => {
     $itemsStore.items = await getItems()
     $itemsStore.categories = new Set(await getCategories())
-    refresh()
   })
 </script>
 
@@ -52,13 +43,6 @@
 </div>
 
 <style lang="postcss">
-  button {
-    @apply border border-red-500 text-red-500 px-2 py-1 rounded-sm;
-  }
-  input {
-    @apply bg-red-100;
-  }
-
   a {
     @apply text-zinc-800 hover:text-black;
   }
