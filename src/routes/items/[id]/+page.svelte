@@ -44,8 +44,9 @@
     },
   }
 
-  function viewAllInCategory(e) {
-    const category = e.target.name
+  function viewAllInCategory(e: Event) {
+    const target = e.target as HTMLButtonElement
+    const category = target.name
     itemsStore.filters.reset()
     itemsStore.filters.toggle(FilterType.categories, category)
     goto('/')

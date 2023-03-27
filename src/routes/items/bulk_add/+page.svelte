@@ -25,6 +25,7 @@
       ratingId: 0,
       rating: 0,
     },
+    traits: [],
   }
 
   onMount(async () => {
